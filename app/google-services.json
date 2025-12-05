@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302267027389",
+    "project_id": "sixtyplus-bada2",
+    "storage_bucket": "sixtyplus-bada2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302267027389:android:002ebe7088566aa0958cd4",
+        "android_client_info": {
+          "package_name": "com.example.sixtyplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOGyuzcadz6qSUmUT46ME8c5jLHM1AQyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

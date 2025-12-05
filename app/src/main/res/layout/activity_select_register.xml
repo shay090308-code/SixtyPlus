@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.SelectRegister">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/goBackLoginSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@android:color/transparent"
+            android:text="➜"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/galacti"
+            android:layout_gravity="center"
+            android:shadowColor="@color/myyellow"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="10"
+            android:text="סוג הרשמה"
+            android:textColor="#000000"
+            android:textSize="75dp"
+            android:textStyle="bold"
+            tools:layout_conversion_absoluteHeight="50dp"
+            tools:layout_conversion_absoluteWidth="242dp" />
+
+        <TextView
+            android:id="@+id/selectDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/rubiklight"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="10"
+            android:text="בחר את סוג המשתמש"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="363dp" />
+
+
+        <ImageButton
+            android:id="@+id/studentSelected"
+            android:layout_width="320dp"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:backgroundTint="#FAFAFA"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/students" />
+
+        <Button
+            android:id="@+id/studentSelectBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@android:color/transparent"
+            android:text="הרשמת תלמידים"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rubicblack"
+            android:textSize="30dp"/>
+
+        <ImageButton
+            android:id="@+id/inChargeSelected"
+            android:layout_width="320dp"
+            android:layout_height="260dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:backgroundTint="#FAFAFA"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/incharge" />
+
+        <Button
+            android:id="@+id/inChargeSelectedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@android:color/transparent"
+            android:text="הרשמת אחראים"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rubicblack"
+            android:textSize="30dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

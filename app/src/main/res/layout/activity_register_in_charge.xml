@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_in_charge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/goBackInCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:text="➜"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="right"/>
+
+            <TextView
+                android:id="@+id/registerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/galacti"
+                android:shadowColor="@color/myyellow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="10"
+                android:text="הרשמת אחראים"
+                android:textColor="#000000"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:layout_marginTop="0dp"
+                tools:layout_conversion_absoluteHeight="50dp"
+                tools:layout_conversion_absoluteWidth="242dp" />
+
+            <TextView
+                android:id="@+id/registerDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubiklight"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="10"
+                android:text="  אנא הקלד את פרטי ההרשמה הבאים:"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                tools:layout_conversion_absoluteHeight="24dp"
+                tools:layout_conversion_absoluteWidth="363dp" />
+
+            <!-- תעודת זהות -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="תעודת זהות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idNumberInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- שם פרטי -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="שם פרטי">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/firstNameInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- שם משפחה -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="שם משפחה">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastNameInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- מספר טלפון -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="מספר טלפון">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"
+                    android:inputType="phone"
+                    android:textAlignment="viewStart"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- עיר מקום ההתנדבות -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="עיר מקום ההתנדבות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cityInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- שם מקום ההתנדבות -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="שם מקום ההתנדבות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/placeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- כתובת מקום ההתנדבות -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="כתובת מקום ההתנדבות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/placeAdress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ימים אפשריים בשבוע -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="ימים אפשריים בשבוע להתנדבות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/placeDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- שעות אפשריות להתנדבות -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="שעות אפשריות להתנדבות">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/placeHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- סיסמא -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="סיסמא">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"
+                    android:inputType="textPassword"
+                    android:textAlignment="viewStart"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- אימות סיסמא -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black"
+                android:textColorHint="#999999"
+                android:hint="אימות סיסמא">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirmPasswordInCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/gveretlevin"
+                    android:inputType="textPassword"
+                    android:textAlignment="viewStart"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/myyellow"
+                android:fontFamily="@font/rubicblack"
+                android:text="הרשמה"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:layout_marginTop="25dp"
+                tools:layout_conversion_absoluteHeight="47dp"
+                tools:layout_conversion_absoluteWidth="200dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text="  יש לך כבר משתמש?"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+                <Button
+                    android:id="@+id/moveToLoginInCharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:fontFamily="@font/rubiklight"
+                    android:text="התחבר"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:layout_marginTop="1dp"
+                    android:layout_toLeftOf="@id/loginText"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
