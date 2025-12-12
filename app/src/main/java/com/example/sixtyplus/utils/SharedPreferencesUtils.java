@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import com.example.sixtyplus.models.UserGeneral;
+import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.models.UserStudent;
 import com.google.gson.Gson;
 
 /// Utility class for shared preferences operations
@@ -120,46 +122,41 @@ public class SharedPreferencesUtils {
     /// @param context The context to use
     /// @param user The user object to save
     /// @see UserGeneral
-    public static void saveUser(Context context, UserGeneral user) {
-        saveObject(context, "user", user);
+    public static void saveUser(Context context, UserStudent user) {
+        saveObject(context, "UserStudent", user);
+    }
+
+    public static void saveUser(Context context, UserInCharge user) {
+        saveObject(context, "UserInCharge", user);
     }
 
     /// Get the user object from shared preferences
     /// @param context The context to use
     /// @return The user object stored in shared preferences
     /// @see UserGeneral
-    /// @see #isUserLoggedIn(Context)
     public static UserGeneral getUser(Context context) {
-        if (!isUserLoggedIn(context)) {
-            return null;
+        if (isUserInCharge(context)) {
+            return getObject(context, "UserInCharge", UserInCharge.class);
         }
-        return getObject(context, "user", UserGeneral.class);
+        if (isUserStudent(context)) {
+            return getObject(context, "UserStudent", UserStudent.class);
+        }
+        return null;
     }
 
     /// Sign out the user by removing user data from shared preferences
     /// @param context The context to use
     public static void signOutUser(Context context) {
-        remove(context, "user");
+        remove(context, "UserInCharge");
+        remove(context, "UserStudent");
     }
 
-    /// Check if a user is logged in by checking if the user id is present in shared preferences
-    /// @param context The context to use
-    /// @return true if the user is logged in, false otherwise
-    /// @see #contains(Context, String)
-    public static boolean isUserLoggedIn(Context context) {
-        return contains(context, "user");
+    public static boolean isUserInCharge(Context context) {
+        return contains(context, "UserInCharge");
     }
 
-    /// Get the user id of the logged in user
-    /// @param context The context to use
-    /// @return The user id of the logged in user, or null if no user is logged in
-    @Nullable
-    public static String getUserId(Context context) {
-        UserGeneral user = getUser(context);
-        if (user != null) {
-            return user.getId();
-        }
-        return null;
+    public static boolean isUserStudent(Context context) {
+        return contains(context, "UserStudent");
     }
 
 }

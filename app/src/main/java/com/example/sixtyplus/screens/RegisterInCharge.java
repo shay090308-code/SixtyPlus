@@ -29,7 +29,8 @@ import java.util.Objects;
 public class RegisterInCharge extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegisterStudents";
-    private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge, etCityInCharge, etAdressInCharge, etIdNumberInCharge, etPlaceName, etDays, etHours;
+    private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge, etCityInCharge,
+            etAdressInCharge, etIdNumberInCharge, etPlaceName, etDays, etHours, etDescription;
     private Button btnRegisterInCharge;
 
     @Override
@@ -56,6 +57,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         etIdNumberInCharge = findViewById(R.id.idNumberInCharge);
         etHours = findViewById(R.id.placeHours);
         etDays = findViewById(R.id.placeDays);
+        etDescription = findViewById(R.id.placeDescription);
 
         btnRegisterInCharge = findViewById(R.id.registerBtn);
 
@@ -81,7 +83,6 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             }
         });
 
-
     }
 
 
@@ -101,6 +102,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             String idnumberInCharge = etIdNumberInCharge.getText().toString();
             String daysInCharge = etDays.getText().toString();
             String hoursInCharge = etHours.getText().toString();
+            String descriptionPlace = etDescription.getText().toString();
 
 
             /// log the input
@@ -114,6 +116,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             Log.d(TAG, "onClick: id: " + idnumberInCharge);
             Log.d(TAG, "onClick: Days: " + daysInCharge);
             Log.d(TAG, "onClick: Hours: " + hoursInCharge);
+            Log.d(TAG, "onClick: Description: " + descriptionPlace);
 
 
             /// Validate input
@@ -127,7 +130,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
             /// Register user
             registerUser(passwordInCharge, fNameInCharge, lNameInCharge, phoneInCharge, cityInCharge,
-                    placeName,adressInCharge, daysInCharge, hoursInCharge, idnumberInCharge);
+                    placeName,adressInCharge, daysInCharge, hoursInCharge, descriptionPlace, idnumberInCharge);
         }
     }
 
@@ -173,7 +176,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         }
 
         if (id == null || id.trim().isEmpty()) {
-            etIdNumberInCharge.setError("ahhhhhhhhhh");
+            etIdNumberInCharge.setError("id");
             etIdNumberInCharge.requestFocus();
             return false;
         }
@@ -184,13 +187,13 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
     /// Register the user
     private void registerUser(String password, String fName, String lName, String phone, String city, String place,
-                              String adress, String days, String hours, String idNumber) {
+                              String adress, String days, String hours, String desc, String idNumber) {
         Log.d(TAG, "registerUser: Registering user...");
 
 
         /// create a new user object
         UserInCharge user = new UserInCharge(UserInCharge.class.getName(), idNumber, fName, lName,
-                                            phone, city, password, place, adress, days, hours, false);
+                                            phone, city, password, place, adress, days, hours, desc,false);
 
         databaseService.checkIfIdExists(user.getId(), new DatabaseService.DatabaseCallback<Boolean>() {
             @Override
@@ -219,7 +222,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
                 SharedPreferencesUtils.saveUser(RegisterInCharge.this, user);
                 Log.d(TAG, "createUserInDatabase: Redirecting to MainActivity");
                 /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
-                Intent mainIntent = new Intent(RegisterInCharge.this, MainActivity.class);
+                Intent mainIntent = new Intent(RegisterInCharge.this, LogOut.class);
                 /// clear the back stack (clear history) and start the MainActivity
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);

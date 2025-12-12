@@ -1,5 +1,10 @@
 package com.example.sixtyplus.models;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class UserGeneral { //What is common for both kind of users.
 
     public String className;
@@ -85,6 +90,7 @@ public class UserGeneral { //What is common for both kind of users.
 
     public void setAdmin(boolean admin) { isAdmin = admin; }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserGeneral{" +
@@ -96,6 +102,14 @@ public class UserGeneral { //What is common for both kind of users.
                 ", city='" + city + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isUserInCharge() {
+        return this.className.equals(UserInCharge.class.getName());
+    }
+
+    public boolean isUserStudent() {
+        return this.className.equals(UserStudent.class.getName());
     }
 }
 

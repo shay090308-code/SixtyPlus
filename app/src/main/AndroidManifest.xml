@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SixtyPlus">
         <activity
+            android:name=".screens.UserInChargesList"
+            android:exported="false" />
+        <activity
+            android:name=".screens.UserStudentsList"
+            android:exported="false" />
+        <activity
+            android:name=".screens.ChangeDetailsInCharge"
+            android:exported="false" />
+        <activity
+            android:name=".screens.ChangeDetailsStudent"
+            android:exported="false" />
+        <activity
             android:name=".screens.SelectRegister"
             android:exported="false" />
         <activity

@@ -12,7 +12,7 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
 
     public UserInCharge(String className, String idNumber, String firstName, String lastName,
                         String phoneNumber, String city, String password, String placeName,
-                        String adress, String daysAvailable, String hrsAvailable, boolean isAccepted) {
+                        String adress, String daysAvailable, String hrsAvailable, String desc, boolean isAccepted) {
         super(className, idNumber, firstName, lastName, phoneNumber, city, password);
         this.placeName = placeName;
         this.adress = adress;

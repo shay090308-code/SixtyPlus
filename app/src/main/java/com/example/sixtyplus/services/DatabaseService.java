@@ -319,7 +319,23 @@ public class DatabaseService {
     /// @see List
     /// @see UserStudent
     public void getUserStudentList(@NotNull final DatabaseCallback<List<UserStudent>> callback) {
-        tryGetDataList(USERS_PATH, UserStudent.class, callback);
+        tryGetDataList(USERS_PATH, UserStudent.class, new DatabaseCallback<List<UserStudent>>() {
+            @Override
+            public void onCompleted(List<UserStudent> userStudents) {
+                List<UserStudent> students = new ArrayList<>();
+                for (UserStudent userStudent : userStudents) {
+                    if (userStudent.isUserStudent()) {
+                        students.add(userStudent);
+                    }
+                }
+                callback.onCompleted(students);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                callback.onFailed(e);
+            }
+        });
     }
 
     /// get all the users from the database
@@ -331,7 +347,23 @@ public class DatabaseService {
     /// @see List
     /// @see UserInCharge
     public void getUserInChargeList(@NotNull final DatabaseCallback<List<UserInCharge>> callback) {
-        tryGetDataList(USERS_PATH, UserInCharge.class, callback);
+        tryGetDataList(USERS_PATH, UserInCharge.class, new DatabaseCallback<List<UserInCharge>>() {
+            @Override
+            public void onCompleted(List<UserInCharge> userInCharges) {
+                List<UserInCharge> users = new ArrayList<>();
+                for (UserInCharge user : userInCharges) {
+                    if (user.isUserInCharge()) {
+                        users.add(user);
+                    }
+                }
+                callback.onCompleted(users);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                callback.onFailed(e);
+            }
+        });
     }
 
     /// get all the users from the database

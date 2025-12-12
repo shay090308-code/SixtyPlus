@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.models.UserGeneral;
+import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import com.example.sixtyplus.utils.validator;
@@ -57,7 +59,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
         Button btnRegisterInCharge = findViewById(R.id.moveToRegister);
         btnRegisterInCharge.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(Login.this, SelectRegister.class);
                 startActivity(intent);
             }
@@ -65,7 +67,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
         Button btnGoBackLogin = findViewById(R.id.goBackLogin);
         btnGoBackLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Landing.class);
                 startActivity(intent);
             }
@@ -105,10 +107,11 @@ public class Login extends BaseActivity implements View.OnClickListener {
 
     /// Method to check if the input is valid
     /// It checks if the email and password are valid
+    ///
     /// @see validator#isPhoneValid(String) (String)
     /// @see validator#isPasswordValid(String) (String)
-    private boolean checkInput(String email, String password) {
-        if (!validator.isPhoneValid(email)) {
+    private boolean checkInput(String phone, String password) {
+        if (!validator.isPhoneValid(phone)) {
             Log.e(TAG, "checkInput: Invalid phone number");
             /// show error message to user
             etPhone.setError("Invalid phone number");
@@ -129,19 +132,58 @@ public class Login extends BaseActivity implements View.OnClickListener {
         return true;
     }
 
-    private void loginUser(String email, String password) {
-        databaseService.getUserByPhoneAndPassword(email, password, new DatabaseService.DatabaseCallback<UserGeneral>() {
+    private void loginUser(String phone, String password) {
+        databaseService.getUserByPhoneAndPassword(phone, password, new DatabaseService.DatabaseCallback<UserGeneral>() {
             /// Callback method called when the operation is completed
+            ///
             /// @param user the user object that is logged in
             @Override
             public void onCompleted(UserGeneral user) {
+
+                if (user == null) {
+                    etPassword.setError("Invalid or password");
+                    etPassword.requestFocus();
+                    return;
+                }
                 Log.d(TAG, "onCompleted: User logged in: " + user.toString());
-                /// save the user data to shared preferences
-                SharedPreferencesUtils.saveUser(Login.this, user);
+
+
+                // check if the user is a student and not accepted
+
+                if (user.isUserInCharge()) {
+                    loginUserInCharge(user);
+                    return;
+                }
+
+                if (user.isUserStudent()) {
+                    loginUserStudent(user);
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to retrieve user data", e);
+                /// Show error message to user
+                etPassword.setError("Invalid or password");
+                etPassword.requestFocus();
+                /// Sign out the user if failed to retrieve user data
+                /// This is to prevent the user from being logged in again
+                SharedPreferencesUtils.signOutUser(Login.this);
+            }
+        });
+    }
+
+    private void loginUserStudent(UserGeneral user) {
+        databaseService.getUserStudent(user.id, new DatabaseService.DatabaseCallback<UserStudent>() {
+            @Override
+            public void onCompleted(UserStudent userStudent) {
+                SharedPreferencesUtils.saveUser(Login.this, userStudent);
                 /// Redirect to main activity and clear back stack to prevent user from going back to login screen
-                Intent mainIntent = new Intent(Login.this, LogOut.class);
+                Intent mainIntent = new Intent(Login.this, UserStudentsList.class);
                 /// Clear the back stack (clear history) and start the MainActivity
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(mainIntent);
             }
 
@@ -149,7 +191,39 @@ public class Login extends BaseActivity implements View.OnClickListener {
             public void onFailed(Exception e) {
                 Log.e(TAG, "onFailed: Failed to retrieve user data", e);
                 /// Show error message to user
-                etPassword.setError("Invalid email or password");
+                etPassword.setError("Invalid or password");
+                etPassword.requestFocus();
+                /// Sign out the user if failed to retrieve user data
+                /// This is to prevent the user from being logged in again
+                SharedPreferencesUtils.signOutUser(Login.this);
+            }
+
+
+        });
+    }
+
+    private void loginUserInCharge(UserGeneral user) {
+        databaseService.getUserInCharge(user.id, new DatabaseService.DatabaseCallback<UserInCharge>() {
+            @Override
+            public void onCompleted(UserInCharge userInCharge) {
+                /// save the user data to shared preferences
+                SharedPreferencesUtils.saveUser(Login.this, userInCharge);
+                if (!userInCharge.isAccepted()) {
+                    Intent waitingIntent = new Intent(Login.this, UserStudentsList.class);
+                    waitingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(waitingIntent);
+                } else {
+                    Intent intent = new Intent(Login.this, UserStudentsList.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to retrieve user data", e);
+                /// Show error message to user
+                etPassword.setError("Invalid or password");
                 etPassword.requestFocus();
                 /// Sign out the user if failed to retrieve user data
                 /// This is to prevent the user from being logged in again
