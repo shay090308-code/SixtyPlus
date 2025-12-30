@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.services.DatabaseService;
+import com.example.sixtyplus.utils.SharedPreferencesUtils;
 
 public class BaseActivity extends AppCompatActivity {
 

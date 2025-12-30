@@ -27,93 +27,76 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/welcomeTitle"
+                android:id="@+id/MainInChargeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
+                android:layout_marginBottom="40dp"
                 android:fontFamily="@font/galacti"
                 android:shadowColor="@color/myyellow"
                 android:shadowDx="2"
                 android:shadowDy="2"
                 android:shadowRadius="10"
-                android:text="שלום רב!"
+                android:text="דף ראשי"
                 android:textColor="#000000"
                 android:textSize="80dp"
                 android:textStyle="bold"
                 tools:layout_conversion_absoluteHeight="50dp"
                 tools:layout_conversion_absoluteWidth="242dp" />
 
-            <!-- טקסט קטן מתחת -->
-            <TextView
-                android:id="@+id/welcomeSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center"
-                android:text="ברוכים הבאים ל-"
-                android:shadowDx="1"
-                android:shadowDy="10"
-                android:shadowRadius="10"
-                android:shadowColor="#908E8E"
-                android:fontFamily="@font/gveretlevin"
-                android:textColor="#000000"
-                android:textSize="33sp" />
-
-            <!-- לוגו האפליקציה -->
-            <ImageView
-                android:id="@+id/appLogo"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="לוגו האפליקציה"
-                android:src="@drawable/sixtypluslogo" />
-
-            <!-- תיאור קצר -->
-            <TextView
-                android:id="@+id/appDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:lineSpacingExtra="2dp"
-                android:paddingHorizontal="12dp"
-                android:shadowDx="1"
-                android:shadowDy="10"
-                android:shadowRadius="10"
-                android:shadowColor="#908E8E"
-                android:fontFamily="@font/gveretlevin"
-                android:text="האפליקציה שתעזור לך לנהל בקלות את שעות המעורבות החברתית"
-                android:textColor="#000000"
-                android:textSize="29sp" />
-
-            <!-- כפתור התחברות -->
             <Button
-                android:id="@+id/loginlanding"
+                android:id="@+id/mainUpdateInCharge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
                 android:backgroundTint="@color/myyellow"
                 android:fontFamily="@font/rubicblack"
-                android:text="התחברות"
+                android:text="עדכון פרטים"
                 android:textColor="#000000"
                 android:textSize="25sp"
                 tools:layout_conversion_absoluteHeight="47dp"
                 tools:layout_conversion_absoluteWidth="200dp"
                 android:layout_marginBottom="10dp"/>
 
-            <!-- כפתור הרשמה תלמיד -->
             <Button
-                android:id="@+id/studentRegisterBtn"
+                android:id="@+id/mainUserStudentsListInCharge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="39dp"
-                android:paddingRight="39dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
                 android:backgroundTint="@color/myyellow"
                 android:fontFamily="@font/rubicblack"
-                android:text="הרשמה"
+                android:text="רשימת תלמידים"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                tools:layout_conversion_absoluteHeight="47dp"
+                tools:layout_conversion_absoluteWidth="200dp" />
+
+            <Button
+                android:id="@+id/mainUserInChargeListInCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:backgroundTint="@color/myyellow"
+                android:fontFamily="@font/rubicblack"
+                android:text="רשימת אחראים"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                tools:layout_conversion_absoluteHeight="47dp"
+                tools:layout_conversion_absoluteWidth="200dp" />
+
+            <Button
+                android:id="@+id/mainLogOutInCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:backgroundTint="@color/myyellow"
+                android:fontFamily="@font/rubicblack"
+                android:text="התנתקות"
                 android:textColor="#000000"
                 android:textSize="25sp"
                 tools:layout_conversion_absoluteHeight="47dp"

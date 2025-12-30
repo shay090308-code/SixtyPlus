@@ -220,7 +220,7 @@
                     android:padding="8dp"
                     android:fontFamily="@font/gveretlevin"
                     android:textAlignment="viewStart"
-                    android:inputType="textPassword"/>
+                    android:editable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -262,7 +262,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/SaveChangesStudentBtn"
+                android:id="@+id/saveChangesStudentBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/myyellow"

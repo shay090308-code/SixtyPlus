@@ -159,4 +159,8 @@ public class SharedPreferencesUtils {
         return contains(context, "UserStudent");
     }
 
+    public static boolean isUserSign(Context context) {
+        return isUserInCharge(context) || isUserStudent(context);
+    }
+
 }

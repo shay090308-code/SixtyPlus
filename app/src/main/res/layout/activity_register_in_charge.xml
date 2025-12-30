@@ -240,24 +240,6 @@
                     android:fontFamily="@font/gveretlevin"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
-                android:textColorHint="#999999"
-                android:hint="תיאור על המקום">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/placeDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
             <!-- סיסמא -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"

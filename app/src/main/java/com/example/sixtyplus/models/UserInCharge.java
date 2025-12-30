@@ -1,10 +1,13 @@
 package com.example.sixtyplus.models;
 
+import androidx.annotation.Nullable;
+
 public class UserInCharge extends UserGeneral { //Those who are in charge of places.
     public String placeName; //Name of the place.
     public String adress; //Adress of the place.
     public String daysAvailable; //Days available to volunteer in this place.
     public String hrsAvailable; //Hours available to volunteer in this place.
+    public String desc;
     public boolean isAccepted; //
 
     public UserInCharge() {
@@ -18,6 +21,7 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
         this.adress = adress;
         this.daysAvailable = daysAvailable;
         this.hrsAvailable = hrsAvailable;
+        this.desc = desc;
         this.isAccepted = isAccepted;
     }
 
@@ -53,6 +57,10 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
         this.hrsAvailable = hrsAvailable;
     }
 
+    @Nullable
+    public String getDesc() { return desc; }
+
+    public void setDesc(String desc) { this.desc = desc; }
     public boolean isAccepted() {
         return isAccepted;
     }

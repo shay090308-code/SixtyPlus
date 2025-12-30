@@ -30,7 +30,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
     private static final String TAG = "RegisterStudents";
     private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge, etCityInCharge,
-            etAdressInCharge, etIdNumberInCharge, etPlaceName, etDays, etHours, etDescription;
+            etAdressInCharge, etIdNumberInCharge, etPlaceName, etDays, etHours;
     private Button btnRegisterInCharge;
 
     @Override
@@ -57,7 +57,6 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         etIdNumberInCharge = findViewById(R.id.idNumberInCharge);
         etHours = findViewById(R.id.placeHours);
         etDays = findViewById(R.id.placeDays);
-        etDescription = findViewById(R.id.placeDescription);
 
         btnRegisterInCharge = findViewById(R.id.registerBtn);
 
@@ -102,7 +101,6 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             String idnumberInCharge = etIdNumberInCharge.getText().toString();
             String daysInCharge = etDays.getText().toString();
             String hoursInCharge = etHours.getText().toString();
-            String descriptionPlace = etDescription.getText().toString();
 
 
             /// log the input
@@ -116,7 +114,6 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             Log.d(TAG, "onClick: id: " + idnumberInCharge);
             Log.d(TAG, "onClick: Days: " + daysInCharge);
             Log.d(TAG, "onClick: Hours: " + hoursInCharge);
-            Log.d(TAG, "onClick: Description: " + descriptionPlace);
 
 
             /// Validate input
@@ -130,7 +127,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
             /// Register user
             registerUser(passwordInCharge, fNameInCharge, lNameInCharge, phoneInCharge, cityInCharge,
-                    placeName,adressInCharge, daysInCharge, hoursInCharge, descriptionPlace, idnumberInCharge);
+                    placeName,adressInCharge, daysInCharge, hoursInCharge, null, idnumberInCharge);
         }
     }
 
@@ -222,7 +219,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
                 SharedPreferencesUtils.saveUser(RegisterInCharge.this, user);
                 Log.d(TAG, "createUserInDatabase: Redirecting to MainActivity");
                 /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
-                Intent mainIntent = new Intent(RegisterInCharge.this, LogOut.class);
+                Intent mainIntent = new Intent(RegisterInCharge.this, MainActivityInCharge.class);
                 /// clear the back stack (clear history) and start the MainActivity
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);

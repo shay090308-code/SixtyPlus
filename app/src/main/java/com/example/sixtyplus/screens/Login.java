@@ -47,6 +47,8 @@ public class Login extends BaseActivity implements View.OnClickListener {
             return insets;
         });
 
+        SharedPreferencesUtils.signOutUser(Login.this);
+
         /// get the views
         etPhone = findViewById(R.id.phonelogin);
         etPassword = findViewById(R.id.passwordlogin);
@@ -180,7 +182,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
             public void onCompleted(UserStudent userStudent) {
                 SharedPreferencesUtils.saveUser(Login.this, userStudent);
                 /// Redirect to main activity and clear back stack to prevent user from going back to login screen
-                Intent mainIntent = new Intent(Login.this, LogOut.class);
+                Intent mainIntent = new Intent(Login.this, MainActivityStudents.class);
                 /// Clear the back stack (clear history) and start the MainActivity
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -213,7 +215,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     waitingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(waitingIntent);
                 } else {
-                    Intent intent = new Intent(Login.this, LogOut.class);
+                    Intent intent = new Intent(Login.this, MainActivityInCharge.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }

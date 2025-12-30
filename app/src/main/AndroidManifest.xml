@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SixtyPlus">
         <activity
+            android:name=".screens.MainActivityInCharge"
+            android:exported="false" />
+        <activity
             android:name=".screens.UserInChargesList"
             android:exported="false" />
         <activity
@@ -33,7 +36,7 @@
             android:name=".screens.Waiting"
             android:exported="false" />
         <activity
-            android:name=".screens.MainActivity"
+            android:name=".screens.MainActivityStudents"
             android:exported="false" />
         <activity
             android:name=".screens.RegisterStudents"

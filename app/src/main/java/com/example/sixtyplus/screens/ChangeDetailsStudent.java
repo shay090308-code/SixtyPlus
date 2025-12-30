@@ -58,7 +58,7 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
         etUserStudentCity = findViewById(R.id.cityStudentChange);
         etUserStudentSchool = findViewById(R.id.schoolNameChange);
         etUserStudentGrade = findViewById(R.id.gradeNameChange);
-        btnUpdateProfile = findViewById(R.id.SaveChangesStudentBtn);
+        btnUpdateProfile = findViewById(R.id.saveChangesStudentBtn);
 
 
         Log.d(TAG, "Selected user: " + selectedUid);
@@ -87,12 +87,12 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
                 // Set the user data to the EditText fields
                 etUserStudentFirstName.setText(selectedUser.getFirstName());
                 etUserStudentLastName.setText(selectedUser.getLastName());
-                etUserStudentId.setText(selectedUser.getFirstName());
+                etUserStudentId.setText(selectedUser.getId());
                 etUserStudentCity.setText(selectedUser.getCity());
                 etUserStudentSchool.setText(selectedUser.getSchoolName());
                 etUserStudentGrade.setText(selectedUser.getGradeLevel());
                 etUserStudentPhone.setText(selectedUser.getPhoneNumber());
-                etUserStudentPassword.setText(selectedUser.getPassword());
+                etUserStudentPassword.setText(selectedUser.getPassword() + "");
             }
             @Override
             public void onFailed(Exception e) {
@@ -114,8 +114,8 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
         String city = etUserStudentCity.getText().toString();
         String school = etUserStudentSchool.getText().toString();
         String classlevel = etUserStudentGrade.getText().toString();
-        String password = etUserStudentNewPassword.getText().toString();
-        String confPass = etUserStudentNewPasswordConfirm.getText().toString();
+        String password = etUserStudentNewPassword.getText().toString() + "";
+        String confPass = etUserStudentNewPasswordConfirm.getText().toString() +"";
 
         if (!isValid(firstName, lastName, phone, password, confPass)) {
             Log.e(TAG, "Invalid input");

@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
+import com.example.sixtyplus.utils.SharedPreferencesUtils;
 
 public class Landing extends AppCompatActivity {
 
@@ -43,5 +44,21 @@ public class Landing extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (SharedPreferencesUtils.isUserSign(Landing.this)) {
+            Intent intent;
+            if (SharedPreferencesUtils.isUserStudent(Landing.this)) {
+                intent = new Intent(Landing.this, MainActivityStudents.class);
+            }
+            else  {
+                intent = new Intent(Landing.this, MainActivityInCharge.class);
+            }
+
+            // clear history
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
     }
 }
