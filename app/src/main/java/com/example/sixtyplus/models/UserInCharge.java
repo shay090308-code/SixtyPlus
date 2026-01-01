@@ -41,7 +41,6 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
         this.adress = adress;
     }
 
-    @Nullable
     public List<DayAndHours> getSchedule() {
         return schedule;
     }
