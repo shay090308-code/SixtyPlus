@@ -1,16 +1,30 @@
 package com.example.sixtyplus.screens;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.widget.TextView;
 
 import com.example.sixtyplus.R;
+import com.example.sixtyplus.adapters.UserInChargeAdapter;
+import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.services.DatabaseService;
 
-public class UserInChargesList extends AppCompatActivity {
+import java.util.List;
+
+public class UserInChargesList extends BaseActivity {
+
+    private static final String TAG = "UsersInChargesListActivity";
+    private UserInChargeAdapter userAdapter;
+    private TextView tvUserCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +36,45 @@ public class UserInChargesList extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        RecyclerView usersList = findViewById(R.id.rtvinchargelist);
+        tvUserCount = findViewById(R.id.tvuserinchargecount);
+        usersList.setLayoutManager(new LinearLayoutManager(this));
+        userAdapter = new UserInChargeAdapter(new UserInChargeAdapter.OnUserClickListener() {
+            @Override
+            public void onUserClick(UserInCharge user) {
+                // Handle user click
+                Log.d(TAG, "User clicked: " + user);
+                Intent intent = new Intent(UserInChargesList.this, ChangeDetailsInCharge.class);
+                intent.putExtra("USER_UID", user.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongUserClick(UserInCharge user) {
+                // Handle long user click
+                Log.d(TAG, "User long clicked: " + user);
+            }
+        });
+        usersList.setAdapter(userAdapter);
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        databaseService.getUserInChargeList(new DatabaseService.DatabaseCallback<>() {
+            @Override
+            public void onCompleted(List<UserInCharge> users) {
+                userAdapter.setUserList(users);
+                tvUserCount.setText("מספר אחראים כולל: " + users.size());
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "Failed to get users list", e);
+            }
+        });
+    }
+
 }

@@ -129,6 +129,7 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
         selectedUser.setCity(city);
         selectedUser.setSchoolName(school);
         selectedUser.setGradeLevel(classlevel);
+        if(!password.isEmpty())
         selectedUser.setPassword(password);
 
         // Update the user data in the authentication

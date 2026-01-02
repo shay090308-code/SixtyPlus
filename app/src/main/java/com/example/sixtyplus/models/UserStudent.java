@@ -1,5 +1,8 @@
 package com.example.sixtyplus.models;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class UserStudent extends UserGeneral { //Those who are students.
     public String schoolName; //Name of the school the student studies in.
     public String gradeLevel; //Class the student is in.

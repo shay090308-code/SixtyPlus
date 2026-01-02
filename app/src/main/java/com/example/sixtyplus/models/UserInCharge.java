@@ -2,27 +2,30 @@ package com.example.sixtyplus.models;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
+@IgnoreExtraProperties
 public class UserInCharge extends UserGeneral { //Those who are in charge of places.
     public String placeName; //Name of the place.
     public String adress; //Adress of the place.
     public List<DayAndHours> schedule;
     public String desc;
-    public boolean isAccepted; //
+    public boolean accepted; //
 
     public UserInCharge() {
     }
 
     public UserInCharge(String className, String idNumber, String firstName, String lastName,
                         String phoneNumber, String city, String password, String placeName,
-                        String adress, List<DayAndHours> schedule, String desc, boolean isAccepted) {
+                        String adress, List<DayAndHours> schedule, String desc, boolean accepted) {
         super(className, idNumber, firstName, lastName, phoneNumber, city, password);
         this.placeName = placeName;
         this.adress = adress;
         this.schedule = schedule;
         this.desc = desc;
-        this.isAccepted = isAccepted;
+        this.accepted = accepted;
     }
 
     public String getPlaceName() {
@@ -53,11 +56,12 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
     public String getDesc() { return desc; }
 
     public void setDesc(String desc) { this.desc = desc; }
+
     public boolean isAccepted() {
-        return isAccepted;
+        return accepted;
     }
 
     public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
+        this.accepted = accepted;
     }
 }

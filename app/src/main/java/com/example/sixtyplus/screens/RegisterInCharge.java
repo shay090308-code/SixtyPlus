@@ -36,7 +36,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
     private static final String TAG = "RegisterStudents";
     private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge, etCityInCharge,
-            etAdressInCharge, etIdNumberInCharge, etPlaceName;
+            etAdressInCharge, etIdNumberInCharge, etPlaceName, etConfPass;
     private Button btnRegisterInCharge;
 
     Spinner sunSH, sunSM, sunEH, sunEM;
@@ -72,7 +72,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         etPlaceName = findViewById(R.id.placeName);
         etAdressInCharge = findViewById(R.id.placeAdress);
         etIdNumberInCharge = findViewById(R.id.idNumberInCharge);
-
+        etConfPass = findViewById(R.id.confirmPasswordInCharge);
         btnRegisterInCharge = findViewById(R.id.registerBtn);
 
         /// set the click listener
@@ -216,6 +216,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             String adressInCharge = etAdressInCharge.getText().toString();
             String placeName = etPlaceName.getText().toString();
             String idnumberInCharge = etIdNumberInCharge.getText().toString();
+            String confPass = etConfPass.getText().toString();
 
 
             /// log the input
@@ -231,7 +232,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
             /// Validate input
             Log.d(TAG, "onClick: Validating input...");
-            if (!checkInput(passwordInCharge, fNameInCharge, lNameInCharge, phoneInCharge, idnumberInCharge)) {
+            if (!checkInput(passwordInCharge, confPass, fNameInCharge, lNameInCharge, phoneInCharge, idnumberInCharge)) {
                 /// stop if input is invalid
                 return;
             }
@@ -255,7 +256,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
     /// Check if the input is valid
     /// @return true if the input is valid, false otherwise
     /// @see validator
-    private boolean checkInput(String password, String fName, String lName, String phone, String id) {
+    private boolean checkInput(String password, String confPass, String fName, String lName, String phone, String id) {
 
         if (!validator.isPasswordValid(password)) {
             Log.e(TAG, "checkInput: Password must be at least 6 characters long");
@@ -293,8 +294,15 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             return false;
         }
 
-        if (id == null || id.trim().isEmpty()) {
-            etIdNumberInCharge.setError("id");
+        if(!validator.isConfirmPasswordValid(password, confPass)) {
+            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
+            etConfPass.setError("Password and confirm password does not match");
+            etConfPass.requestFocus();
+            return false;
+        }
+
+        if (!validator.checkidlength(id)) {
+            etIdNumberInCharge.setError("id must be 9 characters!");
             etIdNumberInCharge.requestFocus();
             return false;
         }
@@ -340,7 +348,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
                 SharedPreferencesUtils.saveUser(RegisterInCharge.this, user);
                 Log.d(TAG, "createUserInDatabase: Redirecting to MainActivity");
                 /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
-                Intent mainIntent = new Intent(RegisterInCharge.this, MainActivityInCharge.class);
+                Intent mainIntent = new Intent(RegisterInCharge.this, Waiting.class);
                 /// clear the back stack (clear history) and start the MainActivity
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);

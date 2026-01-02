@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SixtyPlus">
         <activity
+            android:name=".screens.ForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".screens.MainActivityInCharge"
             android:exported="false" />
         <activity
@@ -28,9 +31,6 @@
             android:exported="false" />
         <activity
             android:name=".screens.SelectRegister"
-            android:exported="false" />
-        <activity
-            android:name=".screens.LogOut"
             android:exported="false" />
         <activity
             android:name=".screens.Waiting"

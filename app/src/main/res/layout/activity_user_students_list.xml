@@ -40,25 +40,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/rubiklight"
             android:shadowColor="#000000"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="10"
             android:text="מספר תלמידים כולל: 0"
-            android:textSize="18dp"
+            android:textSize="23dp"
             android:textStyle="bold"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="363dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvstudentlist"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="161dp"
-            tools:listitem="@layout/item_user_student" />
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#F2E18D"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvstudentlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                tools:listitem="@layout/item_user_student" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
 
     </LinearLayout>
 

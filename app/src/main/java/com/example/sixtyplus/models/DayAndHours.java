@@ -1,5 +1,8 @@
 package com.example.sixtyplus.models;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class DayAndHours {
     public String day;
     public String startTime;

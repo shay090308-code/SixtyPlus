@@ -14,7 +14,7 @@ public class UserGeneral { //What is common for both kind of users.
     public String phoneNumber;
     public String city; //city the students lives in or the place is located.
     public String password;
-    public boolean isAdmin;
+    public boolean admin;
 
     public UserGeneral() {
     }
@@ -27,7 +27,7 @@ public class UserGeneral { //What is common for both kind of users.
         this.phoneNumber = phoneNumber;
         this.city = city;
         this.password = password;
-        this.isAdmin = false;
+        this.admin = false;
     }
 
     public String getClassName() {
@@ -86,9 +86,13 @@ public class UserGeneral { //What is common for both kind of users.
         this.password = password;
     }
 
-    public boolean isAdmin() { return isAdmin;}
+    public boolean isAdmin() {
+        return admin;
+    }
 
-    public void setAdmin(boolean admin) { isAdmin = admin; }
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     @NonNull
     @Override

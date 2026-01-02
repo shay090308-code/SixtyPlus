@@ -161,7 +161,9 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         selectedUser.setAdress(adress);
         selectedUser.setPlaceName(placeName);
         selectedUser.setDesc(desc);
-        selectedUser.setPassword(password);
+        if(!password.isEmpty())
+            selectedUser.setPassword(password);
+
         selectedUser.setSchedule(updatedSchedule);
 
         // Update the user data in the authentication

@@ -22,7 +22,7 @@ import java.util.List;
 
 public class UserStudentsList extends BaseActivity {
 
-    private static final String TAG = "UsersListActivity";
+    private static final String TAG = "UsersStudentListActivity";
     private UserStudentAdapter userAdapter;
     private TextView tvUserCount;
 
@@ -67,7 +67,7 @@ public class UserStudentsList extends BaseActivity {
             @Override
             public void onCompleted(List<UserStudent> users) {
                 userAdapter.setUserList(users);
-                tvUserCount.setText("Total users: " + users.size());
+                tvUserCount.setText("מספר תלמידים כולל: " + users.size());
             }
 
             @Override

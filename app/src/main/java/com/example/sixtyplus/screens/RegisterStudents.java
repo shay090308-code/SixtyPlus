@@ -29,7 +29,7 @@ import java.util.Objects;
 public class RegisterStudents extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegisterStudents";
-    private EditText etPassword, etFName, etLName, etPhone, etCity, etSchoolName, etIdNumber, etGradeLevel;
+    private EditText etPassword, etConfPass, etFName, etLName, etPhone, etCity, etSchoolName, etIdNumber, etGradeLevel;
     private Button btnRegister;
 
     @Override
@@ -54,6 +54,7 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
         etSchoolName = findViewById(R.id.schoolName);
         etGradeLevel = findViewById(R.id.gradeName);
         etIdNumber = findViewById(R.id.idNumber);
+        etConfPass = findViewById(R.id.confirmPasswordStudent);
         btnRegister = findViewById(R.id.registerBtn);
 
         /// set the click listener
@@ -96,6 +97,7 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
             String schoolName = etSchoolName.getText().toString();
             String gradeLevel = etGradeLevel.getText().toString();
             String idnumber = etIdNumber.getText().toString();
+            String confirmpass = etConfPass.getText().toString();
 
 
             /// log the input
@@ -110,7 +112,7 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
 
             /// Validate input
             Log.d(TAG, "onClick: Validating input...");
-            if (!checkInput(passwordStudent, fNameStudent, lNameStudent, phoneStudent, idnumber)) {
+            if (!checkInput(passwordStudent, confirmpass, fNameStudent, lNameStudent, phoneStudent, idnumber)) {
                 /// stop if input is invalid
                 return;
             }
@@ -126,7 +128,7 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
     /// Check if the input is valid
     /// @return true if the input is valid, false otherwise
     /// @see validator
-    private boolean checkInput(String password, String fName, String lName, String phone, String id) {
+    private boolean checkInput(String password, String confirnPass, String fName, String lName, String phone, String id) {
 
         if (!validator.isPasswordValid(password)) {
             Log.e(TAG, "checkInput: Password must be at least 6 characters long");
@@ -164,8 +166,15 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
             return false;
         }
 
-        if (id == null || id.trim().isEmpty()) {
-            etIdNumber.setError("ahhhhhhhhhh");
+        if(!validator.isConfirmPasswordValid(password, confirnPass)) {
+            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
+            etConfPass.setError("Password and confirm password does not match");
+            etConfPass.requestFocus();
+            return false;
+        }
+
+        if (!validator.checkidlength(id)) {
+            etIdNumber.setError("id must be 9 characters!");
             etIdNumber.requestFocus();
             return false;
         }

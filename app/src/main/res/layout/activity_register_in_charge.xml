@@ -162,6 +162,13 @@
                     android:padding="8dp"
                     android:textColor="#000000"
                     android:fontFamily="@font/gveretlevin"/>
+
+                <Spinner
+                    android:id="@+id/spinner_wed_start_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gveretlevin" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- שם מקום ההתנדבות -->
@@ -237,7 +244,7 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום רביעי" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
                 <Spinner android:id="@+id/spinner_wed_start_hour" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_wed_start_min" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
                 <Spinner android:id="@+id/spinner_wed_end_hour" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
                 <Spinner android:id="@+id/spinner_wed_end_min" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
