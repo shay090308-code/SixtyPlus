@@ -74,6 +74,15 @@ public class Login extends BaseActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
+        Button forgotPass = findViewById(R.id.forgotPassword);
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -81,11 +90,11 @@ public class Login extends BaseActivity implements View.OnClickListener {
         if (v.getId() == btnLogin.getId()) {
             Log.d(TAG, "onClick: Login button clicked");
 
-            /// get the email and password entered by the user
+            /// get the pgone and password entered by the user
             String phone = etPhone.getText().toString();
             String password = etPassword.getText().toString();
 
-            /// log the email and password
+            /// log the phone and password
             Log.d(TAG, "onClick: Phone: " + phone);
             Log.d(TAG, "onClick: Password: " + password);
 

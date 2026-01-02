@@ -154,9 +154,6 @@ public class SharedPreferencesUtils {
     public static boolean isUserInCharge(Context context) {
         return contains(context, "UserInCharge");
     }
-    public static boolean isUserAccepted(Context context){
-        return contains(context, "accepted");
-    }
 
 
     public static boolean isUserStudent(Context context) {

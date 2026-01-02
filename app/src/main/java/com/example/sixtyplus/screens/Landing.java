@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
+import com.example.sixtyplus.models.UserInCharge;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 
 public class Landing extends AppCompatActivity {
@@ -51,11 +52,15 @@ public class Landing extends AppCompatActivity {
 
             if (SharedPreferencesUtils.isUserStudent(Landing.this)) {
                 intent = new Intent(Landing.this, MainActivityStudents.class);
-            } else if (SharedPreferencesUtils.isUserAccepted(Landing.this)) {
-                intent = new Intent(Landing.this, MainActivityInCharge.class);
-            }
-            else {
-                intent = new Intent(Landing.this, Waiting.class);
+            } else {
+                UserInCharge userInCharge = (UserInCharge) SharedPreferencesUtils.getUser(Landing.this);
+                assert userInCharge != null;
+                if (userInCharge.isAccepted()) {
+                    intent = new Intent(Landing.this, MainActivityInCharge.class);
+                } else {
+                    intent = new Intent(Landing.this, Waiting.class);
+                }
+
             }
 
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

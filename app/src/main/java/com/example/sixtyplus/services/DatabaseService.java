@@ -455,7 +455,55 @@ public class DatabaseService {
         });
     }
 
+    public void findUserById(@NotNull final String id, @NotNull final DatabaseCallback<UserGeneral> callback) {
+        Log.d(TAG, "🔍 findUserByUserName called with id: " + id);
 
-    // endregion User Section
+        readData(USERS_PATH).orderByChild("id").equalTo(id).get()
+                .addOnCompleteListener(task ->
+                {
 
+                    if (!task.isSuccessful()) {
+                        Log.d(TAG, "❌ Firebase task failed", task.getException());
+                        callback.onFailed(task.getException());
+                        return;
+                    }
+
+                    if (task.getResult() == null) {
+                        Log.d(TAG, "⚠️ Task result is null");
+                        callback.onCompleted(null);
+                        return;
+                    }
+
+                    long childrenCount = task.getResult().getChildrenCount();
+                    Log.d(TAG, "ℹ️ Task completed successfully, children count: " + childrenCount);
+
+                    if (childrenCount == 0) {
+                        Log.d(TAG, "❌ No user found with id: " + id);
+                        callback.onCompleted(null);
+                        return;
+                    }
+
+                    for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                        Log.d(TAG, "✅ Found child key: " + dataSnapshot.getKey());
+
+                        UserGeneral user = dataSnapshot.getValue(UserGeneral.class);
+                        if (user == null) {
+                            Log.e(TAG, "⚠️ Failed to map DataSnapshot to User object");
+                            continue; // מנסה את השאר אם יש יותר children
+                        } else {
+                            Log.d(TAG, "✅ User mapped successfully: " + user.getId() + ", phone: " + user.getPhoneNumber());
+                        }
+
+                        callback.onCompleted(user);
+                        return;
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "❌ Firebase query failed with exception", e);
+                    callback.onFailed(e);
+                });
+    }
+    public void writeUser(@NotNull final UserGeneral user, @Nullable final DatabaseCallback<Void> callback) {
+        writeData(USERS_PATH + "/" + user.getId(), user, callback);
+    }
 }
