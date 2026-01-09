@@ -1,52 +1,49 @@
 package com.example.sixtyplus.models;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class DayAndHours {
-    public String day;
-    public String startTime;
-    public String endTime;
-    public String remark;
+    public Weekday day;
+    public HourMinute startTime;
+    public HourMinute endTime;
 
     public DayAndHours() {
     }
-    public DayAndHours(String day, String startTime, String endTime, String remark) {
+    public DayAndHours(Weekday day, HourMinute startTime, HourMinute endTime) {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.remark = remark;
     }
 
-    public String getDay() {
+    public Weekday getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Weekday day) {
         this.day = day;
     }
 
-    public String getStartTime() {
+    public HourMinute getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(HourMinute startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public HourMinute getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(HourMinute endTime) {
         this.endTime = endTime;
     }
 
-    public String getRemark() {
-        return remark;
+    @Exclude
+    public boolean checkIfClosed() {
+        return this.startTime.equals(this.endTime);
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

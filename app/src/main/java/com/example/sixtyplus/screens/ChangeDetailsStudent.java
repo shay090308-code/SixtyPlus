@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
+import com.example.sixtyplus.models.UserGeneral;
 import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
@@ -41,9 +42,12 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
             return insets;
         });
 
-        UserStudent currentUser = (UserStudent) SharedPreferencesUtils.getUser(this);
-        assert currentUser != null;
-        selectedUid = currentUser.getId();
+        selectedUid = getIntent().getStringExtra("USER_UID");
+        if (selectedUid == null) {
+            UserStudent currentUser = (UserStudent) SharedPreferencesUtils.getUser(this);
+            assert currentUser != null;
+            selectedUid = currentUser.getId();
+        }
 
         Log.d(TAG, "Selected user: " + selectedUid);
 
@@ -83,7 +87,9 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
             @Override
             public void onCompleted(UserStudent user) {
                 selectedUser = user;
-                SharedPreferencesUtils.saveUser(ChangeDetailsStudent.this, user);
+                UserGeneral loginUser = SharedPreferencesUtils.getUser(ChangeDetailsStudent.this);
+                if (user.getId().equals(loginUser.getId()))
+                    SharedPreferencesUtils.saveUser(ChangeDetailsStudent.this, user);
                 // Set the user data to the EditText fields
                 etUserStudentFirstName.setText(selectedUser.getFirstName());
                 etUserStudentLastName.setText(selectedUser.getLastName());

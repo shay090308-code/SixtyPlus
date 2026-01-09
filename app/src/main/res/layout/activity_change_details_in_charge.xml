@@ -12,13 +12,16 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:layoutDirection="rtl"
             android:orientation="vertical">
 
             <Button
@@ -36,6 +39,7 @@
                 android:id="@+id/changeInChargeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:fontFamily="@font/galacti"
                 android:shadowColor="@color/myyellow"
                 android:shadowDx="2"
@@ -45,7 +49,6 @@
                 android:textColor="#000000"
                 android:textSize="50sp"
                 android:textStyle="bold"
-                android:layout_marginTop="0dp"
                 tools:layout_conversion_absoluteHeight="50dp"
                 tools:layout_conversion_absoluteWidth="242dp" />
 
@@ -53,6 +56,8 @@
                 android:id="@+id/ChangeInChargerDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/rubiklight"
                 android:shadowColor="#000000"
                 android:shadowDx="2"
@@ -61,8 +66,6 @@
                 android:text="עדכן את פרטיך במידת הצורך"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 tools:layout_conversion_absoluteHeight="24dp"
                 tools:layout_conversion_absoluteWidth="363dp" />
 
@@ -71,10 +74,10 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="תעודת זהות"
                 android:textColorHint="#999999"
-                android:hint="תעודת זהות">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idNumberInChargeChange"
@@ -92,18 +95,18 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="שם פרטי                                               ✏️"
                 android:textColorHint="#999999"
-                android:hint="שם פרטי                                               ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/firstNameInChargeChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Last Name -->
@@ -111,18 +114,18 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="שם משפחה                                           ✏️"
                 android:textColorHint="#999999"
-                android:hint="שם משפחה                                           ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/lastNameInChargeChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Phone -->
@@ -130,160 +133,354 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="מספר טלפון                                           ✏️"
                 android:textColorHint="#999999"
-                android:hint="מספר טלפון                                           ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneInChargeChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:textColor="#000000"
                     android:fontFamily="@font/gveretlevin"
+                    android:inputType="phone"
+                    android:padding="8dp"
                     android:textAlignment="viewStart"
-                    android:inputType="phone"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="עיר מקום ההתנדבות                                 ✏️"
                 android:textColorHint="#999999"
-                android:hint="עיר מקום ההתנדבות                                 ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cityInChargeChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="שם מקום ההתנדבות                                 ✏️"
                 android:textColorHint="#999999"
-                android:hint="שם מקום ההתנדבות                                 ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/placeNameChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="כתובת מקום ההתנדבות                             ✏️"
                 android:textColorHint="#999999"
-                android:hint="כתובת מקום ההתנדבות                             ✏️">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/placeAdressChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="תיאור על המקום"
                 android:textColorHint="#999999"
-                android:hint="תיאור על המקום">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/placeDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gveretlevin"
                     android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
+                    android:textColor="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="יום ראשון"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/gveretlevin"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="6"
+                android:text="בחירת שעות"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="15dp"
                 android:fontFamily="@font/rubiklight"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="10"
+                android:text="יש לבחור שעות אפשריות להתנדבות במקום,
+
+                 אם ביום מסוים אין אפשרות להתנדב יש להשאיר ריק"
+                android:textAlignment="center"
+                android:textSize="19dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום ראשון"
+                android:textSize="17dp"
                 android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_sun_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_sun_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_sun_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_sun_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startSunday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endSunday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום שני" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_mon_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_mon_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_mon_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_mon_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום שני"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startMonday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endMonday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום שלישי" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_tue_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_tue_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_tue_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_tue_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום שלישי"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startTuesday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endTuesday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום רביעי" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_wed_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_wed_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_wed_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_wed_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום רביעי"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startWednesday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endWednesday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום חמישי" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_thu_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_thu_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_thu_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_thu_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום חמישי"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startThursday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endThursday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום שישי" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_fri_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_fri_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_fri_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_fri_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום שישי"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startFriday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endFriday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="יום שבת" android:fontFamily="@font/rubiklight" android:textStyle="bold" />
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                <Spinner android:id="@+id/spinner_sat_start_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_sat_start_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" עד " android:fontFamily="@font/rubiklight" />
-                <Spinner android:id="@+id/spinner_sat_end_hourChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
-                <Spinner android:id="@+id/spinner_sat_end_minChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="@font/gveretlevin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gveretlevin"
+                android:text="יום שבת"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/startSaturday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubiklight"
+                    android:text=" עד " />
+
+                <EditText
+                    android:id="@+id/endSaturday"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
             <!-- Password -->
@@ -291,69 +488,69 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="סיסמא נוכחית"
                 android:textColorHint="#999999"
-                android:hint="סיסמא נוכחית">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nowPasswordInChargeChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:editable="false"
                     android:fontFamily="@font/gveretlevin"
-                    android:textAlignment="viewStart"
-                    android:editable="false"/>
+                    android:padding="8dp"
+                    android:textAlignment="viewStart" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="סיסמא חדשה"
                 android:textColorHint="#999999"
-                android:hint="סיסמא חדשה">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newPasswordInCharge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
                     android:fontFamily="@font/gveretlevin"
-                    android:textAlignment="viewStart"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textAlignment="viewStart" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
+                android:hint="אימות סיסמא חדשה"
                 android:textColorHint="#999999"
-                android:hint="אימות סיסמא חדשה">
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newPasswordInChargeConfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
                     android:fontFamily="@font/gveretlevin"
-                    android:textAlignment="viewStart"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textAlignment="viewStart" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/saveChangesInChargeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:backgroundTint="@color/myyellow"
                 android:fontFamily="@font/rubicblack"
                 android:text="שמור שינויים"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginTop="30dp"
                 tools:layout_conversion_absoluteHeight="47dp"
                 tools:layout_conversion_absoluteWidth="200dp" />
 

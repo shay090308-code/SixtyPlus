@@ -1,5 +1,6 @@
 package com.example.sixtyplus.screens;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,10 +20,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.models.DayAndHours;
+import com.example.sixtyplus.models.HourMinute;
 import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.models.Weekday;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import com.example.sixtyplus.utils.validator;
+import com.example.sixtyplus.views.IntervalTimePicker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,14 +42,10 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
     private Button btnUpdateProfile;
     String selectedUid;
     UserInCharge selectedUser;
-    // הוסף למעלה עם שאר ה-EditText
-    Spinner sunSH, sunSM, sunEH, sunEM;
-    Spinner monSH, monSM, monEH, monEM;
-    Spinner tueSH, tueSM, tueEH, tueEM;
-    Spinner wedSH, wedSM, wedEH, wedEM;
-    Spinner thuSH, thuSM, thuEH, thuEM;
-    Spinner friSH, friSM, friEH, friEM;
-    Spinner satSH, satSM, satEH, satEM;
+    EditText startSun, startMon, startTue, startWed, startThu, startFri, startSat, endSun, endMon,
+            endTue, endWed, endThu, endFri, endSat;
+    EditText[] startDays;
+    EditText[] endDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,6 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        initViews();
-        fillSpinners();
 
         UserInCharge currentUser = (UserInCharge) SharedPreferencesUtils.getUser(this);
         assert currentUser != null;
@@ -79,10 +77,50 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         etUserInChargeAdress = findViewById(R.id.placeAdressChange);
         etUserInChargeDescription = findViewById(R.id.placeDescription);
         btnUpdateProfile = findViewById(R.id.saveChangesInChargeBtn);
+        startSun = findViewById(R.id.startSunday);
+        startMon = findViewById(R.id.startMonday);
+        startTue = findViewById(R.id.startTuesday);
+        startWed = findViewById(R.id.startWednesday);
+        startThu = findViewById(R.id.startThursday);
+        startFri = findViewById(R.id.startFriday);
+        startSat = findViewById(R.id.startSaturday);
+        endSun = findViewById(R.id.endSunday);
+        endMon = findViewById(R.id.endMonday);
+        endTue = findViewById(R.id.endTuesday);
+        endWed = findViewById(R.id.endWednesday);
+        endThu = findViewById(R.id.endThursday);
+        endFri = findViewById(R.id.endFriday);
+        endSat = findViewById(R.id.endSaturday);
+
+        startDays = new EditText[]{
+                startSun,
+                startMon,
+                startTue,
+                startWed,
+                startThu,
+                startFri,
+                startSat
+        };
+
+        endDays = new EditText[]{
+                endSun,
+                endMon,
+                endTue,
+                endWed,
+                endThu,
+                endFri,
+                endSat
+        };
+        for (EditText startDay : startDays) {
+            setIntervalTimePicker(startDay);
+        }
+
+        for (EditText endDay : endDays) {
+            setIntervalTimePicker(endDay);
+        }
 
 
         Log.d(TAG, "Selected user: " + selectedUid);
-
 
         btnUpdateProfile.setOnClickListener(this);
 
@@ -114,6 +152,20 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
                 etUserInChargePhone.setText(selectedUser.getPhoneNumber());
                 etUserInChargePassword.setText(selectedUser.getPassword() + "");
                 etUserInChargeDescription.setText(selectedUser.getDesc() + "");
+                startSun.setText(selectedUser.getDayAndHours(Weekday.SUNDAY).getStartTime().toString());
+                startMon.setText(selectedUser.getDayAndHours(Weekday.MONDAY).getStartTime().toString());
+                startTue.setText(selectedUser.getDayAndHours(Weekday.TUESDAY).getStartTime().toString());
+                startWed.setText(selectedUser.getDayAndHours(Weekday.WEDNESDAY).getStartTime().toString());
+                startThu.setText(selectedUser.getDayAndHours(Weekday.THURSDAY).getStartTime().toString());
+                startFri.setText(selectedUser.getDayAndHours(Weekday.FRIDAY).getStartTime().toString());
+                startSat.setText(selectedUser.getDayAndHours(Weekday.SATURDAY).getStartTime().toString());
+                endSun.setText(selectedUser.getDayAndHours(Weekday.SUNDAY).getEndTime().toString());
+                endMon.setText(selectedUser.getDayAndHours(Weekday.MONDAY).getEndTime().toString());
+                endTue.setText(selectedUser.getDayAndHours(Weekday.TUESDAY).getEndTime().toString());
+                endWed.setText(selectedUser.getDayAndHours(Weekday.WEDNESDAY).getEndTime().toString());
+                endThu.setText(selectedUser.getDayAndHours(Weekday.THURSDAY).getEndTime().toString());
+                endFri.setText(selectedUser.getDayAndHours(Weekday.FRIDAY).getEndTime().toString());
+                endSat.setText(selectedUser.getDayAndHours(Weekday.SATURDAY).getEndTime().toString());
             }
             @Override
             public void onFailed(Exception e) {
@@ -135,7 +187,11 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         String city = etUserInChargeCity.getText().toString();
         String adress = etUserInChargeAdress.getText().toString();
         String placeName = etUserInChargePlaceName.getText().toString();
-        String desc = etUserInChargeDescription.getText().toString() + "";
+        String desc;
+        if (etUserInChargeDescription.length() != 0) {
+            desc = etUserInChargeDescription.getText().toString();
+        } else
+            desc = "";
         String password = etUserInChargeNewPassword.getText().toString() + "";
         String confPass = etUserInChargeNewPasswordConfirm.getText().toString() + "";
 
@@ -143,15 +199,14 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
             Log.e(TAG, "Invalid input");
             return;
         }
-
-        List<DayAndHours> updatedSchedule = new ArrayList<>();
-        updatedSchedule.add(getDayData("ראשון", sunSH, sunSM, sunEH, sunEM));
-        updatedSchedule.add(getDayData("שני", monSH, monSM, monEH, monEM));
-        updatedSchedule.add(getDayData("שלישי", tueSH, tueSM, tueEH, tueEM));
-        updatedSchedule.add(getDayData("רביעי", wedSH, wedSM, wedEH, wedEM));
-        updatedSchedule.add(getDayData("חמישי", thuSH, thuSM, thuEH, thuEM));
-        updatedSchedule.add(getDayData("שישי", friSH, friSM, friEH, friEM));
-        updatedSchedule.add(getDayData("שבת", satSH, satSM, satEH, satEM));
+        
+        for (Weekday weekday : Weekday.values()) {
+            String start = startDays[weekday.ordinal()].getText().toString();
+            String end = endDays[weekday.ordinal()].getText().toString();
+            if (!start.isEmpty() && !end.isEmpty()) {
+                selectedUser.setDayAndHours(new DayAndHours(weekday, HourMinute.fromString(start), HourMinute.fromString(end)));
+            }
+        }
 
         // Update the user object
         selectedUser.setFirstName(firstName);
@@ -161,115 +216,20 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         selectedUser.setAdress(adress);
         selectedUser.setPlaceName(placeName);
         selectedUser.setDesc(desc);
-        if(!password.isEmpty())
+        if (!password.isEmpty())
             selectedUser.setPassword(password);
-
-        selectedUser.setSchedule(updatedSchedule);
 
         // Update the user data in the authentication
         Log.d(TAG, "Updating user profile");
         Log.d(TAG, "Selected user UID: " + selectedUser.getId());
         Log.d(TAG, "User password: " + selectedUser.getPassword());
 
+
         updateUserInDatabase(selectedUser);
     }
 
-    private void loadUserSchedule(List<DayAndHours> schedule) {
-        if (schedule == null) return;
-        Spinner[][] daySpinners = {
-                {sunSH, sunSM, sunEH, sunEM}, {monSH, monSM, monEH, monEM},
-                {tueSH, tueSM, tueEH, tueEM}, {wedSH, wedSM, wedEH, wedEM},
-                {thuSH, thuSM, thuEH, thuEM}, {friSH, friSM, friEH, friEM},
-                {satSH, satSM, satEH, satEM}
-        };
 
-        for (int i = 0; i < schedule.size() && i < 7; i++) {
-            DayAndHours day = schedule.get(i);
-            if (day.getStartTime() != null && day.getEndTime() != null) {
-                String[] start = day.getStartTime().split(":");
-                String[] end = day.getEndTime().split(":");
-                setSpinnerValue(daySpinners[i][0], start[0]);
-                setSpinnerValue(daySpinners[i][1], start[1]);
-                setSpinnerValue(daySpinners[i][2], end[0]);
-                setSpinnerValue(daySpinners[i][3], end[1]);
-            }
-        }
-    }
-    private void setSpinnerValue(Spinner spinner, String value) {
-        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
-        if (adapter != null) {
-            int position = adapter.getPosition(value);
-            if (position >= 0) spinner.setSelection(position);
-        }
-    }
 
-    public DayAndHours getDayData(String dayName, Spinner hStart, Spinner mStart, Spinner hEnd, Spinner mEnd) {
-        DayAndHours dayObj = new DayAndHours();
-        dayObj.day = dayName;
-        String sH = hStart.getSelectedItem().toString();
-        String sM = mStart.getSelectedItem().toString();
-        String eH = hEnd.getSelectedItem().toString();
-        String eM = mEnd.getSelectedItem().toString();
-
-        if (sH.equals("שעה") && sM.equals("דקה")) {
-            dayObj.setStartTime(null);
-            dayObj.setEndTime(null);
-            dayObj.remark = "Closed this day";
-        } else {
-            dayObj.setStartTime(sH + ":" + sM);
-            dayObj.setEndTime(eH + ":" + eM);
-            dayObj.remark = null;
-        }
-        return dayObj;
-    }
-
-    private void initViews() {
-        sunSH = findViewById(R.id.spinner_sun_start_hourChange);
-        sunSM = findViewById(R.id.spinner_sun_start_minChange);
-        sunEH = findViewById(R.id.spinner_sun_end_hourChange);
-        sunEM = findViewById(R.id.spinner_sun_end_minChange);
-        monSH = findViewById(R.id.spinner_mon_start_hourChange);
-        monSM = findViewById(R.id.spinner_mon_start_minChange);
-        monEH = findViewById(R.id.spinner_mon_end_hourChange);
-        monEM = findViewById(R.id.spinner_mon_end_minChange);
-        tueSH = findViewById(R.id.spinner_tue_start_hourChange);
-        tueSM = findViewById(R.id.spinner_tue_start_minChange);
-        tueEH = findViewById(R.id.spinner_tue_end_hourChange);
-        tueEM = findViewById(R.id.spinner_tue_end_minChange);
-        wedSH = findViewById(R.id.spinner_wed_start_hourChange);
-        wedSM = findViewById(R.id.spinner_wed_start_minChange);
-        wedEH = findViewById(R.id.spinner_wed_end_hourChange);
-        wedEM = findViewById(R.id.spinner_wed_end_minChange);
-        thuSH = findViewById(R.id.spinner_thu_start_hourChange);
-        thuSM = findViewById(R.id.spinner_thu_start_minChange);
-        thuEH = findViewById(R.id.spinner_thu_end_hourChange);
-        thuEM = findViewById(R.id.spinner_thu_end_minChange);
-        friSH = findViewById(R.id.spinner_fri_start_hourChange);
-        friSM = findViewById(R.id.spinner_fri_start_minChange);
-        friEH = findViewById(R.id.spinner_fri_end_hourChange);
-        friEM = findViewById(R.id.spinner_fri_end_minChange);
-        satSH = findViewById(R.id.spinner_sat_start_hourChange);
-        satSM = findViewById(R.id.spinner_sat_start_minChange);
-        satEH = findViewById(R.id.spinner_sat_end_hourChange);
-        satEM = findViewById(R.id.spinner_sat_end_minChange);
-    }
-    private void fillSpinners() {
-        List<String> hours = new ArrayList<>();
-        hours.add("שעה");
-        for (int i = 0; i < 24; i++) hours.add(String.format("%02d", i));
-        String[] mins = {"דקה", "00", "15", "30", "45"};
-
-        ArrayAdapter<String> hAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, hours);
-        hAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.asList(mins));
-        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        Spinner[] hSpinners = {sunSH, sunEH, monSH, monEH, tueSH, tueEH, wedSH, wedEH, thuSH, thuEH, friSH, friEH, satSH, satEH};
-        Spinner[] mSpinners = {sunSM, sunEM, monSM, monEM, tueSM, tueEM, wedSM, wedEM, thuSM, thuEM, friSM, friEM, satSM, satEM};
-
-        for (Spinner s : hSpinners) s.setAdapter(hAdapter);
-        for (Spinner s : mSpinners) s.setAdapter(mAdapter);
-    }
     private void updateUserInDatabase(UserInCharge user) {
         Log.d(TAG, "Updating user in database: " + user.getId());
         databaseService.updateUser(user, new DatabaseService.DatabaseCallback<Void>() {
@@ -311,5 +271,46 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         }
 
         return true;
+    }
+
+
+    void setIntervalTimePicker(EditText timeEditText){
+        timeEditText.setFocusable(false); // Prevent keyboard from showing
+        timeEditText.setClickable(true);
+
+        timeEditText.setText("00:00");
+
+        timeEditText.setOnClickListener(v -> {
+            // Parse current time from EditText
+            String currentTime = timeEditText.getText().toString();
+            int currentHour = 0;
+            int currentMinute = 0;
+
+            if (!currentTime.isEmpty() && currentTime.contains(":")) {
+                String[] parts = currentTime.split(":");
+                currentHour = Integer.parseInt(parts[0]);
+                currentMinute = Integer.parseInt(parts[1]);
+            }
+
+            // Create a dialog with your IntervalTimePicker
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View dialogView = getLayoutInflater().inflate(R.layout.time_picker_dialog, null);
+
+            IntervalTimePicker timePicker = dialogView.findViewById(R.id.intervalTimePicker);
+
+            // Set the current time to the picker
+            timePicker.setHour(currentHour);
+            timePicker.setMinute(currentMinute);
+
+            builder.setView(dialogView)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        int hour = timePicker.getHour();
+                        int minute = timePicker.getMinute();
+                        String time = String.format("%02d:%02d", hour, minute);
+                        timeEditText.setText(time);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
     }
 }

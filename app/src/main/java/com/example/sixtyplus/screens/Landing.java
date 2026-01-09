@@ -46,7 +46,6 @@ public class Landing extends AppCompatActivity {
             }
         });
 
-
         if (SharedPreferencesUtils.isUserSign(Landing.this)) {
             Intent intent;
 
