@@ -146,24 +146,12 @@
                     android:inputType="phone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- City -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="350dp"
+            <Spinner
+                android:id="@+id/cityStudentChange"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
-                android:textColorHint="#999999"
-                android:hint="עיר מגורים                                            ✏️">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cityStudentChange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:textColor="#000000"
-                    android:fontFamily="@font/gveretlevin"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:padding="12dp"
+                android:spinnerMode="dropdown" />
 
             <!-- School Name -->
             <com.google.android.material.textfield.TextInputLayout

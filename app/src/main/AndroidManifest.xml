@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SixtyPlus">
         <activity
+            android:name=".screens.FindPlaces"
+            android:exported="false" />
+        <activity
             android:name=".screens.ForgotPassword"
             android:exported="false" />
         <activity

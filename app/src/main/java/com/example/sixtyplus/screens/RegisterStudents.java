@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,7 +31,8 @@ import java.util.Objects;
 public class RegisterStudents extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegisterStudents";
-    private EditText etPassword, etConfPass, etFName, etLName, etPhone, etCity, etSchoolName, etIdNumber, etGradeLevel;
+    private EditText etPassword, etConfPass, etFName, etLName, etPhone, etSchoolName, etIdNumber, etGradeLevel;
+    Spinner etCityStudent;
     private Button btnRegister;
 
     @Override
@@ -50,7 +53,16 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
         etFName = findViewById(R.id.firstName);
         etLName = findViewById(R.id.lastName);
         etPhone = findViewById(R.id.phone);
-        etCity = findViewById(R.id.city);
+        etCityStudent = findViewById(R.id.cityStudent);
+        String[] regions = getResources().getStringArray(R.array.regions_array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.spinner_item_selected,
+                android.R.id.text1,
+                regions
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_item_selected);
+        etCityStudent.setAdapter(adapter);
         etSchoolName = findViewById(R.id.schoolName);
         etGradeLevel = findViewById(R.id.gradeName);
         etIdNumber = findViewById(R.id.idNumber);
@@ -93,7 +105,8 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
             String fNameStudent = etFName.getText().toString();
             String lNameStudent = etLName.getText().toString();
             String phoneStudent = etPhone.getText().toString();
-            String cityStudent = etCity.getText().toString();
+            String cityStudent = etCityStudent.getSelectedItem().toString();
+            int cityPosition = etCityStudent.getSelectedItemPosition();
             String schoolName = etSchoolName.getText().toString();
             String gradeLevel = etGradeLevel.getText().toString();
             String idnumber = etIdNumber.getText().toString();
@@ -112,7 +125,7 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
 
             /// Validate input
             Log.d(TAG, "onClick: Validating input...");
-            if (!checkInput(passwordStudent, confirmpass, fNameStudent, lNameStudent, phoneStudent, idnumber)) {
+            if (!checkInput(passwordStudent, confirmpass, fNameStudent, lNameStudent, phoneStudent, idnumber, cityPosition)) {
                 /// stop if input is invalid
                 return;
             }
@@ -128,60 +141,55 @@ public class RegisterStudents extends BaseActivity implements View.OnClickListen
     /// Check if the input is valid
     /// @return true if the input is valid, false otherwise
     /// @see validator
-    private boolean checkInput(String password, String confirnPass, String fName, String lName, String phone, String id) {
+    private boolean checkInput(String password, String confPass, String fName, String lName, String phone, String id, int cityPosition) {
+
+        if (cityPosition == 0) {
+            Toast.makeText(this, "אנא בחר איזור מהרשימה", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if (!validator.isPasswordValid(password)) {
             Log.e(TAG, "checkInput: Password must be at least 6 characters long");
             /// show error message to user
-            etPassword.setError("Password must be at least 6 characters long");
-            /// set focus to password field
-            etPassword.requestFocus();
+            Toast.makeText(this, "על הסיסמא להיות בעלת 6 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(fName)) {
-            Log.e(TAG, "checkInput: First name must be at least 3 characters long");
+            Log.e(TAG, "checkInput: First name must be at least 2 characters long");
             /// show error message to user
-            etFName.setError("First name must be at least 3 characters long");
-            /// set focus to first name field
-            etFName.requestFocus();
+            Toast.makeText(this, "על השם להיות בעל 2 תויים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(lName)) {
-            Log.e(TAG, "checkInput: Last name must be at least 3 characters long");
+            Log.e(TAG, "checkInput: Last name must be at least 2 characters long");
             /// show error message to user
-            etLName.setError("Last name must be at least 3 characters long");
-            /// set focus to last name field
-            etLName.requestFocus();
+            Toast.makeText(this, "על השם להיות בעל 2 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isPhoneValid(phone)) {
             Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
-            /// show error message to user
-            etPhone.setError("Phone number must be at least 10 characters long");
-            /// set focus to phone field
-            etPhone.requestFocus();
+            Toast.makeText(this, "על מספר הטלפון להיות בעל 10 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if(!validator.isConfirmPasswordValid(password, confirnPass)) {
-            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
-            etConfPass.setError("Password and confirm password does not match");
-            etConfPass.requestFocus();
+        if(!validator.isConfirmPasswordValid(password, confPass)) {
+            Log.e(TAG, "checkInput: Passwords do not match");
+            Toast.makeText(this, "הסיסמאות לא זהות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.checkidlength(id)) {
-            etIdNumber.setError("id must be 9 characters!");
-            etIdNumber.requestFocus();
+            Toast.makeText(this, "על תעודת הזהות להיות בעלת 9 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         Log.d(TAG, "checkInput: Input is valid");
         return true;
     }
+
 
     /// Register the user
     private void registerUser(String password, String fName, String lName, String phone, String city, String school,

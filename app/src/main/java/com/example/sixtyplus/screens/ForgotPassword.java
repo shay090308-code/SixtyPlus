@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.models.UserGeneral;
+import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.validator;
 import com.google.firebase.database.DataSnapshot;
@@ -50,57 +52,98 @@ public class ForgotPassword extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idnum = etUid.getText().toString().trim();
-                String phone = etUphone.getText().toString().trim();
-                String pw = etPw.getText().toString().trim();
+                onConfirm();
+            }
+        });
+    }
 
-                if (checkInput(idnum, phone, pw)) {
-                    Log.d(TAG, "Input valid, ready to change password");
+    private void onConfirm() {
+        String idnum = etUid.getText().toString().trim();
+        String phone = etUphone.getText().toString().trim();
+        String pw = etPw.getText().toString().trim();
 
-                    Log.d(TAG, "Starting password reset for user: " + idnum);
-                    Log.d(TAG , "searching user by the user name");
+        if (!checkInput(idnum, phone, pw)) {
+            Log.d(TAG, "Input Invalid, NOT ready to change password");
+            return;
+        }
+        Log.d(TAG, "Input valid, ready to change password");
 
-                    /// שלב 1: חיפוש יוזר לפי שם המשתמש
-                    db.findUserById(idnum, new DatabaseService.DatabaseCallback<UserGeneral>() {
-                        @Override
-                        public void onCompleted(UserGeneral user) {
-                            if (user == null) {
-                                Log.e(TAG, "Username does not exist: " + idnum);
-                                etUid.setError("אין משתמש קיים עם תעודת הזהות הזו");
-                                etUid.requestFocus();
-                                return;
-                            }
-                            if (!phone.equals(user.id)) {
-                                Log.e(TAG, "Email does not match for user: " + phone);
-                                etUphone.setError("מספר הטלפון לא תואם לחשבון הזה");
-                                etUphone.requestFocus();
-                                return;
-                            }
-                            user.setPassword(pw);
+        Log.d(TAG, "Starting password reset for user: " + idnum);
+        Log.d(TAG , "searching user by the user name");
 
-                            db.writeUser(user, new DatabaseService.DatabaseCallback<Void>() {
-                                @Override
-                                public void onCompleted(Void object) {
-                                    Log.d(TAG, "Password updated successfully for: " + idnum);
-                                    Toast.makeText(ForgotPassword.this, "הסיסמה עודכנה בהצלחה", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
+        /// שלב 1: חיפוש יוזר לפי שם המשתמש
 
-                                @Override
-                                public void onFailed(Exception e) {
-                                    Log.e(TAG, "Failed to update password", e);
-                                    Toast.makeText(ForgotPassword.this, "שגיאה בעדכון הסיסמה", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailed(Exception e) {
-                            Log.e(TAG, "Database error while searching for user", e);
-                            Toast.makeText(ForgotPassword.this, "שגיאה בגישה לשרת", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        db.findUserById(idnum, phone, new DatabaseService.DatabaseCallback<UserGeneral>() {
+            @Override
+            public void onCompleted(UserGeneral user) {
+                if (user == null) {
+                    Log.e(TAG, "Id does not exist: " + idnum);
+                    etUid.setError("אין משתמש קיים עם תעודת הזהות הזו");
+                    etUid.requestFocus();
+                    return;
                 }
+                if (user.isUserStudent()) {
+                    getUserStudentFromDB(idnum, pw);
+                }
+                else if (user.isUserInCharge()) {
+                    getUserInChargeFromDB(idnum, pw);
+                }
+
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "Database error while searching for user", e);
+                Toast.makeText(ForgotPassword.this, "שגיאה בגישה לשרת", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getUserInChargeFromDB(String idnum, String pw) {
+        db.getUserStudent(idnum, new DatabaseService.DatabaseCallback<UserStudent>() {
+            @Override
+            public void onCompleted(UserStudent userStudent) {
+                userStudent.setPassword(pw);
+
+                updateUserInDB(userStudent, idnum);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+    }
+
+    private void getUserStudentFromDB(String idnum, String pw) {
+        db.getUserInCharge(idnum, new DatabaseService.DatabaseCallback<UserInCharge>() {
+            @Override
+            public void onCompleted(UserInCharge userInCharge) {
+                userInCharge.setPassword(pw);
+
+                updateUserInDB(userInCharge, idnum);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+    }
+
+    private void updateUserInDB(UserGeneral user, String idnum) {
+        db.writeUser(user, new DatabaseService.DatabaseCallback<Void>() {
+            @Override
+            public void onCompleted(Void object) {
+                Log.d(TAG, "Password updated successfully for: " + idnum);
+                Toast.makeText(ForgotPassword.this, "הסיסמה עודכנה בהצלחה", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "Failed to update password", e);
+                Toast.makeText(ForgotPassword.this, "שגיאה בעדכון הסיסמה", Toast.LENGTH_SHORT).show();
             }
         });
     }

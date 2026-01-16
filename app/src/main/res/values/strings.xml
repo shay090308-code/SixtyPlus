@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">SixtyPlus</string>
+
+    <string-array name="regions_array">
+        <item>בחר את איזורך</item>
+        <item>אילת</item>
+        <item>בית שאן</item>
+        <item>גליל עליון</item>
+        <item>גליל תחתון</item>
+        <item>דרום הגולן</item>
+        <item>דרום הנגב (מצפה רמון ודרומה)</item>
+        <item>דרום השפלה (איזור אשדוד)</item>
+        <item>הכרמל (איזור דאליית אל כרמל)</item>
+        <item>העמקים (איזור נצרת ועפולה)</item>
+        <item>הערבה</item>
+        <item>חיפה והקריות</item>
+        <item>יהודה</item>
+        <item>ים המלח</item>
+        <item>ירושלים</item>
+        <item>לכיש</item>
+        <item>מנשה (איזור חדרה וזכרון יעקב)</item>
+        <item>מערב הנגב (איזור נתיבות ואופקים)</item>
+        <item>מרכז (ראש העין, הוד השרון וכו׳)</item>
+        <item>מרכז הנגב (מצפה רמון עד דימונה)</item>
+        <item>עוטף עזה</item>
+        <item>צפון הגולן</item>
+        <item>צפון הנגב (באר שבע עד איזור רהט)</item>
+        <item>צפון השפלה (איזור ראשל״צ, לוד)</item>
+        <item>שומרון</item>
+        <item>שפלת יהודה (איזור מודיעין ובית שמש)</item>
+        <item>שרון (איזור נתניה)</item>
+        <item>תל-אביב (העיר והערים הגובלות בה)</item>
+    </string-array>
 </resources>

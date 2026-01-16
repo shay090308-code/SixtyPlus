@@ -35,8 +35,9 @@ import java.util.Objects;
 public class RegisterInCharge extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegisterStudents";
-    private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge, etCityInCharge,
+    private EditText etPasswordInCharge, etFNameInCharge, etLNameInCharge, etPhoneInCharge,
             etAdressInCharge, etIdNumberInCharge, etPlaceName, etConfPass;
+    private Spinner etCityInCharge;
     private Button btnRegisterInCharge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         EdgeToEdge.enable(this);
         /// set the layout for the activity
         setContentView(R.layout.activity_register_in_charge);
+        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.register_in_charge), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,6 +59,15 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         etLNameInCharge = findViewById(R.id.lastNameInCharge);
         etPhoneInCharge = findViewById(R.id.phoneInCharge);
         etCityInCharge = findViewById(R.id.cityInCharge);
+        String[] regions = getResources().getStringArray(R.array.regions_array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.spinner_item_selected,
+                android.R.id.text1,
+                regions
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_item_selected);
+        etCityInCharge.setAdapter(adapter);
         etPlaceName = findViewById(R.id.placeName);
         etAdressInCharge = findViewById(R.id.placeAdress);
         etIdNumberInCharge = findViewById(R.id.idNumberInCharge);
@@ -67,6 +78,8 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
         btnRegisterInCharge.setOnClickListener(this);
 
         Button btnLoginInCharge = findViewById(R.id.moveToLoginInCharge);
+
+
 
         btnLoginInCharge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +110,8 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
             String fNameInCharge = etFNameInCharge.getText().toString();
             String lNameInCharge = etLNameInCharge.getText().toString();
             String phoneInCharge = etPhoneInCharge.getText().toString();
-            String cityInCharge = etCityInCharge.getText().toString();
+            String cityInCharge = etCityInCharge.getSelectedItem().toString();
+            int cityPosition = etCityInCharge.getSelectedItemPosition();
             String adressInCharge = etAdressInCharge.getText().toString();
             String placeName = etPlaceName.getText().toString();
             String idnumberInCharge = etIdNumberInCharge.getText().toString();
@@ -117,7 +131,7 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
 
             /// Validate input
             Log.d(TAG, "onClick: Validating input...");
-            if (!checkInput(passwordInCharge, confPass, fNameInCharge, lNameInCharge, phoneInCharge, idnumberInCharge)) {
+            if (!checkInput(passwordInCharge, confPass, fNameInCharge, lNameInCharge, phoneInCharge, idnumberInCharge, cityPosition)) {
                 /// stop if input is invalid
                 return;
             }
@@ -133,54 +147,48 @@ public class RegisterInCharge extends BaseActivity implements View.OnClickListen
     /// Check if the input is valid
     /// @return true if the input is valid, false otherwise
     /// @see validator
-    private boolean checkInput(String password, String confPass, String fName, String lName, String phone, String id) {
+    private boolean checkInput(String password, String confPass, String fName, String lName, String phone, String id, int cityPosition) {
+
+        if (cityPosition == 0) {
+            Toast.makeText(this, "אנא בחר איזור מהרשימה", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if (!validator.isPasswordValid(password)) {
             Log.e(TAG, "checkInput: Password must be at least 6 characters long");
             /// show error message to user
-            etPasswordInCharge.setError("Password must be at least 6 characters long");
-            /// set focus to password field
-            etPasswordInCharge.requestFocus();
+            Toast.makeText(this, "על הסיסמא להיות בעלת 6 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(fName)) {
-            Log.e(TAG, "checkInput: First name must be at least 3 characters long");
+            Log.e(TAG, "checkInput: First name must be at least 2 characters long");
             /// show error message to user
-            etFNameInCharge.setError("First name must be at least 3 characters long");
-            /// set focus to first name field
-            etFNameInCharge.requestFocus();
+            Toast.makeText(this, "על השם להיות בעל 2 תויים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(lName)) {
-            Log.e(TAG, "checkInput: Last name must be at least 3 characters long");
+            Log.e(TAG, "checkInput: Last name must be at least 2 characters long");
             /// show error message to user
-            etLNameInCharge.setError("Last name must be at least 3 characters long");
-            /// set focus to last name field
-            etLNameInCharge.requestFocus();
+            Toast.makeText(this, "על השם להיות בעל 2 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isPhoneValid(phone)) {
             Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
-            /// show error message to user
-            etPhoneInCharge.setError("Phone number must be at least 10 characters long");
-            /// set focus to phone field
-            etPhoneInCharge.requestFocus();
+            Toast.makeText(this, "על מספר הטלפון להיות בעל 10 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if(!validator.isConfirmPasswordValid(password, confPass)) {
-            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
-            etConfPass.setError("Password and confirm password does not match");
-            etConfPass.requestFocus();
+            Log.e(TAG, "checkInput: Passwords do not match");
+            Toast.makeText(this, "הסיסמאות לא זהות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.checkidlength(id)) {
-            etIdNumberInCharge.setError("id must be 9 characters!");
-            etIdNumberInCharge.requestFocus();
+            Toast.makeText(this, "על תעודת הזהות להיות בעלת 9 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
 

@@ -38,14 +38,17 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
 
     private EditText etUserInChargefirstName, etUserInChargeLastName, etUserInChargeId, etUserInChargePhone, etUserInChargePassword,
             etUserInChargePlaceName, etUserInChargeAdress, etUserInChargeNewPassword,
-            etUserInChargeDescription, etUserInChargeNewPasswordConfirm, etUserInChargeCity;
+            etUserInChargeDescription, etUserInChargeNewPasswordConfirm;
     private Button btnUpdateProfile;
-    String selectedUid;
-    UserInCharge selectedUser;
-    EditText startSun, startMon, startTue, startWed, startThu, startFri, startSat, endSun, endMon,
+    private String selectedUid;
+    private Spinner etUserInChargeCity;
+    private UserInCharge selectedUser;
+    private String[] regions;
+    private EditText startSun, startMon, startTue, startWed, startThu, startFri, startSat, endSun, endMon,
             endTue, endWed, endThu, endFri, endSat;
-    EditText[] startDays;
-    EditText[] endDays;
+    private EditText[] startDays;
+    private EditText[] endDays;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,14 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         etUserInChargeNewPassword = findViewById(R.id.newPasswordInCharge);
         etUserInChargeNewPasswordConfirm = findViewById(R.id.newPasswordInChargeConfirm);
         etUserInChargeCity = findViewById(R.id.cityInChargeChange);
+        regions = getResources().getStringArray(R.array.regions_array);
+       adapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item_selected,
+                android.R.id.text1,
+                regions);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        etUserInChargeCity.setAdapter(adapter);
         etUserInChargePlaceName = findViewById(R.id.placeNameChange);
         etUserInChargeAdress = findViewById(R.id.placeAdressChange);
         etUserInChargeDescription = findViewById(R.id.placeDescription);
@@ -146,7 +157,14 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
                 etUserInChargefirstName.setText(selectedUser.getFirstName());
                 etUserInChargeLastName.setText(selectedUser.getLastName());
                 etUserInChargeId.setText(selectedUser.getId());
-                etUserInChargeCity.setText(selectedUser.getCity());
+                if (selectedUser.getCity() != null) {
+                    String userCity = selectedUser.getCity();
+                    int spinnerPosition = adapter.getPosition(userCity);
+
+                    if (spinnerPosition != -1) {
+                        etUserInChargeCity.setSelection(spinnerPosition);
+                    }
+                }
                 etUserInChargeAdress.setText(selectedUser.getAdress());
                 etUserInChargePlaceName.setText(selectedUser.getPlaceName());
                 etUserInChargePhone.setText(selectedUser.getPhoneNumber());
@@ -184,14 +202,14 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         String firstName = etUserInChargefirstName.getText().toString();
         String lastName = etUserInChargeLastName.getText().toString();
         String phone = etUserInChargePhone.getText().toString();
-        String city = etUserInChargeCity.getText().toString();
+        String city = etUserInChargeCity.getSelectedItem().toString();
         String adress = etUserInChargeAdress.getText().toString();
         String placeName = etUserInChargePlaceName.getText().toString();
         String desc;
         if (etUserInChargeDescription.length() != 0) {
             desc = etUserInChargeDescription.getText().toString();
         } else
-            desc = "";
+            desc = " ";
         String password = etUserInChargeNewPassword.getText().toString() + "";
         String confPass = etUserInChargeNewPasswordConfirm.getText().toString() + "";
 
@@ -248,25 +266,38 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
         });
     }
 
-    private boolean isValid(String firstName, String lastName, String phone, String password,String confirmPass) {
-        if (!validator.isNameValid(firstName)) {
-            etUserInChargefirstName.setError("First name is required");
-            etUserInChargefirstName.requestFocus();
+    private boolean isValid(String fName, String lName, String phone, String password,String confirmPass) {
+
+        if (!validator.isPasswordValid(password)) {
+            Log.e(TAG, "checkInput: Password must be at least 6 characters long");
+            /// show error message to user
+            Toast.makeText(this, "על הסיסמא להיות בעלת 6 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!validator.isNameValid(lastName)) {
-            etUserInChargeLastName.setError("Last name is required");
-            etUserInChargeLastName.requestFocus();
+
+        if (!validator.isNameValid(fName)) {
+            Log.e(TAG, "checkInput: First name must be at least 2 characters long");
+            /// show error message to user
+            Toast.makeText(this, "על השם להיות בעל 2 תויים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if (!validator.isNameValid(lName)) {
+            Log.e(TAG, "checkInput: Last name must be at least 2 characters long");
+            /// show error message to user
+            Toast.makeText(this, "על השם להיות בעל 2 תווים לפחות", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (!validator.isPhoneValid(phone)) {
-            etUserInChargePhone.setError("Phone number is required");
-            etUserInChargePhone.requestFocus();
+            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
+            Toast.makeText(this, "על מספר הטלפון להיות בעל 10 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!password.equals(confirmPass)) {
-            etUserInChargeNewPassword.setError("Passwords are not similar");
-            etUserInChargeNewPassword.requestFocus();
+
+        if(!validator.isConfirmPasswordValid(password, confirmPass)) {
+            Log.e(TAG, "checkInput: Passwords do not match");
+            Toast.makeText(this, "הסיסמאות לא זהות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
