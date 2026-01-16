@@ -103,7 +103,6 @@
                     android:fontFamily="@font/gveretlevin"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- שם משפחה -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
