@@ -11,48 +11,50 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sixtyplus.R;
-import com.example.sixtyplus.models.UserStudent;
+import com.example.sixtyplus.models.UserInCharge;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.ViewHolder> {
+public class UserInChargeFindPlaces extends RecyclerView.Adapter<UserInChargeFindPlaces.ViewHolder> {
 
 
     public interface OnUserClickListener {
-        void onUserClick(UserStudent user);
-        void onLongUserClick(UserStudent user);
+        void onUserClick(UserInCharge user);
+        void onLongUserClick(UserInCharge user);
     }
 
-    private final List<UserStudent> userList;
+    private final List<UserInCharge> userList;
     private final OnUserClickListener onUserClickListener;
-    public UserStudentAdapter(@Nullable final OnUserClickListener onUserClickListener) {
+    public UserInChargeFindPlaces(@Nullable final OnUserClickListener onUserClickListener) {
         userList = new ArrayList<>();
         this.onUserClickListener = onUserClickListener;
     }
 
     @NonNull
     @Override
-    public UserStudentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserInChargeFindPlaces.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_student, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UserStudent user = userList.get(position);
+        UserInCharge user = userList.get(position);
         if (user == null) return;
-        Log.d("UserStudentAdapter", "User ID: " + user.getId());
+
+        Log.d("UserStudentAdapter", "User PlaceName: " + user.getPlaceName());
         Log.d("UserStudentAdapter", "User City: " + user.getCity());
         Log.d("UserStudentAdapter", "User Phone: " + user.getPhoneNumber());
 
-        holder.tvName.setText(user.getFirstName() + " " + user.getLastName());
+        holder.tvName.setText(user.getPlaceName());
         holder.tvPhone.setText(user.getPhoneNumber());
 
-        if (user.getId() != null && !user.getId().isEmpty()) {
-            holder.tvId.setText(user.getId());
+        if (user.getFirstName() != null && !user.getFirstName().isEmpty()
+        && user.getLastName() != null && !user.getLastName().isEmpty()) {
+            holder.tvId.setText(user.getFirstName() + " " + user.getLastName());
         } else {
             holder.tvId.setText("לא צוין");
         }
@@ -102,24 +104,24 @@ public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.
         return userList.size();
     }
 
-    public void setUserList(List<UserStudent> users) {
+    public void setUserList(List<UserInCharge> users) {
         userList.clear();
         userList.addAll(users);
         notifyDataSetChanged();
     }
 
-    public void addUser(UserStudent user) {
+    public void addUser(UserInCharge user) {
         userList.add(user);
         notifyItemInserted(userList.size() - 1);
     }
-    public void updateUser(UserStudent user) {
+    public void updateUser(UserInCharge user) {
         int index = userList.indexOf(user);
         if (index == -1) return;
         userList.set(index, user);
         notifyItemChanged(index);
     }
 
-    public void removeUser(UserStudent user) {
+    public void removeUser(UserInCharge user) {
         int index = userList.indexOf(user);
         if (index == -1) return;
         userList.remove(index);

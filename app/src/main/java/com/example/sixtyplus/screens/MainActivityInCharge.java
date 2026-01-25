@@ -58,6 +58,15 @@ public class MainActivityInCharge extends AppCompatActivity {
             }
         });
 
+        Button btnUserInChargeFindPlaces = findViewById(R.id.mainUserInChargeFindPlaces);
+        btnUserInChargeFindPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityInCharge.this, FindPlaces.class);
+                startActivity(intent);
+            }
+        });
+
         Button btnLogOutMainInCharge = findViewById(R.id.mainLogOutInCharge);
         btnLogOutMainInCharge.setOnClickListener(new View.OnClickListener() {
             @Override

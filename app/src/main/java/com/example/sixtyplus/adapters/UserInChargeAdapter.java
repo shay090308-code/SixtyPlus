@@ -1,5 +1,6 @@
 package com.example.sixtyplus.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,24 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
         UserInCharge user = userList.get(position);
         if (user == null) return;
 
+        Log.d("UserStudentAdapter", "User ID: " + user.getId());
+        Log.d("UserStudentAdapter", "User City: " + user.getCity());
+        Log.d("UserStudentAdapter", "User Phone: " + user.getPhoneNumber());
+
         holder.tvName.setText(user.getFirstName() + " " + user.getLastName());
         holder.tvPhone.setText(user.getPhoneNumber());
+
+        if (user.getId() != null && !user.getId().isEmpty()) {
+            holder.tvId.setText(user.getId());
+        } else {
+            holder.tvId.setText("לא צוין");
+        }
+
+        if (user.getCity() != null && !user.getCity().isEmpty()) {
+            holder.tvCity.setText(user.getCity());
+        } else {
+            holder.tvCity.setText("לא צוין");
+        }
 
         // Set initials
         String initials = "";

@@ -7,47 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".screens.FindPlaces">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/changeStudentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/galacti"
+        android:shadowColor="@color/myyellow"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="10"
+        android:text="חיפוש התנדבויות"
+        android:textColor="#000000"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layoutDirection="rtl"
+        android:queryHint="חיפוש"
+        android:textDirection="rtl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changeStudentTitle" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlacesResults"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/changeStudentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/galacti"
-                android:shadowColor="@color/myyellow"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="10"
-                android:text="חיפוש התנדבויות"
-                android:textColor="#000000"
-                android:textSize="60dp"
-                android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                tools:layout_conversion_absoluteHeight="50dp"
-                tools:layout_conversion_absoluteWidth="242dp" />
-
-            <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/searchPlaces"
-                android:layout_marginTop="20dp"
-                android:queryHint="חיפוש"
-                android:layoutDirection="rtl"
-                android:textDirection="rtl" />
-
-       </LinearLayout>
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@id/searchPlaces" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

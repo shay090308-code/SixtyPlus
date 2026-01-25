@@ -57,6 +57,16 @@ public class MainActivityStudents extends AppCompatActivity {
             }
         });
 
+        Button btnUserStudentsFindPlaces = findViewById(R.id.mainUserStudentsFindPlaces);
+        btnUserStudentsFindPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityStudents.this, FindPlaces.class);
+                startActivity(intent);
+            }
+        });
+
+
         Button btnLogOutMainStudents = findViewById(R.id.mainLogOutStudents);
         btnLogOutMainStudents.setOnClickListener(new View.OnClickListener() {
             @Override

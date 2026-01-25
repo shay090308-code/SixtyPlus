@@ -23,7 +23,6 @@ import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import com.example.sixtyplus.utils.validator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
