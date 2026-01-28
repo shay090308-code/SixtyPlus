@@ -67,6 +67,15 @@ public class MainActivityInCharge extends AppCompatActivity {
             }
         });
 
+        Button btnUserInChargeRegisterVolunteering = findViewById(R.id.mainUserRegisterVolunteering);
+        btnUserInChargeRegisterVolunteering.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityInCharge.this, RegisterVolunteering.class);
+                startActivity(intent);
+            }
+        });
+
         Button btnLogOutMainInCharge = findViewById(R.id.mainLogOutInCharge);
         btnLogOutMainInCharge.setOnClickListener(new View.OnClickListener() {
             @Override

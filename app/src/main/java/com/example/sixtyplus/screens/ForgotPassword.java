@@ -19,9 +19,6 @@ import com.example.sixtyplus.models.UserInCharge;
 import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.validator;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ForgotPassword extends AppCompatActivity {
 

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/register_volunteering"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- כותרת -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="קביעת התנדבות"
+            android:fontFamily="@font/galacti"
+            android:layout_gravity="center"
+            android:shadowColor="@color/myyellow"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="10"
+            android:textSize="60dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- שם המתנדב (לא ניתן לעריכה) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="שם המתנדב"
+            android:textColorHint="#999999"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            app:startIconDrawable="@android:drawable/ic_menu_info_details">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvStudentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:padding="10dp"
+                android:drawablePadding="8dp"
+                android:textColor="#000000"
+
+                android:fontFamily="@font/gveretlevin"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <AutoCompleteTextView
+            android:id="@+id/actvSearchPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="חפש מקום התנדבות"
+            android:textColorHint="#999999"
+            android:textColor="#000000"
+            android:padding="8dp"
+            android:fontFamily="@font/gveretlevin"
+            android:background="@drawable/edittext_background"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="8dp"
+            android:completionThreshold="1"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- שם המקום שנבחר -->
+        <TextView
+            android:id="@+id/tvSelectedPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="לא נבחר מקום"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnSelectDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="בחר תאריך"
+            android:textSize="16sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/gveretlevin"
+            android:gravity="right"
+            android:background="@android:color/transparent"
+            android:drawableStart="@android:drawable/ic_menu_my_calendar"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- שעת התחלה -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שעת התחלה"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnSelectStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="בחר שעת התחלה"
+            android:textSize="16sp"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- שעת סיום -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שעת סיום"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnSelectEndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="בחר שעת סיום"
+            android:textSize="16sp"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- הצגת משך ההתנדבות -->
+        <TextView
+            android:id="@+id/tvVolunteeringDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="משך ההתנדבות: --"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/edittext_background"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- כפתור שליחה -->
+        <Button
+            android:id="@+id/btnSubmitVolunteering"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שלח בקשת התנדבות"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:enabled="false"/>
+
+    </LinearLayout>
+
+</ScrollView>

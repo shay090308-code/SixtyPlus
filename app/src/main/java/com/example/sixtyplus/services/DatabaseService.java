@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import com.example.sixtyplus.models.UserGeneral;
 import com.example.sixtyplus.models.UserInCharge;
 import com.example.sixtyplus.models.UserStudent;
+import com.example.sixtyplus.models.Volunteering;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,8 +38,7 @@ public class DatabaseService {
     ///
     /// @see DatabaseService#readData(String)
     private static final String USERS_PATH = "users",
-            FOODS_PATH = "foods",
-            CARTS_PATH = "carts";
+            VOLUNTEERING_PATH = "volunteering";
 
     /// callback interface for database operations
     ///
@@ -523,5 +523,11 @@ public class DatabaseService {
                 callback.onFailed(e);
             }
         });
+    }
+
+
+
+    public void setVolunteering(@NotNull final Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
+        writeData(VOLUNTEERING_PATH + "/" + volunteering.getId(), volunteering, callback);
     }
 }

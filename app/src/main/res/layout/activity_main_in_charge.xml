@@ -117,6 +117,21 @@
                 tools:layout_conversion_absoluteHeight="47dp"
                 tools:layout_conversion_absoluteWidth="200dp" />
 
+            <Button
+                android:id="@+id/mainUserRegisterVolunteering"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:backgroundTint="@color/myyellow"
+                android:fontFamily="@font/rubicblack"
+                android:text="קביעת התנדבות"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:layout_marginTop="10dp"
+                tools:layout_conversion_absoluteHeight="47dp"
+                tools:layout_conversion_absoluteWidth="200dp" />
+
         </LinearLayout>
     </ScrollView>
 

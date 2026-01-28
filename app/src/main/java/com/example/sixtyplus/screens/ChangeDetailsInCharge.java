@@ -268,7 +268,10 @@ public class ChangeDetailsInCharge extends BaseActivity implements View.OnClickL
 
     private boolean isValid(String fName, String lName, String phone, String password,String confirmPass) {
 
-        if (!validator.isPasswordValid(password)) {
+
+        if(password.isEmpty() && confirmPass.isEmpty())
+            return true;
+        else if (!validator.isPasswordValid(password)) {
             Log.e(TAG, "checkInput: Password must be at least 6 characters long");
             /// show error message to user
             Toast.makeText(this, "על הסיסמא להיות בעלת 6 תווים לפחות", Toast.LENGTH_SHORT).show();

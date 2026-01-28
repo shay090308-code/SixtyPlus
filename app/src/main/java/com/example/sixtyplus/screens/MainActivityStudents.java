@@ -57,6 +57,15 @@ public class MainActivityStudents extends AppCompatActivity {
             }
         });
 
+        Button btnUserStudentRegisterVolunteering = findViewById(R.id.mainUserStudentRegisterVolunteering);
+        btnUserStudentRegisterVolunteering.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityStudents.this, RegisterVolunteering.class);
+                startActivity(intent);
+            }
+        });
+
         Button btnUserStudentsFindPlaces = findViewById(R.id.mainUserStudentsFindPlaces);
         btnUserStudentsFindPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
