@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- שם המתנדב -->
+        <TextView
+            android:id="@+id/tvVolunteerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שם המתנדב"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- תאריך ויום -->
+        <TextView
+            android:id="@+id/tvVolunteerDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="תאריך: 01/01/2024 (יום ראשון)"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- שעות -->
+        <TextView
+            android:id="@+id/tvVolunteerTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שעות: 09:00 - 12:00"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- משך ההתנדבות -->
+        <TextView
+            android:id="@+id/tvVolunteerDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="משך: 3.0 שעות"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- כפתורים -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnApprove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="אשר"
+                android:textSize="16sp"
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnReject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="דחה"
+                android:textSize="16sp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -48,7 +48,6 @@
                 android:padding="10dp"
                 android:drawablePadding="8dp"
                 android:textColor="#000000"
-
                 android:fontFamily="@font/gveretlevin"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,6 +75,21 @@
             android:textSize="14sp"
             android:textColor="@android:color/holo_blue_dark"
             android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- שעות פתיחה של המקום -->
+        <TextView
+            android:id="@+id/tvPlaceSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/gveretlevin"
+            android:gravity="right"
+            android:padding="12dp"
+            android:background="@drawable/edittext_background"
             android:visibility="gone"
             android:layout_marginBottom="24dp"/>
 

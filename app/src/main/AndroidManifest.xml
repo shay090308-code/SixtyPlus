@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SixtyPlus">
         <activity
+            android:name=".screens.HistoryVolunteers"
+            android:exported="false" />
+        <activity
+            android:name=".screens.AcceptingVolunteers"
+            android:exported="false" />
+        <activity
             android:name=".screens.RegisterVolunteering"
             android:exported="false" />
         <activity

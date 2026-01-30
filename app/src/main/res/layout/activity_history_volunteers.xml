@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- כותרת -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="היסטוריית התנדבויות"
+        android:fontFamily="@font/galacti"
+        android:shadowColor="@color/myyellow"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="10"
+        android:textSize="60dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:padding="24dp"/>
+
+    <!-- רשימת התנדבויות -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVolunteeringHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"/>
+
+    <!-- הודעה כשאין התנדבויות -->
+    <TextView
+        android:id="@+id/tvNoHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="עדיין לא ביצעת התנדבויות"
+        android:textSize="18sp"
+        android:textColor="#999999"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+</LinearLayout>

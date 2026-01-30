@@ -37,7 +37,7 @@ public class RegisterVolunteering extends AppCompatActivity {
 
     private static final String TAG = "RegisterVolunteering";
 
-    private TextView tvStudentName, tvSelectedPlace, tvVolunteeringDuration;
+    private TextView tvStudentName, tvSelectedPlace, tvPlaceSchedule, tvVolunteeringDuration;
     private AutoCompleteTextView actvSearchPlace;
     private Button btnSelectDate, btnSubmitVolunteering, btnSelectStartTime, btnSelectEndTime;
 
@@ -53,11 +53,18 @@ public class RegisterVolunteering extends AppCompatActivity {
     private HourMinute selectedStartTime;
     private HourMinute selectedEndTime;
 
+    private String preSelectedPlaceId;
+    private String preSelectedPlaceName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_volunteering);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+        // קבלת המקום שנבחר מהמסך הקודם (אם יש)
+        preSelectedPlaceId = getIntent().getStringExtra("selectedPlaceId");
+        preSelectedPlaceName = getIntent().getStringExtra("selectedPlaceName");
 
         // אתחול
         initializeViews();
@@ -69,6 +76,7 @@ public class RegisterVolunteering extends AppCompatActivity {
     private void initializeViews() {
         tvStudentName = findViewById(R.id.tvStudentName);
         tvSelectedPlace = findViewById(R.id.tvSelectedPlace);
+        tvPlaceSchedule = findViewById(R.id.tvPlaceSchedule);
         tvVolunteeringDuration = findViewById(R.id.tvVolunteeringDuration);
         actvSearchPlace = findViewById(R.id.actvSearchPlace);
         btnSelectDate = findViewById(R.id.btnSelectDate);
@@ -145,6 +153,12 @@ public class RegisterVolunteering extends AppCompatActivity {
             String selectedPlaceName = (String) parent.getItemAtPosition(position);
             onPlaceSelected(selectedPlaceName);
         });
+
+        // אם יש מקום שנבחר מראש, בחר אותו אוטומטית
+        if (preSelectedPlaceName != null && !preSelectedPlaceName.isEmpty()) {
+            actvSearchPlace.setText(preSelectedPlaceName);
+            onPlaceSelected(preSelectedPlaceName);
+        }
     }
 
     private void onPlaceSelected(String placeName) {
@@ -153,11 +167,14 @@ public class RegisterVolunteering extends AppCompatActivity {
             tvSelectedPlace.setText("נבחר: " + placeName);
             tvSelectedPlace.setVisibility(View.VISIBLE);
 
+            // הצגת שעות פתיחה של המקום
+            displayPlaceSchedule();
+
             // איפוס תאריך ושעות
             selectedDate = null;
             selectedStartTime = null;
             selectedEndTime = null;
-            btnSelectDate.setText("לחץ לבחירת תאריך");
+            btnSelectDate.setText("בחר תאריך");
             btnSelectStartTime.setText("בחר שעת התחלה");
             btnSelectStartTime.setEnabled(false);
             btnSelectEndTime.setText("בחר שעת סיום");
@@ -165,6 +182,48 @@ public class RegisterVolunteering extends AppCompatActivity {
             tvVolunteeringDuration.setText("משך ההתנדבות: --");
             updateSubmitButton();
         }
+    }
+
+    private void displayPlaceSchedule() {
+        StringBuilder scheduleText = new StringBuilder("שעות פתיחה:\n");
+
+        // סדר הימים מיום ראשון
+        Weekday[] weekdays = {
+                Weekday.SUNDAY,
+                Weekday.MONDAY,
+                Weekday.TUESDAY,
+                Weekday.WEDNESDAY,
+                Weekday.THURSDAY,
+                Weekday.FRIDAY,
+                Weekday.SATURDAY
+        };
+
+        // שמות הימים בעברית
+        String[] hebrewDays = {
+                "ראשון",
+                "שני",
+                "שלישי",
+                "רביעי",
+                "חמישי",
+                "שישי",
+                "שבת"
+        };
+
+        for (int i = 0; i < weekdays.length; i++) {
+            DayAndHours daySchedule = selectedPlace.getDayAndHours(weekdays[i]);
+
+            String dayName = hebrewDays[i];
+            if (daySchedule.checkIfClosed()) {
+                scheduleText.append(dayName).append(": סגור\n");
+            } else {
+                String openTime = daySchedule.getStartTime().toString();
+                String closeTime = daySchedule.getEndTime().toString();
+                scheduleText.append(dayName).append(": ").append(openTime).append(" - ").append(closeTime).append("\n");
+            }
+        }
+
+        tvPlaceSchedule.setText(scheduleText.toString().trim());
+        tvPlaceSchedule.setVisibility(View.VISIBLE);
     }
 
     private void setupListeners() {
@@ -402,4 +461,3 @@ public class RegisterVolunteering extends AppCompatActivity {
 
     }
 }
-

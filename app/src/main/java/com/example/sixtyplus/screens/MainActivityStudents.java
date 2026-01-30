@@ -75,6 +75,16 @@ public class MainActivityStudents extends AppCompatActivity {
             }
         });
 
+        Button btnUserStudentsHistoryVolunteers = findViewById(R.id.mainUserStudentsHistoryVolunteers);
+        btnUserStudentsHistoryVolunteers
+                .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityStudents.this, HistoryVolunteers.class);
+                startActivity(intent);
+            }
+        });
+
 
         Button btnLogOutMainStudents = findViewById(R.id.mainLogOutStudents);
         btnLogOutMainStudents.setOnClickListener(new View.OnClickListener() {
