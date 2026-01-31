@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- שם המקום -->
         <TextView
             android:id="@+id/tvPlaceName"
             android:layout_width="match_parent"
@@ -21,30 +20,30 @@
             android:text="שם המקום"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:fontFamily="@font/gveretlevin"
             android:textColor="@color/black"
             android:layout_marginBottom="12dp"/>
 
-        <!-- תאריך ויום -->
         <TextView
             android:id="@+id/tvHistoryDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="תאריך: 01/01/2024 (יום ראשון)"
             android:textSize="14sp"
+            android:fontFamily="@font/gveretlevin"
             android:textColor="#666666"
             android:layout_marginBottom="4dp"/>
 
-        <!-- שעות -->
         <TextView
             android:id="@+id/tvHistoryTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="שעות: 09:00 - 12:00  |  משך: 3.0 שעות"
             android:textSize="14sp"
+            android:fontFamily="@font/gveretlevin"
             android:textColor="#666666"
             android:layout_marginBottom="4dp"/>
 
-        <!-- סטטוס -->
         <TextView
             android:id="@+id/tvHistoryStatus"
             android:layout_width="wrap_content"
@@ -53,6 +52,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@android:color/holo_orange_dark"
+            android:fontFamily="@font/gveretlevin"
             android:padding="8dp"
             android:background="@drawable/edittext_background"/>
 

@@ -3,10 +3,8 @@ package com.example.sixtyplus.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.adapters.UserInChargeFindPlaces;
 import com.example.sixtyplus.models.UserInCharge;
+import com.example.sixtyplus.models.UserStudent;
+import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,14 +28,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FindPlaces extends AppCompatActivity {
 
-    private SearchView searchView;
+    private AutoCompleteTextView actvSearchPlaces;
     private UserInChargeFindPlaces adapter;
     private DatabaseReference dbRef;
     private static final String TAG = "FindPlacesActivity";
+
+    private List<UserInCharge> allPlaces;
+    private Map<String, UserInCharge> placesMap;
+
+    private UserStudent currentStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +55,20 @@ public class FindPlaces extends AppCompatActivity {
             return insets;
         });
 
-        searchView = findViewById(R.id.searchPlaces);
+        actvSearchPlaces = findViewById(R.id.actvSearchPlaces);
         RecyclerView rvResults = findViewById(R.id.rvPlacesResults);
-        List<UserInCharge> placesList = new ArrayList<>();
+
+        allPlaces = new ArrayList<>();
+        placesMap = new HashMap<>();
+
+        // טעינת פרטי התלמיד המחובר
+        currentStudent = (UserStudent) SharedPreferencesUtils.getUser(this);
+        if (currentStudent == null) {
+            Toast.makeText(this, "שגיאה בטעינת פרטי המשתמש", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         dbRef = FirebaseDatabase.getInstance("https://sixtyplus-bada2-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("users");
 
@@ -72,58 +90,22 @@ public class FindPlaces extends AppCompatActivity {
         rvResults.setLayoutManager(new LinearLayoutManager(this));
         rvResults.setAdapter(adapter);
 
-        // תיקון ה-hint של SearchView
-        setupSearchViewHint();
-
-        // הגדרת ה-SearchView
-        setupSearch();
-
-        // טעינת כל המקומות בהתחלה
+        // טעינת כל המקומות והגדרת ה-AutoComplete
         loadAllPlaces();
-    }
-
-
-    private void setupSearchViewHint() {
-        // גישה ל-TextView הפנימי של SearchView
-        int searchTextId = getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView searchText = searchView.findViewById(searchTextId);
-
-        if (searchText != null) {
-            searchText.setHint("חיפוש מקום");
-            searchText.setTextDirection(View.TEXT_DIRECTION_RTL);
-            searchText.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-        }
-    }
-
-    private void setupSearch() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                firebaseSearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // חיפוש תוך כדי הקלדה
-                if (!newText.trim().isEmpty()) {
-                    firebaseSearch(newText);
-                } else {
-                    loadAllPlaces(); // טעינת כל המקומות כשמוחקים את החיפוש
-                }
-                return true;
-            }
-        });
     }
 
     private void loadAllPlaces() {
         Log.d(TAG, "loadAllPlaces called");
 
+        String studentCity = currentStudent.getCity();
+        Log.d(TAG, "Student city: " + studentCity);
+
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d(TAG, "Total children in Firebase: " + snapshot.getChildrenCount());
-                List<UserInCharge> results = new ArrayList<>();
+                allPlaces.clear();
+                placesMap.clear();
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     UserInCharge user = data.getValue(UserInCharge.class);
@@ -133,19 +115,29 @@ public class FindPlaces extends AppCompatActivity {
                         Log.d(TAG, "User className: " + user.className);
                         Log.d(TAG, "User accepted: " + user.isAccepted());
                         Log.d(TAG, "User placeName: " + user.getPlaceName());
+                        Log.d(TAG, "User city: " + user.getCity());
 
-                        if (user.isAccepted()) {
-                            // בדיקה שזה אובייקט UserInCharge
-                            if (user.className != null && user.className.equals(UserInCharge.class.getName())) {
-                                results.add(user);
-                                Log.d(TAG, "Added to results: " + user.getPlaceName());
-                            }
+                        // סינון לפי: מאושר, מסוג UserInCharge, ובאותה עיר של התלמיד
+                        if (user.isAccepted() &&
+                                user.className != null &&
+                                user.className.equals(UserInCharge.class.getName()) &&
+                                user.getCity() != null &&
+                                user.getCity().equals(studentCity)) {
+
+                            allPlaces.add(user);
+                            placesMap.put(user.getPlaceName(), user);
+                            Log.d(TAG, "Added to results: " + user.getPlaceName());
                         }
                     }
                 }
 
-                Log.d(TAG, "Total results: " + results.size());
-                adapter.setUserList(results);
+                Log.d(TAG, "Total results: " + allPlaces.size());
+
+                // הצגת כל המקומות ב-RecyclerView
+                adapter.setUserList(allPlaces);
+
+                // הגדרת ה-AutoComplete
+                setupAutoComplete();
             }
 
             @Override
@@ -156,44 +148,39 @@ public class FindPlaces extends AppCompatActivity {
         });
     }
 
-    private void firebaseSearch(String searchText) {
-        String queryText = searchText.trim().toLowerCase();
-
-        // טעינת כל המשתמשים ביצירת סינון לוקלי
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void setupAutoComplete() {
+        // סינון תוך כדי הקלדה - ללא dropdown
+        actvSearchPlaces.addTextChangedListener(new android.text.TextWatcher() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<UserInCharge> results = new ArrayList<>();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    UserInCharge user = data.getValue(UserInCharge.class);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String searchText = s.toString().trim().toLowerCase();
 
-                    if (user != null && user.isAccepted()) {
-                        // בדיקה שזה אובייקט UserInCharge
-                        if (user.className != null && user.className.equals(UserInCharge.class.getName())) {
-                            // סינון לוקלי - בדיקה אם שם המקום מכיל את טקסט החיפוש
-                            if (user.getPlaceName() != null &&
-                                    user.getPlaceName().toLowerCase().contains(queryText)) {
-                                results.add(user);
-                            }
+                if (searchText.isEmpty()) {
+                    // אם השדה ריק, הצג את כל המקומות
+                    adapter.setUserList(allPlaces);
+                } else {
+                    // סנן את המקומות לפי הטקסט
+                    List<UserInCharge> filteredPlaces = new ArrayList<>();
+                    for (UserInCharge place : allPlaces) {
+                        if (place.getPlaceName() != null &&
+                                place.getPlaceName().toLowerCase().contains(searchText)) {
+                            filteredPlaces.add(place);
                         }
                     }
-                }
-
-                // עדכון האדפטר עם התוצאות
-                adapter.setUserList(results);
-
-                // הודעה אם אין תוצאות
-                if (results.isEmpty()) {
-                    Log.d(TAG, "לא נמצאו תוצאות עבור: " + searchText);
+                    adapter.setUserList(filteredPlaces);
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Search failed: " + error.getMessage());
-                Toast.makeText(FindPlaces.this, "שגיאה בחיפוש", Toast.LENGTH_SHORT).show();
+            public void afterTextChanged(android.text.Editable s) {
             }
         });
+
+        // ביטול ה-dropdown
+        actvSearchPlaces.setThreshold(Integer.MAX_VALUE);
     }
 }

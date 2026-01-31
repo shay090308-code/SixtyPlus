@@ -103,7 +103,6 @@ public class RegisterVolunteering extends AppCompatActivity {
             return;
         }
 
-        String studentCity = currentStudent.getCity();
 
         DatabaseService.getInstance().getUserInChargeList(new DatabaseService.DatabaseCallback<List<UserInCharge>>() {
             @Override
@@ -112,19 +111,19 @@ public class RegisterVolunteering extends AppCompatActivity {
                 placesMap.clear();
 
                 for (UserInCharge userInCharge : userInCharges) {
+                    // סינון לפי: מאושר, מסוג UserInCharge, ובאותה עיר של התלמיד
                     if (userInCharge.isAccepted() &&
                             userInCharge.className != null &&
                             userInCharge.className.equals(UserInCharge.class.getName()) &&
                             userInCharge.getCity() != null &&
-                            userInCharge.getCity().equals(studentCity)) {
+                            userInCharge.getCity().equals(currentStudent.getCity())) {
 
                         availablePlaces.add(userInCharge);
                         placesMap.put(userInCharge.getPlaceName(), userInCharge);
                     }
-                    setupAutoComplete();
                 }
 
-
+                setupAutoComplete();
             }
 
             @Override
@@ -164,24 +163,80 @@ public class RegisterVolunteering extends AppCompatActivity {
     private void onPlaceSelected(String placeName) {
         selectedPlace = placesMap.get(placeName);
         if (selectedPlace != null) {
+            // בדיקה אם המקום סגור בכל ימות השבוע
+            if (isPlaceClosedAllWeek()) {
+
+                tvPlaceSchedule.setText("מקום זה סגור בכל ימות השבוע");
+                tvPlaceSchedule.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                tvPlaceSchedule.setVisibility(View.VISIBLE);
+
+                // חסימת כל הכפתורים
+                btnSelectDate.setEnabled(false);
+                btnSelectStartTime.setEnabled(false);
+                btnSelectEndTime.setEnabled(false);
+                btnSubmitVolunteering.setEnabled(false);
+
+                // איפוס ערכים
+                selectedDate = null;
+                selectedStartTime = null;
+                selectedEndTime = null;
+                btnSelectDate.setText("בחר תאריך");
+                btnSelectStartTime.setText("בחר שעה");
+                btnSelectEndTime.setText("בחר שעה");
+                tvVolunteeringDuration.setText("");
+
+                return;
+            }
+
+            // המקום פתוח לפחות ביום אחד - המשך רגיל
             tvSelectedPlace.setText("נבחר: " + placeName);
+            tvSelectedPlace.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
             tvSelectedPlace.setVisibility(View.VISIBLE);
 
             // הצגת שעות פתיחה של המקום
             displayPlaceSchedule();
+
+            // אפשור כפתור בחירת תאריך
+            btnSelectDate.setEnabled(true);
 
             // איפוס תאריך ושעות
             selectedDate = null;
             selectedStartTime = null;
             selectedEndTime = null;
             btnSelectDate.setText("בחר תאריך");
-            btnSelectStartTime.setText("בחר שעת התחלה");
+            btnSelectStartTime.setText("בחר שעה");
             btnSelectStartTime.setEnabled(false);
-            btnSelectEndTime.setText("בחר שעת סיום");
+            btnSelectEndTime.setText("בחר שעה");
             btnSelectEndTime.setEnabled(false);
-            tvVolunteeringDuration.setText("משך ההתנדבות: --");
+            tvVolunteeringDuration.setText("");
             updateSubmitButton();
         }
+    }
+
+    private boolean isPlaceClosedAllWeek() {
+        if (selectedPlace == null) {
+            return true;
+        }
+
+        Weekday[] weekdays = {
+                Weekday.SUNDAY,
+                Weekday.MONDAY,
+                Weekday.TUESDAY,
+                Weekday.WEDNESDAY,
+                Weekday.THURSDAY,
+                Weekday.FRIDAY,
+                Weekday.SATURDAY
+        };
+
+        // בדיקה אם יש לפחות יום אחד שהמקום פתוח
+        for (Weekday day : weekdays) {
+            DayAndHours daySchedule = selectedPlace.getDayAndHours(day);
+            if (!daySchedule.checkIfClosed()) {
+                return false; // המקום פתוח ביום זה
+            }
+        }
+
+        return true; // המקום סגור בכל הימים
     }
 
     private void displayPlaceSchedule() {
@@ -223,6 +278,7 @@ public class RegisterVolunteering extends AppCompatActivity {
         }
 
         tvPlaceSchedule.setText(scheduleText.toString().trim());
+        tvPlaceSchedule.setTextColor(getResources().getColor(android.R.color.black));
         tvPlaceSchedule.setVisibility(View.VISIBLE);
     }
 
@@ -275,8 +331,8 @@ public class RegisterVolunteering extends AppCompatActivity {
             btnSelectEndTime.setEnabled(false);
             selectedStartTime = null;
             selectedEndTime = null;
-            btnSelectStartTime.setText("בחר שעת התחלה");
-            btnSelectEndTime.setText("בחר שעת סיום");
+            btnSelectStartTime.setText("בחר שעה");
+            btnSelectEndTime.setText("בחר שעה");
             updateSubmitButton();
             return;
         }
@@ -286,8 +342,8 @@ public class RegisterVolunteering extends AppCompatActivity {
         btnSelectEndTime.setEnabled(true);
         selectedStartTime = null;
         selectedEndTime = null;
-        btnSelectStartTime.setText("בחר שעת התחלה");
-        btnSelectEndTime.setText("בחר שעת סיום");
+        btnSelectStartTime.setText("בחר שעה");
+        btnSelectEndTime.setText("בחר שעה");
         updateSubmitButton();
     }
 
@@ -381,8 +437,10 @@ public class RegisterVolunteering extends AppCompatActivity {
     }
 
     private void updateDuration() {
+        // ✅ בדיקת null - זה מונע את ה-NullPointerException
         if (selectedStartTime == null || selectedEndTime == null) {
             tvVolunteeringDuration.setText("משך ההתנדבות: --");
+            tvVolunteeringDuration.setVisibility(View.GONE);
             return;
         }
 
@@ -393,10 +451,11 @@ public class RegisterVolunteering extends AppCompatActivity {
         if (totalMinutes <= 0) {
             tvVolunteeringDuration.setText("שעת הסיום חייבת להיות אחרי שעת ההתחלה");
             tvVolunteeringDuration.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            tvVolunteeringDuration.setVisibility(View.VISIBLE);
         } else {
             // המרה לשעות עשרוניות
             double totalHours = Math.round((totalMinutes / 60.0) * 10.0) / 10.0;
-
+            tvVolunteeringDuration.setVisibility(View.VISIBLE);
             tvVolunteeringDuration.setText(String.format("משך ההתנדבות: %.1f שעות", totalHours));
             tvVolunteeringDuration.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
         }

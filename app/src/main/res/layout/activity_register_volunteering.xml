@@ -20,6 +20,7 @@
             android:text="קביעת התנדבות"
             android:fontFamily="@font/galacti"
             android:layout_gravity="center"
+            android:layout_marginTop="40dp"
             android:shadowColor="@color/myyellow"
             android:shadowDx="2"
             android:shadowDy="2"
@@ -95,68 +96,105 @@
 
         <Button
             android:id="@+id/btnSelectDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="בחר תאריך"
             android:textSize="16sp"
-            android:textColor="#999999"
+            android:textColor="@color/white"
             android:fontFamily="@font/gveretlevin"
+            android:backgroundTint="@color/myyellow"
             android:gravity="right"
-            android:background="@android:color/transparent"
+            android:layout_gravity="right"
             android:drawableStart="@android:drawable/ic_menu_my_calendar"
             android:drawablePadding="8dp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- שעת התחלה -->
-        <TextView
+        <!-- שעות התחלה וסיום באותה שורה -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="שעת התחלה"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp"
+            android:baselineAligned="false">
 
-        <Button
-            android:id="@+id/btnSelectStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="בחר שעת התחלה"
-            android:textSize="16sp"
-            android:drawableStart="@android:drawable/ic_menu_recent_history"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="24dp"/>
+            <!-- שעת התחלה -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
 
-        <!-- שעת סיום -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שעת סיום"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="שעת התחלה"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/rubiklight"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp"/>
 
-        <Button
-            android:id="@+id/btnSelectEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="בחר שעת סיום"
-            android:textSize="16sp"
-            android:drawableStart="@android:drawable/ic_menu_recent_history"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="24dp"/>
+                <Button
+                    android:id="@+id/btnSelectStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="בחר שעה"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/myyellow"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/gveretlevin"
+                    android:drawableStart="@android:drawable/ic_menu_recent_history"
+                    android:drawablePadding="4dp"
+                    android:padding="12dp"/>
+            </LinearLayout>
 
-        <!-- הצגת משך ההתנדבות -->
+            <!-- שעת סיום -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="שעת סיום"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/rubiklight"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/btnSelectEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="בחר שעה"
+                    android:layout_gravity="center"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/gveretlevin"
+                    android:backgroundTint="@color/myyellow"
+                    android:drawableStart="@android:drawable/ic_menu_recent_history"
+                    android:drawablePadding="4dp"
+                    android:padding="12dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvVolunteeringDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="משך ההתנדבות: --"
+            android:text=""
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_green_dark"
+            android:textColor="@android:color/black"
             android:gravity="center"
+            android:fontFamily="@font/rubiklight"
             android:padding="16dp"
-            android:background="@drawable/edittext_background"
+            android:visibility="gone"
             android:layout_marginBottom="32dp"/>
 
         <!-- כפתור שליחה -->
@@ -165,6 +203,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="שלח בקשת התנדבות"
+            android:fontFamily="@font/gveretlevin"
+            android:backgroundTint="@color/myyellow"
             android:textSize="18sp"
             android:textStyle="bold"
             android:padding="16dp"

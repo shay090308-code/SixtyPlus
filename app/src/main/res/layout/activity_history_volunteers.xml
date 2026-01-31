@@ -22,7 +22,6 @@
         android:gravity="center"
         android:padding="24dp"/>
 
-    <!-- רשימת התנדבויות -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVolunteeringHistory"
         android:layout_width="match_parent"
@@ -30,7 +29,6 @@
         android:layout_weight="1"
         android:padding="8dp"/>
 
-    <!-- הודעה כשאין התנדבויות -->
     <TextView
         android:id="@+id/tvNoHistory"
         android:layout_width="match_parent"
@@ -39,6 +37,7 @@
         android:text="עדיין לא ביצעת התנדבויות"
         android:textSize="18sp"
         android:textColor="#999999"
+        android:fontFamily="@font/gveretlevin"
         android:gravity="center"
         android:visibility="gone"/>
 

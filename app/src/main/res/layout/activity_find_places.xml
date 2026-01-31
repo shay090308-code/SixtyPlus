@@ -25,16 +25,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/searchPlaces"
-        android:layout_width="wrap_content"
+    <AutoCompleteTextView
+        android:id="@+id/actvSearchPlaces"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:layoutDirection="rtl"
-        android:queryHint="חיפוש"
+        android:hint="חפש מקום התנדבות"
+        android:textColorHint="#999999"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:completionThreshold="999"
         android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        android:gravity="right|center_vertical"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/changeStudentTitle" />
@@ -50,6 +59,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchPlaces" />
+        app:layout_constraintTop_toBottomOf="@id/actvSearchPlaces" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
