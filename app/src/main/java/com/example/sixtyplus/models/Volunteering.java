@@ -1,5 +1,8 @@
 package com.example.sixtyplus.models;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
@@ -31,18 +34,21 @@ public class Volunteering {
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = "pending";
-        this.totalHours = calculateTotalHours();
+        this.totalHours = getCalculateTotalHours();
     }
 
     private String generateId() {
         return System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
     }
 
-    private double calculateTotalHours() {
+    public double getCalculateTotalHours() {
+        if (startTime == null || endTime == null) return 0;
+
         int startMinutes = startTime.getHour() * 60 + startTime.getMinute();
         int endMinutes = endTime.getHour() * 60 + endTime.getMinute();
         int totalMinutes = endMinutes - startMinutes;
-        // המרה לשעות עשרוניות (מעוגל לספרה אחת אחרי הנקודה)
+
+        // החישוב מתבצע פעם אחת כאן
         return Math.round((totalMinutes / 60.0) * 10.0) / 10.0;
     }
 

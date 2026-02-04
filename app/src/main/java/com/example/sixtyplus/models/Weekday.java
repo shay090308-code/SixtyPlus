@@ -4,13 +4,14 @@ import androidx.annotation.NonNull;
 
 public enum Weekday {
     // These calls use the constructor defined below
+    SUNDAY("Sunday"),
+
     MONDAY("Monday"),
     TUESDAY("Tuesday"),
     WEDNESDAY("Wednesday"),
     THURSDAY("Thursday"),
     FRIDAY("Friday"),
-    SATURDAY("Saturday"),
-    SUNDAY("Sunday");
+    SATURDAY("Saturday");
 
     private final String dayName;
 

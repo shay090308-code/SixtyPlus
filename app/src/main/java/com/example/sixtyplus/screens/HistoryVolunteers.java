@@ -18,6 +18,8 @@ import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HistoryVolunteers extends AppCompatActivity {
@@ -48,7 +50,11 @@ public class HistoryVolunteers extends AppCompatActivity {
 
         adapter = new Volunteeringhistoryadapter();
 
-        rvVolunteeringHistory.setLayoutManager(new LinearLayoutManager(this));
+        // שינוי: הגדרת LayoutManager שמתחיל מלמעלה אבל מציג את הפריטים בסדר הפוך
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+
+        rvVolunteeringHistory.setLayoutManager(layoutManager);
         rvVolunteeringHistory.setAdapter(adapter);
     }
 
@@ -74,6 +80,14 @@ public class HistoryVolunteers extends AppCompatActivity {
                     rvVolunteeringHistory.setVisibility(View.GONE);
                     tvNoHistory.setVisibility(View.VISIBLE);
                 } else {
+                    studentHistory.sort(new Comparator<Volunteering>() {
+                        @Override
+                        public int compare(Volunteering o1, Volunteering o2) {
+                            return Long.compare(o1.dateMillis, o2.dateMillis);
+                        }
+                    });
+                    Collections.reverse(studentHistory);
+
                     rvVolunteeringHistory.setVisibility(View.VISIBLE);
                     tvNoHistory.setVisibility(View.GONE);
                     adapter.setVolunteeringList(studentHistory);

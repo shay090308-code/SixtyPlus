@@ -12,7 +12,7 @@ public class UserGeneral { //What is common for both kind of users.
     public String firstName;
     public String lastName;
     public String phoneNumber;
-    public String city; //city the students lives in or the place is located.
+    public String city;
     public String password;
     public boolean admin;
 

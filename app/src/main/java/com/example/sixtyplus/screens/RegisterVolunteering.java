@@ -437,28 +437,20 @@ public class RegisterVolunteering extends AppCompatActivity {
     }
 
     private void updateDuration() {
-        // ✅ בדיקת null - זה מונע את ה-NullPointerException
-        if (selectedStartTime == null || selectedEndTime == null) {
-            tvVolunteeringDuration.setText("משך ההתנדבות: --");
-            tvVolunteeringDuration.setVisibility(View.GONE);
-            return;
-        }
+        Volunteering v = new Volunteering();
+        v.setStartTime(selectedStartTime);
+        v.setEndTime(selectedEndTime);
 
-        int startMinutes = selectedStartTime.getHour() * 60 + selectedStartTime.getMinute();
-        int endMinutes = selectedEndTime.getHour() * 60 + selectedEndTime.getMinute();
-        int totalMinutes = endMinutes - startMinutes;
+        double hours = v.getCalculateTotalHours();
 
-        if (totalMinutes <= 0) {
+        if (hours <= 0) {
             tvVolunteeringDuration.setText("שעת הסיום חייבת להיות אחרי שעת ההתחלה");
             tvVolunteeringDuration.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-            tvVolunteeringDuration.setVisibility(View.VISIBLE);
         } else {
-            // המרה לשעות עשרוניות
-            double totalHours = Math.round((totalMinutes / 60.0) * 10.0) / 10.0;
-            tvVolunteeringDuration.setVisibility(View.VISIBLE);
-            tvVolunteeringDuration.setText(String.format("משך ההתנדבות: %.1f שעות", totalHours));
+            tvVolunteeringDuration.setText(String.format("משך ההתנדבות: %.1f שעות", hours));
             tvVolunteeringDuration.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
         }
+        tvVolunteeringDuration.setVisibility(View.VISIBLE);
     }
 
     private void updateSubmitButton() {

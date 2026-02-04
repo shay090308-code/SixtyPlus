@@ -136,7 +136,6 @@ public class FindPlaces extends AppCompatActivity {
                 // הצגת כל המקומות ב-RecyclerView
                 adapter.setUserList(allPlaces);
 
-                // הגדרת ה-AutoComplete
                 setupAutoComplete();
             }
 
@@ -149,21 +148,14 @@ public class FindPlaces extends AppCompatActivity {
     }
 
     private void setupAutoComplete() {
-        // סינון תוך כדי הקלדה - ללא dropdown
-        actvSearchPlaces.addTextChangedListener(new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+        actvSearchPlaces.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String searchText = s.toString().trim().toLowerCase();
 
                 if (searchText.isEmpty()) {
-                    // אם השדה ריק, הצג את כל המקומות
                     adapter.setUserList(allPlaces);
                 } else {
-                    // סנן את המקומות לפי הטקסט
                     List<UserInCharge> filteredPlaces = new ArrayList<>();
                     for (UserInCharge place : allPlaces) {
                         if (place.getPlaceName() != null &&
@@ -174,13 +166,14 @@ public class FindPlaces extends AppCompatActivity {
                     adapter.setUserList(filteredPlaces);
                 }
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {
-            }
         });
+    }
 
-        // ביטול ה-dropdown
-        actvSearchPlaces.setThreshold(Integer.MAX_VALUE);
+    abstract static class SimpleTextWatcher implements android.text.TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(android.text.Editable s) {}
     }
 }
