@@ -10,7 +10,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SixtyPlus">
+        android:theme="@style/Theme.SixtyPlus"
+        tools:targetApi="31">
+        <activity
+            android:name=".screens.Navpage"
+            android:exported="false" />
+        <activity
+            android:name=".screens.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.Splash"
+            android:exported="true"
+            android:theme="@style/Theme.SixtyPlus.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".screens.HistoryVolunteers"
             android:exported="false" />
@@ -61,13 +78,7 @@
             android:exported="false" />
         <activity
             android:name=".screens.Landing"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>

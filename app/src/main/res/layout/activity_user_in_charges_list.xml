@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".screens.Login">
 
     <LinearLayout
@@ -22,7 +21,6 @@
             android:id="@+id/listinchargestitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:fontFamily="@font/galacti"
             android:shadowColor="@color/myyellow"
             android:shadowDx="2"

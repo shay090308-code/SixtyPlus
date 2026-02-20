@@ -20,7 +20,7 @@ import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcceptingVolunteers extends AppCompatActivity {
+public class AcceptingVolunteers extends BaseActivity {
 
     private static final String TAG = "AcceptingVolunteers";
 

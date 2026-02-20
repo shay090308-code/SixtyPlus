@@ -164,4 +164,9 @@ public class SharedPreferencesUtils {
         return isUserInCharge(context) || isUserStudent(context);
     }
 
+    public static boolean isAdmin(Context context) {
+        UserGeneral user = getUser(context);
+        if (user == null) return false;
+        return user.isAdmin();
+    }
 }

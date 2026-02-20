@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SixtyPlus</string>
+    <string name="open_drawer">פתח תפריט צד</string>
+    <string name="close_drawer">סגור תפריט צד</string>
 
     <string-array name="regions_array">
         <item>בחר את איזורך</item>

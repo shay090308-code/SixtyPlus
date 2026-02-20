@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class RegisterVolunteering extends AppCompatActivity {
+public class RegisterVolunteering extends BaseActivity {
 
     private static final String TAG = "RegisterVolunteering";
 

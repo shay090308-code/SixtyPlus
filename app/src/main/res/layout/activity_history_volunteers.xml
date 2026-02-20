@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:orientation="vertical">
 
     <!-- כותרת -->
     <TextView
@@ -17,7 +16,6 @@
         android:shadowRadius="10"
         android:textSize="60dp"
         android:textStyle="bold"
-        android:layout_marginTop="30dp"
         android:textColor="@color/black"
         android:gravity="center"
         android:padding="24dp"/>

@@ -25,7 +25,6 @@ public class Volunteering {
 
     public Volunteering(String studentId, String studentName, String placeId, String placeName,
                         long dateMillis, HourMinute startTime, HourMinute endTime) {
-        this.id = generateId();
         this.studentId = studentId;
         this.studentName = studentName;
         this.placeId = placeId;
@@ -48,7 +47,6 @@ public class Volunteering {
         int endMinutes = endTime.getHour() * 60 + endTime.getMinute();
         int totalMinutes = endMinutes - startMinutes;
 
-        // החישוב מתבצע פעם אחת כאן
         return Math.round((totalMinutes / 60.0) * 10.0) / 10.0;
     }
 

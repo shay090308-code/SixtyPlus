@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="210dp"
+    android:viewportWidth="320"
+    android:viewportHeight="210">
+
+    <!-- רקע צהוב-זהוב -->
+    <path
+        android:fillColor="#F5C518"
+        android:pathData="M0,0 L320,0 L320,210 L0,210 Z"/>
+
+    <!-- גל כהה יותר מאחורה -->
+    <path
+        android:fillColor="#E8A800"
+        android:pathData="M0,140
+            C40,120 80,160 120,145
+            C160,130 200,155 240,140
+            C280,125 300,145 320,135
+            L320,210 L0,210 Z"/>
+
+    <!-- גל קדמי בהיר יותר -->
+    <path
+        android:fillColor="#FFD93D"
+        android:pathData="M0,160
+            C30,145 70,175 110,162
+            C150,149 190,170 230,158
+            C270,146 295,165 320,155
+            L320,210 L0,210 Z"/>
+
+    <!-- ניצוצות / עיגולים דקורטיביים -->
+    <path
+        android:fillColor="#FFEB80"
+        android:fillAlpha="0.5"
+        android:pathData="M30,30 A15,15 0 1,1 30.01,30 Z"/>
+
+    <path
+        android:fillColor="#FFEB80"
+        android:fillAlpha="0.3"
+        android:pathData="M270,20 A25,25 0 1,1 270.01,20 Z"/>
+
+    <path
+        android:fillColor="#FFEB80"
+        android:fillAlpha="0.2"
+        android:pathData="M150,50 A35,35 0 1,1 150.01,50 Z"/>
+
+    <path
+        android:fillColor="#FFF5B0"
+        android:fillAlpha="0.4"
+        android:pathData="M60,80 A10,10 0 1,1 60.01,80 Z"/>
+
+    <path
+        android:fillColor="#FFF5B0"
+        android:fillAlpha="0.3"
+        android:pathData="M300,70 A18,18 0 1,1 300.01,70 Z"/>
+
+</vector>

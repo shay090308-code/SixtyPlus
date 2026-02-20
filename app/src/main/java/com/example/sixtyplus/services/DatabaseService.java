@@ -528,7 +528,7 @@ public class DatabaseService {
 
 
     public void setVolunteering(@NotNull final Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
-        writeData(VOLUNTEERING_PATH + "/" + volunteering.getId(), volunteering, callback);
+        writeData(VOLUNTEERING_PATH + "/" + volunteering.getStudentId(), volunteering, callback);
     }
 
     public void getVolunteeringList(@NotNull final DatabaseCallback<List<Volunteering>> callback) {
@@ -536,6 +536,6 @@ public class DatabaseService {
     }
 
     public void updateVolunteering(@NotNull final Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
-        writeData(VOLUNTEERING_PATH + "/" + volunteering.getId(), volunteering, callback);
+        writeData(VOLUNTEERING_PATH + "/" + volunteering.getStudentId(), volunteering, callback);
     }
 }

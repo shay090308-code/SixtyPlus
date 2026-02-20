@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HistoryVolunteers extends AppCompatActivity {
+public class HistoryVolunteers extends BaseActivity {
 
     private static final String TAG = "HistoryVolunteers";
 
@@ -52,7 +52,6 @@ public class HistoryVolunteers extends AppCompatActivity {
 
         // שינוי: הגדרת LayoutManager שמתחיל מלמעלה אבל מציג את הפריטים בסדר הפוך
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);
 
         rvVolunteeringHistory.setLayoutManager(layoutManager);
         rvVolunteeringHistory.setAdapter(adapter);

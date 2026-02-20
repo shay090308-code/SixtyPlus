@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".screens.Landing">
 
     <ScrollView
@@ -30,7 +29,6 @@
                 android:id="@+id/MainStudentsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
                 android:layout_marginBottom="40dp"
                 android:fontFamily="@font/galacti"
                 android:shadowColor="@color/myyellow"
@@ -43,109 +41,6 @@
                 android:textStyle="bold"
                 tools:layout_conversion_absoluteHeight="50dp"
                 tools:layout_conversion_absoluteWidth="242dp" />
-
-            <Button
-                android:id="@+id/mainUpdateStudents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="עדכון פרטים"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp"
-                android:layout_marginBottom="10dp"/>
-
-            <Button
-                android:id="@+id/mainUserStudentsListStudents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="רשימת תלמידים"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
-
-            <Button
-                android:id="@+id/mainUserInChargeListStudents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="רשימת אחראים"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
-
-            <Button
-                android:id="@+id/mainLogOutStudents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="התנתקות"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
-
-            <Button
-            android:id="@+id/mainUserStudentsFindPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:backgroundTint="@color/myyellow"
-            android:fontFamily="@font/rubicblack"
-            android:text="חיפוש התנדבויות"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:layout_marginTop="10dp"
-            tools:layout_conversion_absoluteHeight="47dp"
-            tools:layout_conversion_absoluteWidth="200dp" />
-
-            <Button
-                android:id="@+id/mainUserStudentRegisterVolunteering"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="קביעת התנדבות"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                android:layout_marginTop="10dp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
-
-            <Button
-                android:id="@+id/mainUserStudentsHistoryVolunteers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
-                android:text="היסטוריית התנדבויות"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                android:layout_marginTop="10dp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
 
         </LinearLayout>
     </ScrollView>

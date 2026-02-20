@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FindPlaces extends AppCompatActivity {
+public class FindPlaces extends BaseActivity {
 
     private AutoCompleteTextView actvSearchPlaces;
     private UserInChargeFindPlaces adapter;
