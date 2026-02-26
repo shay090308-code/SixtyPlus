@@ -26,6 +26,7 @@ public class IntervalTimePicker extends TimePicker {
     }
 
     private void init() {
+        setIs24HourView(true);
         setMinuteInterval(minuteInterval);
 
         setOnTimeChangedListener(new OnTimeChangedListener() {
