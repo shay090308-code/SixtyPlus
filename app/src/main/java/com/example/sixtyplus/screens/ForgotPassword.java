@@ -68,7 +68,6 @@ public class ForgotPassword extends AppCompatActivity {
         Log.d(TAG, "Starting password reset for user: " + idnum);
         Log.d(TAG , "searching user by the user name");
 
-        /// שלב 1: חיפוש יוזר לפי שם המשתמש
 
         db.findUserById(idnum, phone, new DatabaseService.DatabaseCallback<UserGeneral>() {
             @Override
