@@ -66,14 +66,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-        Button btnGoBackLogin = findViewById(R.id.goBackLogin);
-        btnGoBackLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Login.this, Landing.class);
-                startActivity(intent);
-            }
-        });
+
 
         Button forgotPass = findViewById(R.id.forgotPassword);
         forgotPass.setOnClickListener(new View.OnClickListener() {

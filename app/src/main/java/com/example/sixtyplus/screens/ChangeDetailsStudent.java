@@ -57,7 +57,6 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
 
         Log.d(TAG, "Selected user: " + selectedUid);
 
-        // Initialize the EditText fields
         etUserStudentFirstName = findViewById(R.id.firstNameStudentChange);
         etUserStudentLastName = findViewById(R.id.lastNameStudentChange);
         etUserStudentId = findViewById(R.id.idNumberStudentChange);
@@ -78,10 +77,6 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
         etUserStudentGrade = findViewById(R.id.gradeNameChange);
         btnUpdateProfile = findViewById(R.id.saveChangesStudentBtn);
 
-
-        Log.d(TAG, "Selected user: " + selectedUid);
-
-
         btnUpdateProfile.setOnClickListener(this);
 
         showUserProfile();
@@ -96,7 +91,6 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
     }
 
     private void showUserProfile() {
-        // Get the user data from database
         databaseService.getUserStudent(selectedUid, new DatabaseService.DatabaseCallback<UserStudent>() {
             @Override
             public void onCompleted(UserStudent user) {
@@ -104,7 +98,7 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
                 UserGeneral loginUser = SharedPreferencesUtils.getUser(ChangeDetailsStudent.this);
                 if (user.getId().equals(loginUser.getId()))
                     SharedPreferencesUtils.saveUser(ChangeDetailsStudent.this, user);
-                // Set the user data to the EditText fields
+
                 etUserStudentFirstName.setText(selectedUser.getFirstName());
                 etUserStudentLastName.setText(selectedUser.getLastName());
                 etUserStudentId.setText(selectedUser.getId());
@@ -115,7 +109,8 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
                     if (spinnerPosition != -1) {
                         etUserStudentCity.setSelection(spinnerPosition);
                     }
-                }                etUserStudentSchool.setText(selectedUser.getSchoolName());
+                }
+                etUserStudentSchool.setText(selectedUser.getSchoolName());
                 etUserStudentGrade.setText(selectedUser.getGradeLevel());
                 etUserStudentPhone.setText(selectedUser.getPhoneNumber());
                 etUserStudentPassword.setText(selectedUser.getPassword() + "");
@@ -133,87 +128,89 @@ public class ChangeDetailsStudent extends BaseActivity implements View.OnClickLi
             Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Get the updated user data from the EditText fields
-        String firstName = etUserStudentFirstName.getText().toString();
-        String lastName = etUserStudentLastName.getText().toString();
-        String phone = etUserStudentPhone.getText().toString();
-        String city = etUserStudentCity.getSelectedItem().toString();
-        String school = etUserStudentSchool.getText().toString();
-        String classlevel = etUserStudentGrade.getText().toString();
-        String password = etUserStudentNewPassword.getText().toString() + "";
-        String confPass = etUserStudentNewPasswordConfirm.getText().toString() +"";
+
+        final String firstName = etUserStudentFirstName.getText().toString();
+        final String lastName = etUserStudentLastName.getText().toString();
+        final String phone = etUserStudentPhone.getText().toString();
+        final String city = etUserStudentCity.getSelectedItem().toString();
+        final String school = etUserStudentSchool.getText().toString();
+        final String classlevel = etUserStudentGrade.getText().toString();
+        final String password = etUserStudentNewPassword.getText().toString() + "";
+        final String confPass = etUserStudentNewPasswordConfirm.getText().toString() +"";
 
         if (!isValid(firstName, lastName, phone, password, confPass)) {
             Log.e(TAG, "Invalid input");
             return;
         }
 
-        // Update the user object
-        selectedUser.setFirstName(firstName);
-        selectedUser.setLastName(lastName);
-        selectedUser.setPhoneNumber(phone);
-        selectedUser.setCity(city);
-        selectedUser.setSchoolName(school);
-        selectedUser.setGradeLevel(classlevel);
-        if(!password.isEmpty())
-         selectedUser.setPassword(password);
+        // בדיקת טלפון לפני העדכון כדי לוודא שאינו תפוס על ידי משתמש אחר
+        databaseService.checkPhoneForUpdate(phone, selectedUser.getId(), new DatabaseService.DatabaseCallback<Boolean>() {
+            @Override
+            public void onCompleted(Boolean isTaken) {
+                if (isTaken) {
+                    Toast.makeText(ChangeDetailsStudent.this, "מספר הטלפון כבר קיים במערכת", Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedUser.setFirstName(firstName);
+                    selectedUser.setLastName(lastName);
+                    selectedUser.setPhoneNumber(phone);
+                    selectedUser.setCity(city);
+                    selectedUser.setSchoolName(school);
+                    selectedUser.setGradeLevel(classlevel);
+                    if(!password.isEmpty())
+                        selectedUser.setPassword(password);
 
-        // Update the user data in the authentication
-        Log.d(TAG, "Updating user profile");
-        Log.d(TAG, "Selected user UID: " + selectedUser.getId());
-        Log.d(TAG, "User password: " + selectedUser.getPassword());
+                    updateUserInDatabase(selectedUser);
+                }
+            }
 
-        updateUserInDatabase(selectedUser);
+            @Override
+            public void onFailed(Exception e) {
+                Toast.makeText(ChangeDetailsStudent.this, "שגיאה בבדיקת מספר הטלפון", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
     private void updateUserInDatabase(UserStudent user) {
         Log.d(TAG, "Updating user in database: " + user.getId());
         databaseService.updateUser(user, new DatabaseService.DatabaseCallback<Void>() {
             @Override
             public void onCompleted(Void result) {
                 Log.d(TAG, "User profile updated successfully");
-                Toast.makeText(ChangeDetailsStudent.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangeDetailsStudent.this, "הפרופיל עודכן בהצלחה", Toast.LENGTH_SHORT).show();
                 showUserProfile();
             }
 
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "Error updating user profile", e);
-                Toast.makeText(ChangeDetailsStudent.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangeDetailsStudent.this, "עדכון הפרטים נכשל", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private boolean isValid(String fName, String lName, String phone, String password,String confirmPass) {
+    private boolean isValid(String fName, String lName, String phone, String password, String confirmPass) {
 
         if (!password.isEmpty() && !validator.isPasswordValid(password)) {
-            Log.e(TAG, "checkInput: Password must be at least 6 characters long");
-            /// show error message to user
             Toast.makeText(this, "על הסיסמא להיות בעלת 6 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(fName)) {
-            Log.e(TAG, "checkInput: First name must be at least 2 characters long");
-            /// show error message to user
             Toast.makeText(this, "על השם להיות בעל 2 תויים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isNameValid(lName)) {
-            Log.e(TAG, "checkInput: Last name must be at least 2 characters long");
-            /// show error message to user
             Toast.makeText(this, "על השם להיות בעל 2 תווים לפחות", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!validator.isPhoneValid(phone)) {
-            Log.e(TAG, "checkInput: Phone number must be at least 10 characters long");
             Toast.makeText(this, "על מספר הטלפון להיות בעל 10 תווים", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if(!validator.isConfirmPasswordValid(password, confirmPass)) {
-            Log.e(TAG, "checkInput: Passwords do not match");
             Toast.makeText(this, "הסיסמאות לא זהות", Toast.LENGTH_SHORT).show();
             return false;
         }

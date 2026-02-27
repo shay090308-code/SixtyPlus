@@ -24,10 +24,12 @@ public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.
     public interface OnUserClickListener {
         void onUserClick(UserStudent user);
         void onLongUserClick(UserStudent user);
+
     }
 
     private final List<UserStudent> userList;
     private final OnUserClickListener onUserClickListener;
+    Chip chipRole;
     public UserStudentAdapter(@Nullable final OnUserClickListener onUserClickListener) {
         userList = new ArrayList<>();
         this.onUserClickListener = onUserClickListener;
@@ -73,13 +75,7 @@ public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.
         }
         holder.tvInitials.setText(initials.toUpperCase());
 
-        // Show admin chip if user is admin
-        if (user.isAdmin()) {
-            holder.chipRole.setVisibility(View.VISIBLE);
-            holder.chipRole.setText("Admin");
-        } else {
-            holder.chipRole.setVisibility(View.GONE);
-        }
+
 
         holder.itemView.setOnClickListener(v -> {
             if (onUserClickListener != null) {
@@ -94,6 +90,9 @@ public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.
             return true;
         });
 
+        if (holder.chipRole != null) {
+            holder.chipRole.setVisibility(View.GONE);
+        }
     }
 
 
@@ -134,7 +133,7 @@ public class UserStudentAdapter extends RecyclerView.Adapter<UserStudentAdapter.
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_item_userstudent_name);
             tvId = itemView.findViewById(R.id.tv_item_userstudent_id);
-            tvCity = itemView.findViewById((R.id.tv_item_userstudent_city));
+            tvCity = itemView.findViewById(R.id.tv_item_userstudent_city);
             tvPhone = itemView.findViewById(R.id.tv_item_userstudent_phone);
             tvInitials = itemView.findViewById(R.id.tv_userstudent_initials);
             chipRole = itemView.findViewById(R.id.chip_userstudent_role);

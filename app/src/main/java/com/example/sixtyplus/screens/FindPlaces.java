@@ -117,7 +117,6 @@ public class FindPlaces extends BaseActivity {
                         Log.d(TAG, "User placeName: " + user.getPlaceName());
                         Log.d(TAG, "User city: " + user.getCity());
 
-                        // סינון לפי: מאושר, מסוג UserInCharge, ובאותה עיר של התלמיד
                         if (user.isAccepted() &&
                                 user.className != null &&
                                 user.className.equals(UserInCharge.class.getName()) &&

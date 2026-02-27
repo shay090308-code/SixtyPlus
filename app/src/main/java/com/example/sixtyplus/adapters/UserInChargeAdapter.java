@@ -74,13 +74,7 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
         }
         holder.tvInitials.setText(initials.toUpperCase());
 
-        // Show admin chip if user is admin
-        if (user.isAdmin()) {
-            holder.chipRole.setVisibility(View.VISIBLE);
-            holder.chipRole.setText("Admin");
-        } else {
-            holder.chipRole.setVisibility(View.GONE);
-        }
+
 
         holder.itemView.setOnClickListener(v -> {
             if (onUserClickListener != null) {

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +26,6 @@ public class AcceptingVolunteers extends BaseActivity {
     private RecyclerView rvVolunteeringRequests;
     private TextView tvNoRequests;
     private Volunteeringrequestadapter adapter;
-
     private UserInCharge currentUser;
 
     @Override
@@ -49,12 +47,18 @@ public class AcceptingVolunteers extends BaseActivity {
         adapter = new Volunteeringrequestadapter(new Volunteeringrequestadapter.OnVolunteeringActionListener() {
             @Override
             public void onApprove(Volunteering volunteering) {
-                approveVolunteering(volunteering);
+                if (volunteering != null) {
+                    volunteering.setStatus("approved");
+                    updateVolunteeringStatus(volunteering, "ההתנדבות אושרה בהצלחה");
+                }
             }
 
             @Override
             public void onReject(Volunteering volunteering) {
-                rejectVolunteering(volunteering);
+                if (volunteering != null) {
+                    volunteering.setStatus("rejected");
+                    updateVolunteeringStatus(volunteering, "ההתנדבות נדחתה");
+                }
             }
         });
 
@@ -68,68 +72,64 @@ public class AcceptingVolunteers extends BaseActivity {
             return;
         }
 
+        Log.d(TAG, "loadPendingRequests: Loading requests for Place ID: " + currentUser.getId());
+
         DatabaseService.getInstance().getVolunteeringList(new DatabaseService.DatabaseCallback<List<Volunteering>>() {
             @Override
             public void onCompleted(List<Volunteering> allVolunteering) {
                 List<Volunteering> pendingRequests = new ArrayList<>();
 
-                for (Volunteering v : allVolunteering) {
-                    if (v.getPlaceId().equals(currentUser.getId()) &&
-                            v.getStatus().equals("pending")) {
-                        pendingRequests.add(v);
+                if (allVolunteering != null) {
+                    for (Volunteering v : allVolunteering) {
+                        if (v != null && v.getPlaceId() != null && v.getStatus() != null) {
+
+                            // השוואה בטוחה בין ה-ID של המקום ל-ID של המשתמש המחובר
+                            boolean isMyPlace = v.getPlaceId().trim().equals(currentUser.getId().trim());
+                            boolean isPending = v.getStatus().equalsIgnoreCase("pending");
+
+                            if (isMyPlace && isPending) {
+                                pendingRequests.add(v);
+                            }
+                        }
                     }
                 }
 
-                if (pendingRequests.isEmpty()) {
-                    rvVolunteeringRequests.setVisibility(View.GONE);
-                    tvNoRequests.setVisibility(View.VISIBLE);
-                } else {
-                    rvVolunteeringRequests.setVisibility(View.VISIBLE);
-                    tvNoRequests.setVisibility(View.GONE);
-                    adapter.setVolunteeringList(pendingRequests);
-                }
+                updateUI(pendingRequests);
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to load volunteering requests", e);
-                Toast.makeText(AcceptingVolunteers.this, "שגיאה בטעינת בקשות", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailed: Error fetching data", e);
+                Toast.makeText(AcceptingVolunteers.this, "שגיאה בטעינת הנתונים", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void approveVolunteering(Volunteering volunteering) {
-        volunteering.setStatus("approved");
-
-        DatabaseService.getInstance().updateVolunteering(volunteering, new DatabaseService.DatabaseCallback<Void>() {
-            @Override
-            public void onCompleted(Void unused) {
-                Toast.makeText(AcceptingVolunteers.this, "ההתנדבות אושרה!", Toast.LENGTH_SHORT).show();
-                loadPendingRequests(); // רענון הרשימה
-            }
-
-            @Override
-            public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to approve volunteering", e);
-                Toast.makeText(AcceptingVolunteers.this, "שגיאה באישור ההתנדבות", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void updateUI(List<Volunteering> requests) {
+        if (requests == null || requests.isEmpty()) {
+            rvVolunteeringRequests.setVisibility(View.GONE);
+            tvNoRequests.setVisibility(View.VISIBLE);
+        } else {
+            rvVolunteeringRequests.setVisibility(View.VISIBLE);
+            tvNoRequests.setVisibility(View.GONE);
+            adapter.setVolunteeringList(requests);
+        }
     }
 
-    private void rejectVolunteering(Volunteering volunteering) {
-        volunteering.setStatus("rejected");
-
+    private void updateVolunteeringStatus(Volunteering volunteering, String toastMessage) {
+        // שימוש ב-DatabaseCallback<Void> כדי למנוע את קריסת ה-Double conversion
         DatabaseService.getInstance().updateVolunteering(volunteering, new DatabaseService.DatabaseCallback<Void>() {
             @Override
-            public void onCompleted(Void unused) {
-                Toast.makeText(AcceptingVolunteers.this, "ההתנדבות נדחתה", Toast.LENGTH_SHORT).show();
-                loadPendingRequests(); // רענון הרשימה
+            public void onCompleted(Void result) {
+                Log.d(TAG, "updateVolunteeringStatus: Success");
+                Toast.makeText(AcceptingVolunteers.this, toastMessage, Toast.LENGTH_SHORT).show();
+                loadPendingRequests(); // טעינה מחדש של הרשימה לאחר העדכון
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to reject volunteering", e);
-                Toast.makeText(AcceptingVolunteers.this, "שגיאה בדחיית ההתנדבות", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "updateVolunteeringStatus: Failed", e);
+                Toast.makeText(AcceptingVolunteers.this, "שגיאה בעדכון הסטטוס", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -9,9 +9,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
-import com.example.sixtyplus.models.UserGeneral;
 import com.example.sixtyplus.models.UserInCharge;
-import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 
 
@@ -34,7 +32,7 @@ public class Splash  extends AppCompatActivity {
     }
 
     private void navigateToCorrectScreen() {
-        // בדוק אם המשתמש מחובר
+        // בודק אם המשתמש מחובר
         if (!SharedPreferencesUtils.isUserSign(this)) {
             Log.d(TAG, "User not signed in, navigating to LandingActivity");
             startActivity(new Intent(this, Landing.class));
@@ -61,7 +59,6 @@ public class Splash  extends AppCompatActivity {
     }
 
     private void handleInChargeUser() {
-        // קבל את המשתמש כ-UserInCharge
         UserInCharge userInCharge = (UserInCharge) SharedPreferencesUtils.getUser(this);
 
         if (userInCharge == null) {

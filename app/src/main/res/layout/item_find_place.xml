@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="4dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#FFFFFF"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -17,12 +19,13 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:layoutDirection="rtl"
         android:padding="16dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="56dp"
             android:layout_height="56dp"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+            app:cardBackgroundColor="#1A1A2E"
             app:cardCornerRadius="28dp"
             app:cardElevation="0dp">
 
@@ -35,7 +38,7 @@
                 android:fontFamily="@font/gveretlevin"
                 android:textColor="@color/myyellow"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -51,64 +54,60 @@
                 android:id="@+id/tv_item_userstudent_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="John Doe"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="20sp"
+                android:layout_marginBottom="6dp"
+                android:textColor="#1A1A2E"
+                android:textSize="18sp"
                 android:fontFamily="@font/gveretlevin"
                 android:textStyle="bold"
-                tools:text="@tools:sample/full_names" />
+                tools:text="שם המקום"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginEnd="6dp"
                     android:src="@android:drawable/ic_menu_my_calendar"
-                    app:tint="#050505" />
+                    app:tint="#F0D238"/>
 
                 <TextView
                     android:id="@+id/tv_item_userstudent_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/gveretlevin"
-                    tools:text="@tools:sample/us_phones" />
+                    android:textColor="#666666"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/rubiklight"
+                    tools:text="שם האחראי"/>
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginEnd="6dp"
                     android:src="@android:drawable/ic_menu_mylocation"
-                    app:tint="#050505" />
+                    app:tint="#F0D238"/>
 
                 <TextView
                     android:id="@+id/tv_item_userstudent_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/gveretlevin"
-                    tools:text="@tools:sample/full_names" />
+                    android:textColor="#666666"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/rubiklight"
+                    tools:text="עיר"/>
 
             </LinearLayout>
 
@@ -119,21 +118,20 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="17dp"
-                    android:layout_height="17dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginEnd="6dp"
                     android:src="@android:drawable/sym_action_call"
-                    app:tint="#666666" />
+                    app:tint="#F0D238"/>
 
                 <TextView
                     android:id="@+id/tv_item_userstudent_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+1 234 567 8900"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/gveretlevin"
-                    tools:text="@tools:sample/us_phones" />
+                    android:textColor="#666666"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/rubiklight"
+                    tools:text="טלפון"/>
 
             </LinearLayout>
 
@@ -142,26 +140,17 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center|end"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_userstudent_role"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="Admin"
-                android:textSize="13sp"
-                android:visibility="gone"
-                app:chipBackgroundColor="@color/myyellow"
-                app:chipStrokeWidth="0dp"
-                tools:visibility="visible" />
+
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_marginTop="8dp"
                 android:src="@android:drawable/ic_menu_more"
-                app:tint="#999999" />
+                app:tint="#CCCCCC"/>
 
         </LinearLayout>
 

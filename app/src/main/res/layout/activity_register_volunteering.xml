@@ -1,213 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/register_volunteering"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="#F5F5F5">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- כותרת -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="קביעת התנדבות"
-            android:fontFamily="@font/galacti"
-            android:layout_gravity="center"
-            android:shadowColor="@color/myyellow"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="10"
-            android:textSize="70dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:layout_marginBottom="32dp"/>
-
-        <!-- שם המתנדב (לא ניתן לעריכה) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="שם המתנדב"
-            android:textColorHint="#999999"
-            android:layout_marginBottom="16dp"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            app:startIconDrawable="@android:drawable/ic_menu_info_details">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tvStudentName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:padding="10dp"
-                android:drawablePadding="8dp"
-                android:textColor="#000000"
-                android:fontFamily="@font/gveretlevin"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <AutoCompleteTextView
-            android:id="@+id/actvSearchPlace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="חפש מקום התנדבות"
-            android:textColorHint="#999999"
-            android:textColor="#000000"
-            android:padding="8dp"
-            android:fontFamily="@font/gveretlevin"
-            android:background="@drawable/edittext_background"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="8dp"
-            android:completionThreshold="1"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- שם המקום שנבחר -->
-        <TextView
-            android:id="@+id/tvSelectedPlace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="לא נבחר מקום"
-            android:textSize="14sp"
-            android:textColor="@android:color/holo_blue_dark"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- שעות פתיחה של המקום -->
-        <TextView
-            android:id="@+id/tvPlaceSchedule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/gveretlevin"
-            android:gravity="right"
-            android:padding="12dp"
-            android:background="@drawable/edittext_background"
-            android:visibility="gone"
-            android:layout_marginBottom="24dp"/>
-
-        <Button
-            android:id="@+id/btnSelectDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="בחר תאריך"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/gveretlevin"
-            android:backgroundTint="@color/myyellow"
-            android:gravity="right"
-            android:layout_gravity="right"
-            android:drawableStart="@android:drawable/ic_menu_my_calendar"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- שעות התחלה וסיום באותה שורה -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp"
-            android:baselineAligned="false">
+            android:orientation="vertical"
+            android:layoutDirection="rtl">
 
-            <!-- שעת התחלה -->
+            <!-- Header -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@drawable/header_gradient"
                 android:orientation="vertical"
-                android:layout_marginEnd="8dp">
+                android:padding="28dp"
+                android:paddingBottom="40dp">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="שעת התחלה"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/rubiklight"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"/>
-
-                <Button
-                    android:id="@+id/btnSelectStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="בחר שעה"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/myyellow"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/gveretlevin"
-                    android:drawableStart="@android:drawable/ic_menu_recent_history"
-                    android:drawablePadding="4dp"
-                    android:padding="12dp"/>
-            </LinearLayout>
-
-            <!-- שעת סיום -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
+                    android:text="קביעת התנדבות"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:fontFamily="@font/galacti"
+                    android:shadowColor="#33000000"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="שעת סיום"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/rubiklight"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"/>
-
-                <Button
-                    android:id="@+id/btnSelectEndTime"
+                    android:id="@+id/tvStudentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="בחר שעה"
-                    android:layout_gravity="center"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/gveretlevin"
-                    android:backgroundTint="@color/myyellow"
-                    android:drawableStart="@android:drawable/ic_menu_recent_history"
-                    android:drawablePadding="4dp"
-                    android:padding="12dp"/>
+                    android:textColor="#FFF9C4"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rubiklight"
+                    android:layout_marginTop="4dp"/>
+
             </LinearLayout>
+
+            <!-- כרטיס חיפוש מקום -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="-24dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📍 בחירת מקום התנדבות"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="16dp"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actvSearchPlace"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="חפש מקום התנדבות..."
+                        android:textColorHint="#999999"
+                        android:textColor="#000000"
+                        android:padding="14dp"
+                        android:fontFamily="@font/gveretlevin"
+                        android:background="@drawable/edittext_rounded"
+                        android:completionThreshold="1"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:id="@+id/tvSelectedPlace"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#1A1A2E"
+                        android:fontFamily="@font/rubiklight"
+                        android:gravity="center"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כרטיס תמונות המקום -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPlaceImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🖼️ תמונות המקום"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="12dp"/>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/imagesContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="120dp"
+                            android:orientation="horizontal"/>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כרטיס שעות המקום -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPlaceSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🕐 שעות פעילות"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvPlaceSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#444444"
+                        android:fontFamily="@font/gveretlevin"
+                        android:lineSpacingExtra="4dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כרטיס בחירת תאריך ושעות -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📅 בחירת תאריך ושעות"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- כפתור תאריך -->
+                    <Button
+                        android:id="@+id/btnSelectDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="בחר תאריך"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/gveretlevin"
+                        android:backgroundTint="@color/myyellow"
+                        android:textColor="#1A1A2E"
+                        android:layout_marginBottom="16dp"
+                        app:cornerRadius="12dp"/>
+
+                    <!-- שעת התחלה וסיום -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="שעת התחלה"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/rubiklight"
+                                android:textColor="#666666"
+                                android:gravity="center"
+                                android:layout_marginBottom="8dp"/>
+
+                            <Button
+                                android:id="@+id/btnSelectStartTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="בחר שעה"
+                                android:backgroundTint="@color/myyellow"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/gveretlevin"
+                                android:textColor="#1A1A2E"
+                                app:cornerRadius="12dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="שעת סיום"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/rubiklight"
+                                android:textColor="#666666"
+                                android:gravity="center"
+                                android:layout_marginBottom="8dp"/>
+
+                            <Button
+                                android:id="@+id/btnSelectEndTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="בחר שעה"
+                                android:backgroundTint="@color/myyellow"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/gveretlevin"
+                                android:textColor="#1A1A2E"
+                                app:cornerRadius="12dp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- משך ההתנדבות -->
+                    <TextView
+                        android:id="@+id/tvVolunteeringDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:visibility="gone"
+                        android:background="@drawable/edittext_rounded"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כפתור שליחה -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <Button
+                        android:id="@+id/btnSubmitVolunteering"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="שלח בקשת התנדבות"
+                        android:fontFamily="@font/rubicblack"
+                        android:backgroundTint="@color/myyellow"
+                        android:textSize="18sp"
+                        android:textColor="#1A1A2E"
+                        android:enabled="false"
+                        app:cornerRadius="16dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+    </ScrollView>
+
+    <!-- Dialog תמונה בגדול - overlay -->
+    <FrameLayout
+        android:id="@+id/imageOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:visibility="gone"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/ivFullscreenImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:padding="32dp"/>
 
         <TextView
-            android:id="@+id/tvVolunteeringDuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="✕"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
             android:gravity="center"
-            android:fontFamily="@font/rubiklight"
-            android:padding="16dp"
-            android:visibility="gone"
-            android:layout_marginBottom="32dp"/>
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:id="@+id/btnCloseOverlay"/>
 
-        <!-- כפתור שליחה -->
-        <Button
-            android:id="@+id/btnSubmitVolunteering"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שלח בקשת התנדבות"
-            android:fontFamily="@font/gveretlevin"
-            android:backgroundTint="@color/myyellow"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="16dp"
-            android:enabled="false"/>
+    </FrameLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

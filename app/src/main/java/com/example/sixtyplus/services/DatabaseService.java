@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -502,6 +503,25 @@ public class DatabaseService {
             }
         });
     }
+    public void checkIfPhoneExists(@NotNull final String phone, @NotNull final DatabaseCallback<Boolean> callback) {
+        getUserList(new DatabaseCallback<List<UserGeneral>>() {
+            @Override
+            public void onCompleted(List<UserGeneral> users) {
+                for (UserGeneral user : users) {
+                    if (Objects.equals(user.getPhoneNumber(), phone)) {
+                        callback.onCompleted(true);
+                        return;
+                    }
+                }
+                callback.onCompleted(false);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                callback.onFailed(e);
+            }
+        });
+    }
 
     public void findUserStudentById(@NotNull final String id, @NotNull final String phone, @NotNull final DatabaseCallback<UserStudent> callback) {
         Log.d(TAG, "🔍 findUserByUserName called with id: " + id);
@@ -525,19 +545,110 @@ public class DatabaseService {
         });
     }
 
-
-
+    // שמירת התנדבות חדשה תחת מזהה הסטודנט
     public void setVolunteering(@NotNull final Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
-        String newId = generateNewId(VOLUNTEERING_PATH);
-        volunteering.setId(newId);
-        writeData(VOLUNTEERING_PATH + "/" + newId, volunteering, callback);
+        String studentPath = VOLUNTEERING_PATH + "/" + volunteering.getStudentId();
+        String pushId = databaseReference.child(studentPath).push().getKey();
+        volunteering.setId(pushId);
+        databaseReference.child(studentPath + "/" + pushId).setValue(volunteering)
+                .addOnSuccessListener(aVoid -> {
+                    if (callback != null) callback.onCompleted(null);
+                })
+                .addOnFailureListener(e -> {
+                    if (callback != null) callback.onFailed(e);
+                });
     }
 
+    // עדכון סטטוס התנדבות (אישור/דחייה) - שימוש בנתיב מלא ומניעת שגיאות המרה
+    public void updateVolunteering(@NotNull Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
+        if (volunteering.getStudentId() == null || volunteering.getId() == null) {
+            if (callback != null) callback.onFailed(new Exception("Missing IDs"));
+            return;
+        }
+        String path = VOLUNTEERING_PATH + "/" + volunteering.getStudentId() + "/" + volunteering.getId();
+        databaseReference.child(path).setValue(volunteering)
+                .addOnSuccessListener(aVoid -> {
+                    if (callback != null) callback.onCompleted(null);
+                })
+                .addOnFailureListener(e -> {
+                    if (callback != null) callback.onFailed(e);
+                });
+    }
+
+    // שליפת כל ההתנדבויות של כל הסטודנטים (עבור מסך אישור בקשות של האחראי)
     public void getVolunteeringList(@NotNull final DatabaseCallback<List<Volunteering>> callback) {
-        getDataList(VOLUNTEERING_PATH, Volunteering.class, callback);
+        databaseReference.child(VOLUNTEERING_PATH).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Volunteering> allVolunteering = new ArrayList<>();
+                for (DataSnapshot studentSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot volunteeringSnapshot : studentSnapshot.getChildren()) {
+                        try {
+                            Volunteering v = volunteeringSnapshot.getValue(Volunteering.class);
+                            if (v != null) {
+                                v.setId(volunteeringSnapshot.getKey());
+                                allVolunteering.add(v);
+                            }
+                        } catch (Exception e) {
+                            Log.e("DB", "Error converting volunteering object", e);
+                        }
+                    }
+                }
+                callback.onCompleted(allVolunteering);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailed(error.toException());
+            }
+        });
     }
 
-    public void updateVolunteering(@NotNull final Volunteering volunteering, @Nullable final DatabaseCallback<Void> callback) {
-        writeData(VOLUNTEERING_PATH + "/" + volunteering.getId(), volunteering, callback);
+    // שליפת היסטוריית התנדבויות עבור סטודנט ספציפי בלבד
+    public void getVolunteeringByStudent(@NotNull String studentId, @NotNull final DatabaseCallback<List<Volunteering>> callback) {
+        databaseReference.child(VOLUNTEERING_PATH).child(studentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Volunteering> studentList = new ArrayList<>();
+                for (DataSnapshot volunteeringSnapshot : snapshot.getChildren()) {
+                    try {
+                        Volunteering v = volunteeringSnapshot.getValue(Volunteering.class);
+                        if (v != null) {
+                            v.setId(volunteeringSnapshot.getKey());
+                            studentList.add(v);
+                        }
+                    } catch (Exception e) {
+                        Log.e("DB", "Error converting student volunteering", e);
+                    }
+                }
+                callback.onCompleted(studentList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailed(error.toException());
+            }
+        });
+    }
+
+    public void checkPhoneForUpdate(@NotNull final String newPhone, @NotNull final String currentUserId, @NotNull final DatabaseCallback<Boolean> callback) {
+        getUserList(new DatabaseCallback<List<UserGeneral>>() {
+            @Override
+            public void onCompleted(List<UserGeneral> users) {
+                for (UserGeneral user : users) {
+                    // אם המספר קיים אצל מישהו שהוא לא אני
+                    if (Objects.equals(user.getPhoneNumber(), newPhone) && !Objects.equals(user.getId(), currentUserId)) {
+                        callback.onCompleted(true); // תפוס
+                        return;
+                    }
+                }
+                callback.onCompleted(false); // פנוי לשימוש
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                callback.onFailed(e);
+            }
+        });
     }
 }

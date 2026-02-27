@@ -1,6 +1,7 @@
 package com.example.sixtyplus.screens;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,11 +9,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.models.DayAndHours;
@@ -22,6 +26,7 @@ import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.models.Volunteering;
 import com.example.sixtyplus.models.Weekday;
 import com.example.sixtyplus.services.DatabaseService;
+import com.example.sixtyplus.utils.ImageUtil;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
 import com.example.sixtyplus.views.IntervalTimePicker;
 
@@ -40,16 +45,19 @@ public class RegisterVolunteering extends BaseActivity {
     private TextView tvStudentName, tvSelectedPlace, tvPlaceSchedule, tvVolunteeringDuration;
     private AutoCompleteTextView actvSearchPlace;
     private Button btnSelectDate, btnSubmitVolunteering, btnSelectStartTime, btnSelectEndTime;
+    private CardView cardPlaceImages, cardPlaceSchedule, cardDateTime;
+    private LinearLayout imagesContainer;
+    private FrameLayout imageOverlay;
+    private ImageView ivFullscreenImage;
+    private TextView btnCloseOverlay;
 
     private UserStudent currentStudent;
-
     private List<UserInCharge> availablePlaces;
     private Map<String, UserInCharge> placesMap;
     private UserInCharge selectedPlace;
 
     private Calendar selectedDate;
     private DayAndHours placeScheduleForSelectedDay;
-
     private HourMinute selectedStartTime;
     private HourMinute selectedEndTime;
 
@@ -62,11 +70,9 @@ public class RegisterVolunteering extends BaseActivity {
         setContentView(R.layout.activity_register_volunteering);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
-        // קבלת המקום שנבחר מהמסך הקודם (אם יש)
         preSelectedPlaceId = getIntent().getStringExtra("selectedPlaceId");
         preSelectedPlaceName = getIntent().getStringExtra("selectedPlaceName");
 
-        // אתחול
         initializeViews();
         initializeData();
         loadAvailablePlaces();
@@ -83,17 +89,22 @@ public class RegisterVolunteering extends BaseActivity {
         btnSubmitVolunteering = findViewById(R.id.btnSubmitVolunteering);
         btnSelectStartTime = findViewById(R.id.btnSelectStartTime);
         btnSelectEndTime = findViewById(R.id.btnSelectEndTime);
+        cardPlaceImages = findViewById(R.id.cardPlaceImages);
+        cardPlaceSchedule = findViewById(R.id.cardPlaceSchedule);
+        cardDateTime = findViewById(R.id.cardDateTime);
+        imagesContainer = findViewById(R.id.imagesContainer);
+        imageOverlay = findViewById(R.id.imageOverlay);
+        ivFullscreenImage = findViewById(R.id.ivFullscreenImage);
+        btnCloseOverlay = findViewById(R.id.btnCloseOverlay);
     }
 
     private void initializeData() {
         availablePlaces = new ArrayList<>();
         placesMap = new HashMap<>();
 
-        // טעינת פרטי התלמיד
         currentStudent = (UserStudent) SharedPreferencesUtils.getUser(this);
         if (currentStudent != null) {
-            String fullName = currentStudent.getFirstName() + " " + currentStudent.getLastName();
-            tvStudentName.setText(fullName);
+            tvStudentName.setText(currentStudent.getFirstName() + " " + currentStudent.getLastName());
         }
     }
 
@@ -103,7 +114,6 @@ public class RegisterVolunteering extends BaseActivity {
             return;
         }
 
-
         DatabaseService.getInstance().getUserInChargeList(new DatabaseService.DatabaseCallback<List<UserInCharge>>() {
             @Override
             public void onCompleted(List<UserInCharge> userInCharges) {
@@ -111,28 +121,23 @@ public class RegisterVolunteering extends BaseActivity {
                 placesMap.clear();
 
                 for (UserInCharge userInCharge : userInCharges) {
-                    // סינון לפי: מאושר, מסוג UserInCharge, ובאותה עיר של התלמיד
                     if (userInCharge.isAccepted() &&
                             userInCharge.className != null &&
                             userInCharge.className.equals(UserInCharge.class.getName()) &&
                             userInCharge.getCity() != null &&
                             userInCharge.getCity().equals(currentStudent.getCity())) {
-
                         availablePlaces.add(userInCharge);
                         placesMap.put(userInCharge.getPlaceName(), userInCharge);
                     }
                 }
-
                 setupAutoComplete();
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to load places: " + e.getMessage());
                 Toast.makeText(RegisterVolunteering.this, "שגיאה בטעינת מקומות", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void setupAutoComplete() {
@@ -142,18 +147,13 @@ public class RegisterVolunteering extends BaseActivity {
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                placeNames
-        );
-
+                this, android.R.layout.simple_dropdown_item_1line, placeNames);
         actvSearchPlace.setAdapter(adapter);
         actvSearchPlace.setOnItemClickListener((parent, view, position, id) -> {
             String selectedPlaceName = (String) parent.getItemAtPosition(position);
             onPlaceSelected(selectedPlaceName);
         });
 
-        // אם יש מקום שנבחר מראש, בחר אותו אוטומטית
         if (preSelectedPlaceName != null && !preSelectedPlaceName.isEmpty()) {
             actvSearchPlace.setText(preSelectedPlaceName);
             onPlaceSelected(preSelectedPlaceName);
@@ -162,124 +162,110 @@ public class RegisterVolunteering extends BaseActivity {
 
     private void onPlaceSelected(String placeName) {
         selectedPlace = placesMap.get(placeName);
-        if (selectedPlace != null) {
-            // בדיקה אם המקום סגור בכל ימות השבוע
-            if (isPlaceClosedAllWeek()) {
+        if (selectedPlace == null) return;
 
-                tvPlaceSchedule.setText("מקום זה סגור בכל ימות השבוע");
-                tvPlaceSchedule.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                tvPlaceSchedule.setVisibility(View.VISIBLE);
-
-                // חסימת כל הכפתורים
-                btnSelectDate.setEnabled(false);
-                btnSelectStartTime.setEnabled(false);
-                btnSelectEndTime.setEnabled(false);
-                btnSubmitVolunteering.setEnabled(false);
-
-                // איפוס ערכים
-                selectedDate = null;
-                selectedStartTime = null;
-                selectedEndTime = null;
-                btnSelectDate.setText("בחר תאריך");
-                btnSelectStartTime.setText("בחר שעה");
-                btnSelectEndTime.setText("בחר שעה");
-                tvVolunteeringDuration.setText("");
-
-                return;
-            }
-
-            // המקום פתוח לפחות ביום אחד - המשך רגיל
-            tvSelectedPlace.setText("נבחר: " + placeName);
-            tvSelectedPlace.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
-            tvSelectedPlace.setVisibility(View.VISIBLE);
-
-            // הצגת שעות פתיחה של המקום
-            displayPlaceSchedule();
-
-            // אפשור כפתור בחירת תאריך
-            btnSelectDate.setEnabled(true);
-
-            // איפוס תאריך ושעות
-            selectedDate = null;
-            selectedStartTime = null;
-            selectedEndTime = null;
-            btnSelectDate.setText("בחר תאריך");
-            btnSelectStartTime.setText("בחר שעה");
+        if (isPlaceClosedAllWeek()) {
+            tvPlaceSchedule.setText("מקום זה סגור בכל ימות השבוע");
+            tvPlaceSchedule.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            cardPlaceSchedule.setVisibility(View.VISIBLE);
+            cardPlaceImages.setVisibility(View.GONE);
+            cardDateTime.setVisibility(View.GONE);
+            btnSelectDate.setEnabled(false);
             btnSelectStartTime.setEnabled(false);
-            btnSelectEndTime.setText("בחר שעה");
             btnSelectEndTime.setEnabled(false);
-            tvVolunteeringDuration.setText("");
-            updateSubmitButton();
+            btnSubmitVolunteering.setEnabled(false);
+            return;
+        }
+
+        tvSelectedPlace.setText("נבחר: " + placeName);
+        tvSelectedPlace.setVisibility(View.VISIBLE);
+
+        // הצגת תמונות המקום
+        displayPlaceImages();
+
+        // הצגת שעות
+        displayPlaceSchedule();
+        cardPlaceSchedule.setVisibility(View.VISIBLE);
+        cardDateTime.setVisibility(View.VISIBLE);
+
+        btnSelectDate.setEnabled(true);
+        selectedDate = null;
+        selectedStartTime = null;
+        selectedEndTime = null;
+        btnSelectDate.setText("בחר תאריך");
+        btnSelectStartTime.setText("בחר שעה");
+        btnSelectStartTime.setEnabled(false);
+        btnSelectEndTime.setText("בחר שעה");
+        btnSelectEndTime.setEnabled(false);
+        tvVolunteeringDuration.setVisibility(View.GONE);
+        updateSubmitButton();
+    }
+
+    private void displayPlaceImages() {
+        imagesContainer.removeAllViews();
+        List<String> images = selectedPlace.getImages();
+
+        if (images == null || images.isEmpty()) {
+            cardPlaceImages.setVisibility(View.GONE);
+            return;
+        }
+
+        cardPlaceImages.setVisibility(View.VISIBLE);
+        int sizePx = (int) (110 * getResources().getDisplayMetrics().density);
+        int marginPx = (int) (6 * getResources().getDisplayMetrics().density);
+
+        for (String base64 : images) {
+            Bitmap bmp = ImageUtil.fromBase64(base64);
+            if (bmp == null) continue;
+
+            ImageView imageView = new ImageView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizePx, sizePx);
+            params.setMargins(marginPx, 0, marginPx, 0);
+            imageView.setLayoutParams(params);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageBitmap(bmp);
+            imageView.setClipToOutline(true);
+
+            android.graphics.drawable.GradientDrawable rounded =
+                    new android.graphics.drawable.GradientDrawable();
+            rounded.setCornerRadius(20f);
+            rounded.setColor(android.graphics.Color.LTGRAY);
+            imageView.setBackground(rounded);
+
+            // לחיצה לתמונה בגדול
+            final Bitmap finalBmp = bmp;
+            imageView.setOnClickListener(v -> showFullscreenImage(finalBmp));
+
+            imagesContainer.addView(imageView);
         }
     }
 
-    private boolean isPlaceClosedAllWeek() {
-        if (selectedPlace == null) {
-            return true;
-        }
-
-        Weekday[] weekdays = {
-                Weekday.SUNDAY,
-                Weekday.MONDAY,
-                Weekday.TUESDAY,
-                Weekday.WEDNESDAY,
-                Weekday.THURSDAY,
-                Weekday.FRIDAY,
-                Weekday.SATURDAY
-        };
-
-        // בדיקה אם יש לפחות יום אחד שהמקום פתוח
-        for (Weekday day : weekdays) {
-            DayAndHours daySchedule = selectedPlace.getDayAndHours(day);
-            if (!daySchedule.checkIfClosed()) {
-                return false; // המקום פתוח ביום זה
-            }
-        }
-
-        return true; // המקום סגור בכל הימים
+    private void showFullscreenImage(Bitmap bmp) {
+        ivFullscreenImage.setImageBitmap(bmp);
+        imageOverlay.setVisibility(View.VISIBLE);
     }
 
     private void displayPlaceSchedule() {
-        StringBuilder scheduleText = new StringBuilder("שעות פתיחה:\n");
-
-        // סדר הימים מיום ראשון
-        Weekday[] weekdays = {
-                Weekday.SUNDAY,
-                Weekday.MONDAY,
-                Weekday.TUESDAY,
-                Weekday.WEDNESDAY,
-                Weekday.THURSDAY,
-                Weekday.FRIDAY,
-                Weekday.SATURDAY
-        };
-
-        // שמות הימים בעברית
-        String[] hebrewDays = {
-                "ראשון",
-                "שני",
-                "שלישי",
-                "רביעי",
-                "חמישי",
-                "שישי",
-                "שבת"
-        };
+        StringBuilder scheduleText = new StringBuilder();
+        Weekday[] weekdays = {Weekday.SUNDAY, Weekday.MONDAY, Weekday.TUESDAY,
+                Weekday.WEDNESDAY, Weekday.THURSDAY, Weekday.FRIDAY, Weekday.SATURDAY};
+        String[] hebrewDays = {"ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"};
 
         for (int i = 0; i < weekdays.length; i++) {
             DayAndHours daySchedule = selectedPlace.getDayAndHours(weekdays[i]);
-
-            String dayName = hebrewDays[i];
             if (daySchedule.checkIfClosed()) {
-                scheduleText.append(dayName).append(": סגור\n");
+                scheduleText.append("יום ").append(hebrewDays[i]).append(": סגור\n");
             } else {
-                String openTime = daySchedule.getStartTime().toString();
-                String closeTime = daySchedule.getEndTime().toString();
-                scheduleText.append(dayName).append(": ").append(openTime).append(" - ").append(closeTime).append("\n");
+                scheduleText.append("יום ").append(hebrewDays[i]).append(": ")
+                        .append(daySchedule.getStartTime().toString())
+                        .append(" - ")
+                        .append(daySchedule.getEndTime().toString())
+                        .append("\n");
             }
         }
 
         tvPlaceSchedule.setText(scheduleText.toString().trim());
         tvPlaceSchedule.setTextColor(getResources().getColor(android.R.color.black));
-        tvPlaceSchedule.setVisibility(View.VISIBLE);
     }
 
     private void setupListeners() {
@@ -287,6 +273,16 @@ public class RegisterVolunteering extends BaseActivity {
         btnSubmitVolunteering.setOnClickListener(v -> submitVolunteering());
         btnSelectStartTime.setOnClickListener(v -> showStartTimePicker());
         btnSelectEndTime.setOnClickListener(v -> showEndTimePicker());
+        imageOverlay.setOnClickListener(v -> imageOverlay.setVisibility(View.GONE));
+        btnCloseOverlay.setOnClickListener(v -> imageOverlay.setVisibility(View.GONE));
+    }
+
+    private boolean isPlaceClosedAllWeek() {
+        if (selectedPlace == null) return true;
+        for (Weekday day : Weekday.values()) {
+            if (!selectedPlace.getDayAndHours(day).checkIfClosed()) return false;
+        }
+        return true;
     }
 
     private void showDatePicker() {
@@ -297,7 +293,7 @@ public class RegisterVolunteering extends BaseActivity {
 
         Calendar calendar = Calendar.getInstance();
         Calendar maxDate = Calendar.getInstance();
-        maxDate.add(Calendar.DAY_OF_MONTH, 7); // עד שבוע קדימה
+        maxDate.add(Calendar.DAY_OF_MONTH, 7);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -311,7 +307,6 @@ public class RegisterVolunteering extends BaseActivity {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
 
-        // הגבלת טווח תאריכים
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
         datePickerDialog.show();
@@ -321,7 +316,6 @@ public class RegisterVolunteering extends BaseActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         btnSelectDate.setText(sdf.format(selectedDate.getTime()));
 
-        // קביעת יום בשבוע
         Weekday weekday = getWeekdayFromCalendar(selectedDate);
         placeScheduleForSelectedDay = selectedPlace.getDayAndHours(weekday);
 
@@ -337,7 +331,6 @@ public class RegisterVolunteering extends BaseActivity {
             return;
         }
 
-        // אפשר בחירת שעות
         btnSelectStartTime.setEnabled(true);
         btnSelectEndTime.setEnabled(true);
         selectedStartTime = null;
@@ -348,8 +341,7 @@ public class RegisterVolunteering extends BaseActivity {
     }
 
     private Weekday getWeekdayFromCalendar(Calendar calendar) {
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (dayOfWeek) {
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.SUNDAY: return Weekday.SUNDAY;
             case Calendar.MONDAY: return Weekday.MONDAY;
             case Calendar.TUESDAY: return Weekday.TUESDAY;
@@ -366,7 +358,6 @@ public class RegisterVolunteering extends BaseActivity {
             Toast.makeText(this, "אנא בחר תאריך תחילה", Toast.LENGTH_SHORT).show();
             return;
         }
-
         showTimePickerDialog(true);
     }
 
@@ -375,7 +366,6 @@ public class RegisterVolunteering extends BaseActivity {
             Toast.makeText(this, "אנא בחר שעת התחלה תחילה", Toast.LENGTH_SHORT).show();
             return;
         }
-
         showTimePickerDialog(false);
     }
 
@@ -386,7 +376,6 @@ public class RegisterVolunteering extends BaseActivity {
         HourMinute openTime = placeScheduleForSelectedDay.getStartTime();
         HourMinute closeTime = placeScheduleForSelectedDay.getEndTime();
 
-        // הגדרת שעה התחלתית
         if (isStartTime) {
             timePicker.setHour(openTime.getHour());
             timePicker.setMinute(openTime.getMinute());
@@ -395,22 +384,19 @@ public class RegisterVolunteering extends BaseActivity {
             timePicker.setMinute(selectedStartTime.getMinute());
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle(isStartTime ? "בחר שעת התחלה" : "בחר שעת סיום")
                 .setView(dialogView)
-                .setPositiveButton("אישור", (dialogInterface, i) -> {
-                    int selectedHour = timePicker.getHour();
-                    int selectedMinute = timePicker.getMinute();
-                    HourMinute selectedTime = new HourMinute(selectedHour, selectedMinute);
+                .setPositiveButton("אישור", (dialog, i) -> {
+                    HourMinute selectedTime = new HourMinute(
+                            timePicker.getHour(), timePicker.getMinute());
 
-                    // בדיקה שהשעה בטווח המותר
                     if (selectedTime.compareTo(openTime) < 0 || selectedTime.compareTo(closeTime) > 0) {
                         Toast.makeText(this, "השעה חייבת להיות בטווח שעות הפעילות", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (isStartTime) {
-                        // בדיקה ששעת ההתחלה לפני שעת הסיום אם כבר נבחרה
                         if (selectedEndTime != null && selectedTime.compareTo(selectedEndTime) >= 0) {
                             Toast.makeText(this, "שעת ההתחלה חייבת להיות לפני שעת הסיום", Toast.LENGTH_SHORT).show();
                             return;
@@ -418,7 +404,6 @@ public class RegisterVolunteering extends BaseActivity {
                         selectedStartTime = selectedTime;
                         btnSelectStartTime.setText(selectedTime.toString());
                     } else {
-                        // בדיקה ששעת הסיום אחרי שעת ההתחלה
                         if (selectedTime.compareTo(selectedStartTime) <= 0) {
                             Toast.makeText(this, "שעת הסיום חייבת להיות אחרי שעת ההתחלה", Toast.LENGTH_SHORT).show();
                             return;
@@ -431,16 +416,13 @@ public class RegisterVolunteering extends BaseActivity {
                     updateSubmitButton();
                 })
                 .setNegativeButton("ביטול", null)
-                .create();
-
-        dialog.show();
+                .show();
     }
 
     private void updateDuration() {
         Volunteering v = new Volunteering();
         v.setStartTime(selectedStartTime);
         v.setEndTime(selectedEndTime);
-
         double hours = v.getCalculateTotalHours();
 
         if (hours <= 0) {
@@ -461,18 +443,14 @@ public class RegisterVolunteering extends BaseActivity {
                 selectedStartTime != null &&
                 selectedEndTime != null &&
                 selectedEndTime.compareTo(selectedStartTime) > 0;
-
         btnSubmitVolunteering.setEnabled(isValid);
     }
 
     private boolean isValidTimeRange() {
-        if (selectedStartTime == null || selectedEndTime == null || placeScheduleForSelectedDay == null) {
+        if (selectedStartTime == null || selectedEndTime == null || placeScheduleForSelectedDay == null)
             return false;
-        }
-
         HourMinute openTime = placeScheduleForSelectedDay.getStartTime();
         HourMinute closeTime = placeScheduleForSelectedDay.getEndTime();
-
         return selectedEndTime.compareTo(selectedStartTime) > 0 &&
                 selectedStartTime.compareTo(openTime) >= 0 &&
                 selectedEndTime.compareTo(closeTime) <= 0;
@@ -484,11 +462,9 @@ public class RegisterVolunteering extends BaseActivity {
             return;
         }
 
-        String studentName = currentStudent.getFirstName() + " " + currentStudent.getLastName();
-
         Volunteering volunteering = new Volunteering(
                 currentStudent.getId(),
-                studentName,
+                currentStudent.getFirstName() + " " + currentStudent.getLastName(),
                 selectedPlace.getId(),
                 selectedPlace.getPlaceName(),
                 selectedDate.getTimeInMillis(),
@@ -500,15 +476,13 @@ public class RegisterVolunteering extends BaseActivity {
             @Override
             public void onCompleted(Void v) {
                 Toast.makeText(RegisterVolunteering.this, "בקשת ההתנדבות נשלחה בהצלחה!", Toast.LENGTH_LONG).show();
-                finish(); // חזרה למסך הקודם
+                finish();
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to save volunteering", e);
                 Toast.makeText(RegisterVolunteering.this, "שגיאה בשליחת הבקשה", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

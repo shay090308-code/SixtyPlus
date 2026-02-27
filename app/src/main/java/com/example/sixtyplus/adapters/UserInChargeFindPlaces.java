@@ -36,8 +36,7 @@ public class UserInChargeFindPlaces extends RecyclerView.Adapter<UserInChargeFin
     @NonNull
     @Override
     public UserInChargeFindPlaces.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_student, parent, false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_find_place, parent, false);        return new ViewHolder(view);
     }
 
     @Override
@@ -75,13 +74,6 @@ public class UserInChargeFindPlaces extends RecyclerView.Adapter<UserInChargeFin
         }
         holder.tvInitials.setText(initials.toUpperCase());
 
-        // Show admin chip if user is admin
-        if (user.isAdmin()) {
-            holder.chipRole.setVisibility(View.VISIBLE);
-            holder.chipRole.setText("Admin");
-        } else {
-            holder.chipRole.setVisibility(View.GONE);
-        }
 
         holder.itemView.setOnClickListener(v -> {
             if (onUserClickListener != null) {

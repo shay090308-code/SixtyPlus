@@ -9,15 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class UserInCharge extends UserGeneral { //Those who are in charge of places.
-    public String placeName; //Name of the place.
-    public String adress; //Adress of the place.
+public class UserInCharge extends UserGeneral {
+    public String placeName;
+    public String adress;
     public List<DayAndHours> schedule;
     public String desc;
-    public boolean accepted; //
+    public boolean accepted;
+    public List<String> images; // ← חדש
 
     public UserInCharge() {
         this.schedule = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 
     public UserInCharge(String className, String idNumber, String firstName, String lastName,
@@ -29,48 +31,33 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
         this.schedule = schedule;
         this.desc = desc;
         this.accepted = accepted;
+        this.images = new ArrayList<>();
     }
 
-    public String getPlaceName() {
-        return placeName;
-    }
+    public String getPlaceName() { return placeName; }
+    public void setPlaceName(String placeName) { this.placeName = placeName; }
 
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
-    }
-
-    public String getAdress() {
-        return adress;
-    }
-
-    public void setAdress(String adress) {
-        this.adress = adress;
-    }
+    public String getAdress() { return adress; }
+    public void setAdress(String adress) { this.adress = adress; }
 
     public List<DayAndHours> getSchedule() {
-        if (schedule == null) {
-            schedule = new ArrayList<>();
-        }
+        if (schedule == null) schedule = new ArrayList<>();
         return schedule;
     }
-
-    public void setSchedule(List<DayAndHours> schedule) {
-        this.schedule = schedule;
-    }
+    public void setSchedule(List<DayAndHours> schedule) { this.schedule = schedule; }
 
     @Nullable
     public String getDesc() { return desc; }
-
     public void setDesc(String desc) { this.desc = desc; }
 
-    public boolean isAccepted() {
-        return accepted;
-    }
+    public boolean isAccepted() { return accepted; }
+    public void setAccepted(boolean accepted) { this.accepted = accepted; }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public List<String> getImages() {
+        if (images == null) images = new ArrayList<>();
+        return images;
     }
-
+    public void setImages(List<String> images) { this.images = images; }
 
     @Exclude
     public DayAndHours getDayAndHours(Weekday weekday) {
@@ -85,9 +72,7 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
     }
 
     public void setDayAndHours(DayAndHours dayAndHours) {
-        if (this.schedule == null) {
-            this.schedule = new ArrayList<>();
-        }
+        if (this.schedule == null) this.schedule = new ArrayList<>();
         for (DayAndHours dah : this.schedule) {
             if (dah.day.equals(dayAndHours.day)) {
                 this.schedule.remove(dah);
@@ -96,5 +81,4 @@ public class UserInCharge extends UserGeneral { //Those who are in charge of pla
         }
         this.schedule.add(dayAndHours);
     }
-
 }

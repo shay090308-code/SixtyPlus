@@ -1,89 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/tvVolunteerName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שם המתנדב"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/gveretlevin"
-            android:textColor="@color/black"
-            android:layout_marginBottom="12dp"/>
-
-        <TextView
-            android:id="@+id/tvVolunteerDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="תאריך: 01/01/2024 (יום ראשון)"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:fontFamily="@font/gveretlevin"
-            android:layout_marginBottom="4dp"/>
-
-        <TextView
-            android:id="@+id/tvVolunteerTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שעות: 09:00 - 12:00"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:fontFamily="@font/gveretlevin"
-            android:layout_marginBottom="4dp"/>
-
-        <TextView
-            android:id="@+id/tvVolunteerDuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="משך: 3.0 שעות"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:fontFamily="@font/gveretlevin"
-            android:layout_marginBottom="16dp"/>
+        android:layoutDirection="rtl"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cardBackgroundColor="#1A1A2E"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="👤"
+                    android:textSize="20sp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvVolunteerName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/gveretlevin"
+                android:textColor="#1A1A2E"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:src="@android:drawable/ic_menu_my_calendar"
+                app:tint="#F0D238"/>
+
+            <TextView
+                android:id="@+id/tvVolunteerDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:fontFamily="@font/gveretlevin"
+                android:textColor="#666666"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                app:tint="#F0D238"/>
+
+            <TextView
+                android:id="@+id/tvVolunteerTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:fontFamily="@font/gveretlevin"
+                android:textColor="#666666"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                app:tint="#F0D238"/>
+
+            <TextView
+                android:id="@+id/tvVolunteerDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:fontFamily="@font/gveretlevin"
+                android:textColor="#666666"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
 
             <Button
                 android:id="@+id/btnApprove"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="אשר"
-                android:textSize="18dp"
-                android:backgroundTint="@android:color/holo_green_dark"
+                android:text="✓ אשר"
+                android:textSize="15sp"
                 android:fontFamily="@font/rubiklight"
-                android:layout_marginEnd="8dp"/>
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4CAF50"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="12dp"/>
 
             <Button
                 android:id="@+id/btnReject"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="דחה"
-                android:textSize="18dp"
+                android:text="✗ דחה"
+                android:textSize="15sp"
                 android:fontFamily="@font/rubiklight"
-                android:backgroundTint="@android:color/holo_red_dark"
-                android:layout_marginStart="8dp"/>
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#F44336"
+                android:layout_marginStart="8dp"
+                app:cornerRadius="12dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
