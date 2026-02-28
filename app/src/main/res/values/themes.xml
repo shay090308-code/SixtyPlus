@@ -14,5 +14,12 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
 
         <item name="postSplashScreenTheme">@style/Theme.SixtyPlus</item>
+
     </style>
+
+    <style name="NavItemTextAppearance">
+        <item name="android:fontFamily">@font/rubiklight</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

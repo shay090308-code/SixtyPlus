@@ -40,26 +40,26 @@ public abstract class BaseActivity extends AppCompatActivity
 
         super.setContentView(R.layout.activity_base);
 
-        // Toolbar
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
-        // Drawer
         drawerLayout = findViewById(R.id.nav_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // עדכון שם המשתמש בheader
+        boolean isInCharge = SharedPreferencesUtils.isUserInCharge(this);
+        boolean isAdmin = SharedPreferencesUtils.isAdmin(this);
+
         View headerView = navigationView.getHeaderView(0);
         TextView usernameText = headerView.findViewById(R.id.usernameText);
+        TextView userRoleText = headerView.findViewById(R.id.userRoleText);
         UserGeneral user = SharedPreferencesUtils.getUser(this);
         if (user != null) {
             usernameText.setText("שלום, " + user.getFirstName() + " " + user.getLastName() + "!");
+            if (userRoleText != null) {
+                userRoleText.setText(isInCharge ? "אחראי מקום" : "תלמיד");
+            }
         }
-
-        // טעינת המנו לפי סוג המשתמש
-        boolean isInCharge = SharedPreferencesUtils.isUserInCharge(this);
-        boolean isAdmin = SharedPreferencesUtils.isAdmin(this);
 
         if (isInCharge) {
             navigationView.inflateMenu(R.menu.nav_menu_in_charge);
@@ -67,7 +67,6 @@ public abstract class BaseActivity extends AppCompatActivity
             navigationView.inflateMenu(R.menu.nav_menu_student);
         }
 
-        // הסתרת רשימות למי שאינו admin
         if (!isAdmin) {
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.nav_students_list).setVisible(false);
@@ -75,7 +74,6 @@ public abstract class BaseActivity extends AppCompatActivity
         }
 
         if (hasSideMenu()) {
-
             toggle = new ActionBarDrawerToggle(
                     this,
                     drawerLayout,
@@ -92,7 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
                 getSupportActionBar().setTitle("");
             }
-
         } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             navigationView.setVisibility(View.GONE);
@@ -148,7 +145,6 @@ public abstract class BaseActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        // ===== משותף לשניהם =====
         if (id == R.id.nav_signOut) {
             drawerLayout.closeDrawer(GravityCompat.START);
             showLogoutDialog();
@@ -165,46 +161,32 @@ public abstract class BaseActivity extends AppCompatActivity
             return true;
         }
 
-        // ===== תלמיד =====
         if (id == R.id.nav_home_student) {
             navigateTo(MainActivityStudents.class);
-
         } else if (id == R.id.nav_search_volunteering) {
             navigateTo(FindPlaces.class);
-
         } else if (id == R.id.nav_add_volunteering) {
             navigateTo(RegisterVolunteering.class);
-
         } else if (id == R.id.nav_history) {
             navigateTo(HistoryVolunteers.class);
-
         } else if (id == R.id.nav_weekly_student) {
-            ///navigateTo(WeeklyStudentActivity.class);
-
+            // navigateTo(WeeklyStudentActivity.class);
         } else if (id == R.id.nav_update_details_student) {
             navigateTo(ChangeDetailsStudent.class);
-
         } else if (id == R.id.nav_instructions_student) {
-            ///navigateTo(InstructionsStudentActivity.class);
-
-            // ===== אחראי =====
+            // navigateTo(InstructionsStudentActivity.class);
         } else if (id == R.id.nav_home_manager) {
             navigateTo(MainActivityInCharge.class);
-
         } else if (id == R.id.nav_volunteering_requests) {
             navigateTo(AcceptingVolunteers.class);
-
         } else if (id == R.id.nav_cancel_volunteering) {
-            ///navigateTo(CancelVolunteeringActivity.class);
-
+            // navigateTo(CancelVolunteeringActivity.class);
         } else if (id == R.id.nav_weekly_manager) {
-            ///navigateTo(WeeklyManagerActivity.class);
-
+            // navigateTo(WeeklyManagerActivity.class);
         } else if (id == R.id.nav_update_details_manager) {
             navigateTo(ChangeDetailsInCharge.class);
-
         } else if (id == R.id.nav_instructions_manager) {
-            ///navigateTo(InstructionsManagerActivity.class);
+            // navigateTo(InstructionsManagerActivity.class);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -226,7 +208,6 @@ public abstract class BaseActivity extends AppCompatActivity
                 .setNegativeButton("לא", (d, which) -> d.dismiss())
                 .show();
 
-
         TextView message = dialog.findViewById(android.R.id.message);
         if (message != null) {
             message.setTypeface(ResourcesCompat.getFont(this, R.font.rubiklight));
@@ -237,7 +218,6 @@ public abstract class BaseActivity extends AppCompatActivity
         dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
                 .setTypeface(ResourcesCompat.getFont(this, R.font.gveretlevin));
     }
-
 
     @Override
     public void onBackPressed() {

@@ -1,126 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.Landing">
+    android:background="#F5F5F5">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_gradient"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:paddingBottom="60dp"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שלום רב!"
+            android:textColor="#FFFFFF"
+            android:textSize="52sp"
+            android:fontFamily="@font/galacti"
+            android:shadowColor="#33000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="8"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ברוכים הבאים ל-"
+            android:textColor="#FFF9C4"
+            android:textSize="18sp"
+            android:fontFamily="@font/gveretlevin"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/sixtypluslogo"/>
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="-24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="28dp"
+            android:gravity="center">
 
             <TextView
-                android:id="@+id/welcomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:fontFamily="@font/galacti"
-                android:shadowColor="@color/myyellow"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="10"
-                android:text="שלום רב!"
-                android:textColor="#000000"
-                android:textSize="80dp"
-                android:textStyle="bold"
-                tools:layout_conversion_absoluteHeight="50dp"
-                tools:layout_conversion_absoluteWidth="242dp" />
-
-            <!-- טקסט קטן מתחת -->
-            <TextView
-                android:id="@+id/welcomeSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center"
-                android:text="ברוכים הבאים ל-"
-                android:shadowDx="1"
-                android:shadowDy="10"
-                android:shadowRadius="10"
-                android:shadowColor="#908E8E"
-                android:fontFamily="@font/gveretlevin"
-                android:textColor="#000000"
-                android:textSize="33sp" />
-
-            <!-- לוגו האפליקציה -->
-            <ImageView
-                android:id="@+id/appLogo"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="לוגו האפליקציה"
-                android:src="@drawable/sixtypluslogo" />
-
-            <!-- תיאור קצר -->
-            <TextView
-                android:id="@+id/appDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:lineSpacingExtra="2dp"
-                android:paddingHorizontal="12dp"
-                android:shadowDx="1"
-                android:shadowDy="10"
-                android:shadowRadius="10"
-                android:shadowColor="#908E8E"
-                android:fontFamily="@font/gveretlevin"
                 android:text="האפליקציה שתעזור לך לנהל בקלות את שעות המעורבות החברתית"
-                android:textColor="#000000"
-                android:textSize="29sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/gveretlevin"
+                android:textColor="#666666"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="32dp"/>
 
-            <!-- כפתור התחברות -->
             <Button
                 android:id="@+id/loginlanding"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
                 android:text="התחברות"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp"
-                android:layout_marginBottom="10dp"/>
+                android:textSize="18sp"
+                android:fontFamily="@font/rubicblack"
+                android:textColor="#1A1A2E"
+                android:backgroundTint="@color/myyellow"
+                android:layout_marginBottom="12dp"
+                app:cornerRadius="16dp"/>
 
-            <!-- כפתור הרשמה תלמיד -->
             <Button
                 android:id="@+id/studentRegisterBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="39dp"
-                android:paddingRight="39dp"
-                android:backgroundTint="@color/myyellow"
-                android:fontFamily="@font/rubicblack"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
                 android:text="הרשמה"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                tools:layout_conversion_absoluteHeight="47dp"
-                tools:layout_conversion_absoluteWidth="200dp" />
+                android:textSize="18sp"
+                android:fontFamily="@font/rubicblack"
+                android:textColor="#1A1A2E"
+                android:backgroundTint="#F5F5F5"
+                android:strokeColor="@color/myyellow"
+                app:cornerRadius="16dp"/>
 
         </LinearLayout>
-    </ScrollView>
-
-
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,109 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.SelectRegister">
+    android:background="#F5F5F5">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/goBackLoginSelect"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@android:color/transparent"
-            android:text="➜"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/selectTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/galacti"
-            android:layout_gravity="center"
-            android:shadowColor="@color/myyellow"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="10"
-            android:text="סוג הרשמה"
-            android:textColor="#000000"
-            android:textSize="75dp"
-            android:textStyle="bold"
-            tools:layout_conversion_absoluteHeight="50dp"
-            tools:layout_conversion_absoluteWidth="242dp" />
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/header_gradient"
+                android:orientation="vertical"
+                android:padding="28dp"
+                android:paddingBottom="48dp"
+                android:layoutDirection="rtl">
 
-        <TextView
-            android:id="@+id/selectDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:fontFamily="@font/rubiklight"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="10"
-            android:text="בחר את סוג המשתמש"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="363dp" />
+                <Button
+                    android:id="@+id/goBackLoginSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:text="➜"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="סוג הרשמה"
+                    android:textColor="#FFFFFF"
+                    android:textSize="36sp"
+                    android:fontFamily="@font/galacti"
+                    android:shadowColor="#33000000"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"/>
 
-        <ImageButton
-            android:id="@+id/studentSelected"
-            android:layout_width="320dp"
-            android:layout_height="250dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:backgroundTint="#FAFAFA"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/students" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="בחר את סוג המשתמש"
+                    android:textColor="#FFF9C4"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rubiklight"
+                    android:layout_marginTop="4dp"/>
 
-        <Button
-            android:id="@+id/studentSelectBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:text="הרשמת תלמידים"
-            android:textColor="@color/black"
-            android:fontFamily="@font/rubicblack"
-            android:textSize="30dp"/>
+            </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/inChargeSelected"
-            android:layout_width="320dp"
-            android:layout_height="260dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:backgroundTint="#FAFAFA"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            app:srcCompat="@drawable/incharge" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="-24dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="#F4F4F4">
 
-        <Button
-            android:id="@+id/inChargeSelectedBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:text="הרשמת אחראים"
-            android:textColor="@color/black"
-            android:fontFamily="@font/rubicblack"
-            android:textSize="30dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:gravity="center">
 
-    </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/studentSelected"
+                        android:layout_width="match_parent"
+                        android:layout_height="265dp"
+                        android:scaleType="centerCrop"
+                        android:backgroundTint="#F5F5F5"
+                        android:layout_marginBottom="8dp"
+                        app:srcCompat="@drawable/students"
+                        style="@style/Widget.AppCompat.ImageButton"/>
+
+                    <Button
+                        android:id="@+id/studentSelectBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="הרשמת תלמידים"
+                        android:textColor="#1A1A2E"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/rubicblack"
+                        android:backgroundTint="@color/myyellow"
+                        android:layout_marginBottom="24dp"
+                        app:cornerRadius="16dp"/>
+
+                    <ImageButton
+                        android:id="@+id/inChargeSelected"
+                        android:layout_width="match_parent"
+                        android:layout_height="265dp"
+                        android:scaleType="centerCrop"
+                        android:backgroundTint="#F5F5F5"
+                        android:layout_marginBottom="8dp"
+                        app:srcCompat="@drawable/incharge"
+                        style="@style/Widget.AppCompat.ImageButton"/>
+
+                    <Button
+                        android:id="@+id/inChargeSelectedBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="הרשמת אחראים"
+                        android:textColor="#1A1A2E"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/rubicblack"
+                        android:backgroundTint="@color/myyellow"
+                        app:cornerRadius="16dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
