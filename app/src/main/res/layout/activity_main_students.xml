@@ -103,7 +103,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- כרטיס ימים שנשארו -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +149,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- כרטיס טבלה -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

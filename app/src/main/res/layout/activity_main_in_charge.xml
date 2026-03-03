@@ -1,50 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_activity_in_charge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.Landing">
+    android:background="#F5F5F5">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layoutDirection="rtl">
 
-            <TextView
-                android:id="@+id/MainInChargeTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:fontFamily="@font/galacti"
-                android:shadowColor="@color/myyellow"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="10"
-                android:text="דף ראשי"
-                android:textColor="#000000"
-                android:textSize="80dp"
-                android:textStyle="bold"
-                tools:layout_conversion_absoluteHeight="50dp"
-                tools:layout_conversion_absoluteWidth="242dp" />
+                android:background="@drawable/header_gradient"
+                android:orientation="vertical"
+                android:padding="28dp"
+                android:paddingBottom="40dp">
+
+                <TextView
+                    android:id="@+id/tvGreeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="בוקר טוב!"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:fontFamily="@font/galacti"
+                    android:shadowColor="#33000000"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"/>
+
+                <TextView
+                    android:id="@+id/tvInChargeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFF9C4"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/rubiklight"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+            <!-- כרטיס בקשות ממתינות -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="-24dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔔 בקשות ממתינות"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="12dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tvPendingCount"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/galacti"
+                            android:textColor="#1A1A2E"
+                            android:background="@drawable/circle_yellow"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                            <TextView
+                                android:id="@+id/tvPendingText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="בקשות מחכות לאישורך"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/rubiklight"
+                                android:textColor="#444444"
+                                android:layout_marginBottom="8dp"/>
+
+                            <Button
+                                android:id="@+id/btnGoToRequests"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:text="עבור לאישור ←"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/gveretlevin"
+                                android:textColor="#1A1A2E"
+                                android:backgroundTint="@color/myyellow"
+                                app:cornerRadius="20dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כרטיס ספירה לאחור -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏳ ספירה לאחור"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="12dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBarDays"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:progressDrawable="@drawable/progress_bar_yellow"
+                        android:max="100"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tvDaysLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#666666"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- כרטיס טבלה -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📅 3 הימים הקרובים"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/rubiklight"
+                        android:textColor="#222222"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TableLayout
+                        android:id="@+id/tableUpcoming"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="*"
+                        android:background="#E0E0E0"
+                        android:padding="1dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
