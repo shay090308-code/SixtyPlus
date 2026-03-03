@@ -462,27 +462,86 @@ public class RegisterVolunteering extends BaseActivity {
             return;
         }
 
-        Volunteering volunteering = new Volunteering(
-                currentStudent.getId(),
-                currentStudent.getFirstName() + " " + currentStudent.getLastName(),
-                selectedPlace.getId(),
-                selectedPlace.getPlaceName(),
-                selectedDate.getTimeInMillis(),
-                selectedStartTime,
-                selectedEndTime
-        );
+        btnSubmitVolunteering.setEnabled(false);
 
-        DatabaseService.getInstance().setVolunteering(volunteering, new DatabaseService.DatabaseCallback<Void>() {
-            @Override
-            public void onCompleted(Void v) {
-                Toast.makeText(RegisterVolunteering.this, "בקשת ההתנדבות נשלחה בהצלחה!", Toast.LENGTH_LONG).show();
-                finish();
-            }
+        databaseService.getVolunteeringByStudent(currentStudent.getId(),
+                new DatabaseService.DatabaseCallback<List<Volunteering>>() {
+                    @Override
+                    public void onCompleted(List<Volunteering> existingList) {
+                        for (Volunteering existing : existingList) {
+                            if ("rejected".equals(existing.getStatus())) continue;
 
-            @Override
-            public void onFailed(Exception e) {
-                Toast.makeText(RegisterVolunteering.this, "שגיאה בשליחת הבקשה", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-}
+                            Calendar existingCal = Calendar.getInstance();
+                            existingCal.setTimeInMillis(existing.getDateMillis());
+                            boolean sameDay =
+                                    existingCal.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR) &&
+                                            existingCal.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR);
+
+                            if (!sameDay) continue;
+
+                            int newStart = selectedStartTime.getHour() * 60 + selectedStartTime.getMinute();
+                            int newEnd = selectedEndTime.getHour() * 60 + selectedEndTime.getMinute();
+                            int exStart = existing.getStartTime().getHour() * 60 + existing.getStartTime().getMinute();
+                            int exEnd = existing.getEndTime().getHour() * 60 + existing.getEndTime().getMinute();
+
+                            boolean overlaps = newStart < exEnd && newEnd > exStart;
+
+                            if (overlaps) {
+                                runOnUiThread(() -> {
+                                    btnSubmitVolunteering.setEnabled(true);
+                                    Toast.makeText(RegisterVolunteering.this,
+                                            "קיימת כבר התנדבות בשעות " +
+                                                    existing.getStartTime().toString() + "-" +
+                                                    existing.getEndTime().toString() +
+                                                    " באותו יום",
+                                            Toast.LENGTH_LONG).show();
+                                });
+                                return;
+                            }
+                        }
+
+                        Volunteering volunteering = new Volunteering(
+                                currentStudent.getId(),
+                                currentStudent.getFirstName() + " " + currentStudent.getLastName(),
+                                selectedPlace.getId(),
+                                selectedPlace.getPlaceName(),
+                                selectedDate.getTimeInMillis(),
+                                selectedStartTime,
+                                selectedEndTime
+                        );
+
+                        databaseService.setVolunteering(volunteering,
+                                new DatabaseService.DatabaseCallback<Void>() {
+                                    @Override
+                                    public void onCompleted(Void v) {
+                                        runOnUiThread(() -> {
+                                            Toast.makeText(RegisterVolunteering.this,
+                                                    "בקשת ההתנדבות נשלחה בהצלחה!",
+                                                    Toast.LENGTH_LONG).show();
+                                            finish();
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailed(Exception e) {
+                                        runOnUiThread(() -> {
+                                            btnSubmitVolunteering.setEnabled(true);
+                                            Toast.makeText(RegisterVolunteering.this,
+                                                    "שגיאה בשליחת הבקשה",
+                                                    Toast.LENGTH_SHORT).show();
+                                        });
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onFailed(Exception e) {
+                        runOnUiThread(() -> {
+                            btnSubmitVolunteering.setEnabled(true);
+                            Toast.makeText(RegisterVolunteering.this,
+                                    "שגיאה בבדיקת התנדבויות קיימות",
+                                    Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
+    }}

@@ -2,14 +2,11 @@ package com.example.sixtyplus.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,12 +17,8 @@ import com.example.sixtyplus.R;
 import com.example.sixtyplus.adapters.UserInChargeFindPlaces;
 import com.example.sixtyplus.models.UserInCharge;
 import com.example.sixtyplus.models.UserStudent;
+import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.SharedPreferencesUtils;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +29,6 @@ public class FindPlaces extends BaseActivity {
 
     private AutoCompleteTextView actvSearchPlaces;
     private UserInChargeFindPlaces adapter;
-    private DatabaseReference dbRef;
     private static final String TAG = "FindPlacesActivity";
 
     private List<UserInCharge> allPlaces;
@@ -61,7 +53,6 @@ public class FindPlaces extends BaseActivity {
         allPlaces = new ArrayList<>();
         placesMap = new HashMap<>();
 
-        // טעינת פרטי התלמיד המחובר
         currentStudent = (UserStudent) SharedPreferencesUtils.getUser(this);
         if (currentStudent == null) {
             Toast.makeText(this, "שגיאה בטעינת פרטי המשתמש", Toast.LENGTH_SHORT).show();
@@ -69,13 +60,9 @@ public class FindPlaces extends BaseActivity {
             return;
         }
 
-        dbRef = FirebaseDatabase.getInstance("https://sixtyplus-bada2-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("users");
-
         adapter = new UserInChargeFindPlaces(new UserInChargeFindPlaces.OnUserClickListener() {
             @Override
             public void onUserClick(UserInCharge user) {
-                // מעבר למסך קביעת התנדבות עם המקום שנבחר
                 Intent intent = new Intent(FindPlaces.this, RegisterVolunteering.class);
                 intent.putExtra("selectedPlaceId", user.getId());
                 intent.putExtra("selectedPlaceName", user.getPlaceName());
@@ -83,64 +70,41 @@ public class FindPlaces extends BaseActivity {
             }
 
             @Override
-            public void onLongUserClick(UserInCharge user) {
-            }
+            public void onLongUserClick(UserInCharge user) {}
         });
 
         rvResults.setLayoutManager(new LinearLayoutManager(this));
         rvResults.setAdapter(adapter);
 
-        // טעינת כל המקומות והגדרת ה-AutoComplete
         loadAllPlaces();
     }
 
     private void loadAllPlaces() {
-        Log.d(TAG, "loadAllPlaces called");
-
         String studentCity = currentStudent.getCity();
-        Log.d(TAG, "Student city: " + studentCity);
 
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseService.getUserInChargeList(new DatabaseService.DatabaseCallback<List<UserInCharge>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "Total children in Firebase: " + snapshot.getChildrenCount());
+            public void onCompleted(List<UserInCharge> users) {
                 allPlaces.clear();
                 placesMap.clear();
 
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    UserInCharge user = data.getValue(UserInCharge.class);
-                    Log.d(TAG, "User found: " + (user != null ? "yes" : "null"));
-
-                    if (user != null) {
-                        Log.d(TAG, "User className: " + user.className);
-                        Log.d(TAG, "User accepted: " + user.isAccepted());
-                        Log.d(TAG, "User placeName: " + user.getPlaceName());
-                        Log.d(TAG, "User city: " + user.getCity());
-
-                        if (user.isAccepted() &&
-                                user.className != null &&
-                                user.className.equals(UserInCharge.class.getName()) &&
-                                user.getCity() != null &&
-                                user.getCity().equals(studentCity)) {
-
-                            allPlaces.add(user);
-                            placesMap.put(user.getPlaceName(), user);
-                            Log.d(TAG, "Added to results: " + user.getPlaceName());
-                        }
+                for (UserInCharge user : users) {
+                    if (user.isAccepted() &&
+                            user.className != null &&
+                            user.className.equals(UserInCharge.class.getName()) &&
+                            user.getCity() != null &&
+                            user.getCity().equals(studentCity)) {
+                        allPlaces.add(user);
+                        placesMap.put(user.getPlaceName(), user);
                     }
                 }
 
-                Log.d(TAG, "Total results: " + allPlaces.size());
-
-                // הצגת כל המקומות ב-RecyclerView
                 adapter.setUserList(allPlaces);
-
                 setupAutoComplete();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to load places: " + error.getMessage());
+            public void onFailed(Exception e) {
                 Toast.makeText(FindPlaces.this, "שגיאה בטעינת מקומות", Toast.LENGTH_SHORT).show();
             }
         });

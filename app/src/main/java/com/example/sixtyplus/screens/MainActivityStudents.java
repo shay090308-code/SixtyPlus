@@ -108,7 +108,7 @@ public class MainActivityStudents extends BaseActivity {
     private void loadVolunteeringData() {
         if (currentStudent == null) return;
 
-        DatabaseService.getInstance().getVolunteeringList(
+        databaseService.getVolunteeringList(
                 new DatabaseService.DatabaseCallback<List<Volunteering>>() {
                     @Override
                     public void onCompleted(List<Volunteering> volunteeringList) {

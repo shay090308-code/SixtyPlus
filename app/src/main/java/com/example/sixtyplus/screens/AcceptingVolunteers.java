@@ -74,7 +74,7 @@ public class AcceptingVolunteers extends BaseActivity {
 
         Log.d(TAG, "loadPendingRequests: Loading requests for Place ID: " + currentUser.getId());
 
-        DatabaseService.getInstance().getVolunteeringList(new DatabaseService.DatabaseCallback<List<Volunteering>>() {
+        databaseService.getVolunteeringList(new DatabaseService.DatabaseCallback<List<Volunteering>>() {
             @Override
             public void onCompleted(List<Volunteering> allVolunteering) {
                 List<Volunteering> pendingRequests = new ArrayList<>();
@@ -117,8 +117,7 @@ public class AcceptingVolunteers extends BaseActivity {
     }
 
     private void updateVolunteeringStatus(Volunteering volunteering, String toastMessage) {
-        // שימוש ב-DatabaseCallback<Void> כדי למנוע את קריסת ה-Double conversion
-        DatabaseService.getInstance().updateVolunteering(volunteering, new DatabaseService.DatabaseCallback<Void>() {
+        databaseService.updateVolunteering(volunteering, new DatabaseService.DatabaseCallback<Void>() {
             @Override
             public void onCompleted(Void result) {
                 Log.d(TAG, "updateVolunteeringStatus: Success");

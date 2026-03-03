@@ -63,17 +63,16 @@ public class HistoryVolunteers extends BaseActivity {
             return;
         }
 
-        // שימוש בפונקציה הממוקדת לפי ה-ID של התלמיד
-        DatabaseService.getInstance().getVolunteeringByStudent(currentStudent.getId(), new DatabaseService.DatabaseCallback<List<Volunteering>>() {
+        databaseService.getVolunteeringByStudent(currentStudent.getId(), new DatabaseService.DatabaseCallback<List<Volunteering>>() {
             @Override
             public void onCompleted(List<Volunteering> studentHistory) {
+                studentHistory.removeIf(v -> "cancelled".equals(v.getStatus()));
                 if (studentHistory == null || studentHistory.isEmpty()) {
                     rvVolunteeringHistory.setVisibility(View.GONE);
                     tvNoHistory.setVisibility(View.VISIBLE);
                 } else {
                     // מיון לפי תאריך (מהחדש לישן)
                     studentHistory.sort((o1, o2) -> Long.compare(o2.getDateMillis(), o1.getDateMillis()));
-
                     rvVolunteeringHistory.setVisibility(View.VISIBLE);
                     tvNoHistory.setVisibility(View.GONE);
                     adapter.setVolunteeringList(studentHistory);

@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,12 +19,16 @@ import com.example.sixtyplus.models.UserStudent;
 import com.example.sixtyplus.services.DatabaseService;
 import com.example.sixtyplus.utils.validator;
 
-public class ForgotPassword extends AppCompatActivity {
+public class ForgotPassword extends BaseActivity {
 
     private static final String TAG = "forgotPwActivity";
     private EditText etUid, etUphone, etPw;
     private Button btnConfirm;
-    private DatabaseService db;
+
+    @Override
+    protected boolean hasSideMenu() {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +42,12 @@ public class ForgotPassword extends AppCompatActivity {
             return insets;
         });
 
-        db = DatabaseService.getInstance();
-
         etUid = findViewById(R.id.idForgotPass);
         etUphone = findViewById(R.id.phoneForgotPass);
         etPw = findViewById(R.id.passwordForgotPass);
         btnConfirm = findViewById(R.id.SubmitBtnForgotPass);
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onConfirm();
-            }
-        });
+        btnConfirm.setOnClickListener(v -> onConfirm());
     }
 
     private void onConfirm() {
@@ -63,13 +59,8 @@ public class ForgotPassword extends AppCompatActivity {
             Log.d(TAG, "Input Invalid, NOT ready to change password");
             return;
         }
-        Log.d(TAG, "Input valid, ready to change password");
 
-        Log.d(TAG, "Starting password reset for user: " + idnum);
-        Log.d(TAG , "searching user by the user name");
-
-
-        db.findUserById(idnum, phone, new DatabaseService.DatabaseCallback<UserGeneral>() {
+        databaseService.findUserById(idnum, phone, new DatabaseService.DatabaseCallback<UserGeneral>() {
             @Override
             public void onCompleted(UserGeneral user) {
                 if (user == null) {
@@ -80,11 +71,9 @@ public class ForgotPassword extends AppCompatActivity {
                 }
                 if (user.isUserStudent()) {
                     getUserStudentFromDB(idnum, pw);
-                }
-                else if (user.isUserInCharge()) {
+                } else if (user.isUserInCharge()) {
                     getUserInChargeFromDB(idnum, pw);
                 }
-
             }
 
             @Override
@@ -96,39 +85,33 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private void getUserInChargeFromDB(String idnum, String pw) {
-        db.getUserStudent(idnum, new DatabaseService.DatabaseCallback<UserStudent>() {
+        databaseService.getUserStudent(idnum, new DatabaseService.DatabaseCallback<UserStudent>() {
             @Override
             public void onCompleted(UserStudent userStudent) {
                 userStudent.setPassword(pw);
-
                 updateUserInDB(userStudent, idnum);
             }
 
             @Override
-            public void onFailed(Exception e) {
-
-            }
+            public void onFailed(Exception e) {}
         });
     }
 
     private void getUserStudentFromDB(String idnum, String pw) {
-        db.getUserInCharge(idnum, new DatabaseService.DatabaseCallback<UserInCharge>() {
+        databaseService.getUserInCharge(idnum, new DatabaseService.DatabaseCallback<UserInCharge>() {
             @Override
             public void onCompleted(UserInCharge userInCharge) {
                 userInCharge.setPassword(pw);
-
                 updateUserInDB(userInCharge, idnum);
             }
 
             @Override
-            public void onFailed(Exception e) {
-
-            }
+            public void onFailed(Exception e) {}
         });
     }
 
     private void updateUserInDB(UserGeneral user, String idnum) {
-        db.writeUser(user, new DatabaseService.DatabaseCallback<Void>() {
+        databaseService.writeUser(user, new DatabaseService.DatabaseCallback<Void>() {
             @Override
             public void onCompleted(Void object) {
                 Log.d(TAG, "Password updated successfully for: " + idnum);
@@ -144,42 +127,22 @@ public class ForgotPassword extends AppCompatActivity {
         });
     }
 
-    /// Check if the input is valid
-    /// @return true if valid, false otherwise
     private boolean checkInput(String username, String email, String pw) {
-        Log.d(TAG, "entered checkInput function");
-
-        // validate user name
         if (!validator.checkidlength(username)) {
-            Log.e(TAG, "checkInput: Invalid user name");
             etUid.setError("יש להזין תעודת זהות תקינה");
             etUid.requestFocus();
             return false;
-        } else {
-            Log.d(TAG, "isIdValid true");
         }
-
-        // validate email
         if (!validator.isPhoneValid(email)) {
-            Log.e(TAG, "checkInput: Invalid email");
             etUphone.setError("יש להזין מספר טלפון תקין");
             etUphone.requestFocus();
             return false;
-        } else {
-            Log.d(TAG, "isPhoneValid true");
         }
-
-        // validate password
         if (!validator.isPasswordValid(pw)) {
-            Log.e(TAG, "checkInput: Password must be at least 6 chars");
             etPw.setError("סיסמה חייבת להכיל לפחות 6 תווים");
             etPw.requestFocus();
             return false;
-        } else {
-            Log.d(TAG, "isPasswordValid true");
         }
-
-        Log.d(TAG, "checkInput: Input is valid");
         return true;
     }
 }

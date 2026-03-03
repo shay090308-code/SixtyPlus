@@ -170,7 +170,7 @@ public abstract class BaseActivity extends AppCompatActivity
         } else if (id == R.id.nav_history) {
             navigateTo(HistoryVolunteers.class);
         } else if (id == R.id.nav_weekly_student) {
-            // navigateTo(WeeklyStudentActivity.class);
+            navigateTo(ScheduleStudent.class);
         } else if (id == R.id.nav_update_details_student) {
             navigateTo(ChangeDetailsStudent.class);
         } else if (id == R.id.nav_instructions_student) {
@@ -180,9 +180,9 @@ public abstract class BaseActivity extends AppCompatActivity
         } else if (id == R.id.nav_volunteering_requests) {
             navigateTo(AcceptingVolunteers.class);
         } else if (id == R.id.nav_cancel_volunteering) {
-            // navigateTo(CancelVolunteeringActivity.class);
+            navigateTo(CancelingVolunteers.class);
         } else if (id == R.id.nav_weekly_manager) {
-            // navigateTo(WeeklyManagerActivity.class);
+            navigateTo(ScheduleInCharge.class);
         } else if (id == R.id.nav_update_details_manager) {
             navigateTo(ChangeDetailsInCharge.class);
         } else if (id == R.id.nav_instructions_manager) {
