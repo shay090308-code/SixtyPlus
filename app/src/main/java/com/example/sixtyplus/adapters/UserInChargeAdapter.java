@@ -1,6 +1,5 @@
 package com.example.sixtyplus.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sixtyplus.R;
 import com.example.sixtyplus.models.UserInCharge;
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapter.ViewHolder> {
-
 
     public interface OnUserClickListener {
         void onUserClick(UserInCharge user);
@@ -28,6 +24,7 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
 
     private final List<UserInCharge> userList;
     private final OnUserClickListener onUserClickListener;
+
     public UserInChargeAdapter(@Nullable final OnUserClickListener onUserClickListener) {
         userList = new ArrayList<>();
         this.onUserClickListener = onUserClickListener;
@@ -35,8 +32,9 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
 
     @NonNull
     @Override
-    public UserInChargeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_student, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_user_in_charge_grid, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,52 +43,35 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
         UserInCharge user = userList.get(position);
         if (user == null) return;
 
-        Log.d("UserStudentAdapter", "User ID: " + user.getId());
-        Log.d("UserStudentAdapter", "User City: " + user.getCity());
-        Log.d("UserStudentAdapter", "User Phone: " + user.getPhoneNumber());
+        // שם מקום
+        holder.tvPlaceName.setText(user.getPlaceName() != null ? user.getPlaceName() : "לא צוין");
 
+        // שם פרטי + משפחה
         holder.tvName.setText(user.getFirstName() + " " + user.getLastName());
-        holder.tvPhone.setText(user.getPhoneNumber());
 
-        if (user.getId() != null && !user.getId().isEmpty()) {
-            holder.tvId.setText(user.getId());
-        } else {
-            holder.tvId.setText("לא צוין");
-        }
+        // עיר
+        holder.tvCity.setText(user.getCity() != null ? user.getCity() : "לא צוין");
 
-        if (user.getCity() != null && !user.getCity().isEmpty()) {
-            holder.tvCity.setText(user.getCity());
-        } else {
-            holder.tvCity.setText("לא צוין");
-        }
+        // טלפון
+        holder.tvPhone.setText(user.getPhoneNumber() != null ? user.getPhoneNumber() : "לא צוין");
 
-        // Set initials
+        // אינישלס
         String initials = "";
-        if (user.getFirstName() != null && !user.getFirstName().isEmpty()) {
+        if (user.getFirstName() != null && !user.getFirstName().isEmpty())
             initials += user.getFirstName().charAt(0);
-        }
-        if (user.getLastName() != null && !user.getLastName().isEmpty()) {
+        if (user.getLastName() != null && !user.getLastName().isEmpty())
             initials += user.getLastName().charAt(0);
-        }
         holder.tvInitials.setText(initials.toUpperCase());
 
-
-
         holder.itemView.setOnClickListener(v -> {
-            if (onUserClickListener != null) {
-                onUserClickListener.onUserClick(user);
-            }
+            if (onUserClickListener != null) onUserClickListener.onUserClick(user);
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            if (onUserClickListener != null) {
-                onUserClickListener.onLongUserClick(user);
-            }
+            if (onUserClickListener != null) onUserClickListener.onLongUserClick(user);
             return true;
         });
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -107,6 +88,7 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
         userList.add(user);
         notifyItemInserted(userList.size() - 1);
     }
+
     public void updateUser(UserInCharge user) {
         int index = userList.indexOf(user);
         if (index == -1) return;
@@ -122,17 +104,15 @@ public class UserInChargeAdapter extends RecyclerView.Adapter<UserInChargeAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvId, tvCity, tvPhone, tvInitials;
-        Chip chipRole;
+        TextView tvPlaceName, tvName, tvCity, tvPhone, tvInitials;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_item_userstudent_name);
-            tvId = itemView.findViewById(R.id.tv_item_userstudent_id);
-            tvCity = itemView.findViewById((R.id.tv_item_userstudent_city));
-            tvPhone = itemView.findViewById(R.id.tv_item_userstudent_phone);
-            tvInitials = itemView.findViewById(R.id.tv_userstudent_initials);
-            chipRole = itemView.findViewById(R.id.chip_userstudent_role);
+            tvPlaceName = itemView.findViewById(R.id.tv_place_name);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvCity = itemView.findViewById(R.id.tv_city);
+            tvPhone = itemView.findViewById(R.id.tv_phone);
+            tvInitials = itemView.findViewById(R.id.tv_initials);
         }
     }
 }

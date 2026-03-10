@@ -1,77 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.Login">
+    android:background="#F5F5F5">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center_horizontal"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layoutDirection="rtl"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/liststudentstitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/galacti"
-            android:shadowColor="@color/myyellow"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="10"
-            android:text="רשימת תלמידים"
-            android:textColor="#000000"
-            android:textSize="75dp"
-            android:textStyle="bold"
-            tools:layout_conversion_absoluteHeight="50dp"
-            tools:layout_conversion_absoluteWidth="242dp" />
-
-        <TextView
-            android:id="@+id/tvuserstudentcount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/rubiklight"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="10"
-            android:text="מספר תלמידים כולל: 0"
-            android:textSize="23dp"
-            android:textStyle="bold"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="363dp" />
-
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#F2E18D"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true">
+            android:background="@drawable/header_gradient"
+            android:orientation="vertical"
+            android:padding="28dp"
+            android:paddingBottom="48dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvstudentlist"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                tools:listitem="@layout/item_user_student" />
+                android:text="רשימת תלמידים"
+                android:textColor="#FFFFFF"
+                android:textSize="36sp"
+                android:fontFamily="@font/galacti"
+                android:shadowColor="#33000000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="8"/>
 
-        </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/tvuserstudentcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="מספר תלמידים כולל: 0"
+                android:textColor="#FFF9C4"
+                android:textSize="16sp"
+                android:fontFamily="@font/rubiklight"
+                android:layout_marginTop="4dp"/>
 
+        </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvstudentlist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="-24dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false"/>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.TextView;
@@ -39,11 +39,12 @@ public class UserInChargesList extends BaseActivity {
 
         RecyclerView usersList = findViewById(R.id.rtvinchargelist);
         tvUserCount = findViewById(R.id.tvuserinchargecount);
-        usersList.setLayoutManager(new LinearLayoutManager(this));
+
+        usersList.setLayoutManager(new GridLayoutManager(this, 2));
+
         userAdapter = new UserInChargeAdapter(new UserInChargeAdapter.OnUserClickListener() {
             @Override
             public void onUserClick(UserInCharge user) {
-                // Handle user click
                 Log.d(TAG, "User clicked: " + user);
                 Intent intent = new Intent(UserInChargesList.this, ChangeDetailsInCharge.class);
                 intent.putExtra("USER_UID", user.getId());
@@ -52,13 +53,12 @@ public class UserInChargesList extends BaseActivity {
 
             @Override
             public void onLongUserClick(UserInCharge user) {
-                // Handle long user click
                 Log.d(TAG, "User long clicked: " + user);
             }
         });
+
         usersList.setAdapter(userAdapter);
     }
-
 
     @Override
     protected void onResume() {
@@ -66,8 +66,10 @@ public class UserInChargesList extends BaseActivity {
         databaseService.getUserInChargeList(new DatabaseService.DatabaseCallback<>() {
             @Override
             public void onCompleted(List<UserInCharge> users) {
-                userAdapter.setUserList(users);
-                tvUserCount.setText("מספר אחראים כולל: " + users.size());
+                runOnUiThread(() -> {
+                    userAdapter.setUserList(users);
+                    tvUserCount.setText("מספר אחראים כולל: " + users.size());
+                });
             }
 
             @Override
@@ -76,5 +78,4 @@ public class UserInChargesList extends BaseActivity {
             }
         });
     }
-
 }

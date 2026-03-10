@@ -8,7 +8,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.TextView;
@@ -39,11 +39,12 @@ public class UserStudentsList extends BaseActivity {
 
         RecyclerView usersList = findViewById(R.id.rvstudentlist);
         tvUserCount = findViewById(R.id.tvuserstudentcount);
-        usersList.setLayoutManager(new LinearLayoutManager(this));
+
+        usersList.setLayoutManager(new GridLayoutManager(this, 2));
+
         userAdapter = new UserStudentAdapter(new UserStudentAdapter.OnUserClickListener() {
             @Override
             public void onUserClick(UserStudent user) {
-                // Handle user click
                 Log.d(TAG, "User clicked: " + user);
                 Intent intent = new Intent(UserStudentsList.this, ChangeDetailsStudent.class);
                 intent.putExtra("USER_UID", user.getId());
@@ -52,13 +53,12 @@ public class UserStudentsList extends BaseActivity {
 
             @Override
             public void onLongUserClick(UserStudent user) {
-                // Handle long user click
                 Log.d(TAG, "User long clicked: " + user);
             }
         });
+
         usersList.setAdapter(userAdapter);
     }
-
 
     @Override
     protected void onResume() {
@@ -66,8 +66,10 @@ public class UserStudentsList extends BaseActivity {
         databaseService.getUserStudentList(new DatabaseService.DatabaseCallback<>() {
             @Override
             public void onCompleted(List<UserStudent> users) {
-                userAdapter.setUserList(users);
-                tvUserCount.setText("מספר תלמידים כולל: " + users.size());
+                runOnUiThread(() -> {
+                    userAdapter.setUserList(users);
+                    tvUserCount.setText("מספר תלמידים כולל: " + users.size());
+                });
             }
 
             @Override
@@ -76,5 +78,4 @@ public class UserStudentsList extends BaseActivity {
             }
         });
     }
-
 }
